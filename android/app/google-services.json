@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "838416527144",
+    "project_id": "sim-club-d17e7",
+    "storage_bucket": "sim-club-d17e7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838416527144:android:8997e09e372fa5b58baa1d",
+        "android_client_info": {
+          "package_name": "com.example.web_simclub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrnriMiIImu71d_eshbY9_gYBaSCbIn-M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
