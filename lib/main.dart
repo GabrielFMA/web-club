@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_simclub/firebase_options.dart';
-import 'package:web_simclub/pages/auth/Login.dart';
+import 'package:web_simclub/screen/auth/login.dart';
 import 'package:web_simclub/store/auth.store.dart';
 
 void main() async {
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       providers: [Provider<AuthStore>(create: (_) => AuthStore())],
       child: const MaterialApp(
         home: Scaffold(
-          body: LoginPage(),
+          body: LoginScreen(),
         ),
       ),
     );

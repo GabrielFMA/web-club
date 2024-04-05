@@ -16,7 +16,7 @@ class TextFieldPassword extends StatelessWidget {
         TextEditingController(text: password);
 
     return Container(
-        margin: const EdgeInsets.all(8),
+        margin: const EdgeInsets.only(top: 10, bottom: 10),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
@@ -63,7 +63,7 @@ class TextFieldConfirmPassword extends StatelessWidget {
         TextEditingController(text: confirmPassword);
 
     return Container(
-      margin: const EdgeInsets.all(8),
+      margin: const EdgeInsets.only(top: 10, bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -74,7 +74,7 @@ class TextFieldConfirmPassword extends StatelessWidget {
           validator: (value) {
             if (value!.isEmpty) {
               return "Digite uma senha";
-            } 
+            }
             return null;
           },
           obscureText: !store.isVisible,
