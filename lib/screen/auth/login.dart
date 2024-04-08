@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           "Entrar na sua conta",
                           style: TextStyle(
                               fontSize: 45, fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
+                          textAlign: TextAlign.center,
                         ),
                       ),
                       TextFieldString(
@@ -59,16 +59,24 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (text!.isEmpty) {
                             return "Digite um e-mail";
                           }
-
                           store.setEmail(text);
                           return null;
                         },
                       ),
-
-                      TextFieldPassword(password: _passwordController.text),
-
+                      TextFieldPassword(
+                        password: _passwordController.text,
+                        shouldValidate: true,
+                        validator: (text) {
+                          if (text!.isEmpty) {
+                            return "Digite uma senha";
+                          } else if (text.length < 6) {
+                            return "Digite uma senha maior";
+                          }
+                          store.setPassword(text);
+                          return null;
+                        },
+                      ),
                       const SizedBox(height: 10),
-
                       buttonDefault(
                         context,
                         () {

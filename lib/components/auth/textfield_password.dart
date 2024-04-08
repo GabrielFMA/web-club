@@ -5,8 +5,13 @@ import 'package:web_simclub/store/auth.store.dart';
 
 class TextFieldPassword extends StatelessWidget {
   final String password;
-
-  const TextFieldPassword({super.key, required this.password});
+  final bool shouldValidate;
+  final String? Function(String?)? validator;
+  const TextFieldPassword(
+      {super.key,
+      required this.password,
+      required this.shouldValidate,
+      required this.validator});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +21,7 @@ class TextFieldPassword extends StatelessWidget {
         TextEditingController(text: password);
 
     return Container(
-        margin: const EdgeInsets.only(top: 10, bottom: 10),
+        margin: const EdgeInsets.only(top: 5, bottom: 5),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
@@ -24,15 +29,7 @@ class TextFieldPassword extends StatelessWidget {
         child: Observer(
           builder: (_) => TextFormField(
             controller: passwordController,
-            validator: (value) {
-              if (value!.isEmpty) {
-                return "Digite uma senha";
-              } else if (value.length < 6) {
-                return "Digite uma senha maior";
-              }
-              store.setPassword(value);
-              return null;
-            },
+            validator: shouldValidate ? validator : null,
             obscureText: !store.isVisible,
             decoration: InputDecoration(
                 icon: const Icon(Icons.lock),
@@ -63,7 +60,7 @@ class TextFieldConfirmPassword extends StatelessWidget {
         TextEditingController(text: confirmPassword);
 
     return Container(
-      margin: const EdgeInsets.only(top: 10, bottom: 10),
+      margin: const EdgeInsets.only(top: 5, bottom: 5),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),

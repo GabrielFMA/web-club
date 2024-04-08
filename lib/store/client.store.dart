@@ -10,11 +10,11 @@ import 'package:http/http.dart' as http;
 import 'package:web_simclub/screen/auth/login.dart';
 import 'package:web_simclub/screen/home_page.dart';
 
-part 'auth.store.g.dart';
+part 'client.store.g.dart';
 
-class AuthStore = _AuthStore with _$AuthStore;
+class ClientStore = _ClientStore with _$ClientStore;
 
-abstract class _AuthStore with Store {
+abstract class _ClientStore with Store {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   static const _url =
       'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBlb1hQGuNgpJs0dkTKhAQ-l5YqS3XVM88';
@@ -134,55 +134,43 @@ abstract class _AuthStore with Store {
   }
 
   //Auth Firebase Funções
-  @action
-  Future<void> signInWithEmailPassword(BuildContext context) async {
+  Future<void> signUpWithEmailPassword(BuildContext context) async {
     try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _email,
-        password: _password,
+      print(_nome);
+      print(_email);
+      print(_password);
+      final response = await http.post(
+        Uri.parse(_url),
+        body: jsonEncode({
+          'email': _email,
+          'password': _password,
+          'returnSecureToken': true,
+        }),
       );
+      final responseData = jsonDecode(response.body);
+      if (responseData.containsKey('idToken')) {
+        _token = responseData['idToken'];
+        _uidUser = responseData['localId'];
 
-      // Usuário logado com sucesso
-      print('Usuário logado com sucesso: ${credential.user!.uid}');
-      _uidUser = credential.user!.uid;
+        await cadastroUsuario();
 
-      recuperacaoDados(_uidUser);
-
-      Navigator.pushAndRemoveUntil(
+        Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-          (route) => false);
-
-      textError = ' ';
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+          (route) => false,
+        );
+      }
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'invalid-email') {
-        textError = 'Email não encontrado!';
-        isError = true;
-        print('Email não encontrado');
-      } else if (e.code == 'invalid-credential') {
-        textError = 'Email/senha incorretos!';
-        isError = true;
-        print('Email/senha incorretos');
-      } else if (e.code == 'too-many-requests') {
-        textError =
-            'Acesso a esta conta foi temporariamente desativado devido a muitas tentativas de login.';
-        isError = true;
-        print('Muitas tentativas de login');
+      if (e.code == 'email-already-in-use') {
+        print('Email já está em uso.');
+      } else if (e.code == 'weak-password') {
+        print('A senha fornecida é muito fraca.');
+      } else {
+        print('Erro de autenticação: ${e.message}');
       }
     } catch (e) {
-      print('Erro ao fazer login: $e');
+      print('Erro ao fazer registro: $e');
       print('Tipo de exceção: ${e.runtimeType}');
-    }
-  }
-
-  //Função para Deslogar
-  @action
-  Future<void> signOut() async {
-    try {
-      await _auth.signOut();
-      _currentUser = null;
-    } catch (e) {
-      print(e);
     }
   }
 
@@ -211,9 +199,8 @@ abstract class _AuthStore with Store {
     return await db.collection("Usuarios").doc(id).set(usuariosMap);
   }
 
-  //Setar dados após login
   @action
-  Future<void> recuperacaoDados(String currentUser) async {
+  void recuperacaoDados(String currentUser) {
     _uidUser = currentUser;
     try {
       db.collection(_uidUser);
@@ -226,11 +213,6 @@ abstract class _AuthStore with Store {
           setEmail(data['Email']);
           setCPF(data['CPF']);
           setTelefone(data['Telefone']);
-          print('try2');
-          print(_nome);
-          print(_email);
-          print(_cpf);
-          print(_telefone);
         },
         onError: (e) => print("Error getting document: $e"),
       );

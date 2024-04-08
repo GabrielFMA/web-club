@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth.store.dart';
+part of 'client.store.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,9 +8,9 @@ part of 'auth.store.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$AuthStore on _AuthStore, Store {
+mixin _$ClientStore on _ClientStore, Store {
   late final _$_currentUserAtom =
-      Atom(name: '_AuthStore._currentUser', context: context);
+      Atom(name: '_ClientStore._currentUser', context: context);
 
   @override
   User? get _currentUser {
@@ -26,7 +26,7 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   late final _$isVisibleAtom =
-      Atom(name: '_AuthStore.isVisible', context: context);
+      Atom(name: '_ClientStore.isVisible', context: context);
 
   @override
   bool get isVisible {
@@ -41,7 +41,7 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$_tokenAtom = Atom(name: '_AuthStore._token', context: context);
+  late final _$_tokenAtom = Atom(name: '_ClientStore._token', context: context);
 
   @override
   String get _token {
@@ -57,7 +57,7 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   late final _$_uidUserAtom =
-      Atom(name: '_AuthStore._uidUser', context: context);
+      Atom(name: '_ClientStore._uidUser', context: context);
 
   @override
   String get _uidUser {
@@ -72,7 +72,7 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$_cpfAtom = Atom(name: '_AuthStore._cpf', context: context);
+  late final _$_cpfAtom = Atom(name: '_ClientStore._cpf', context: context);
 
   @override
   String get _cpf {
@@ -87,7 +87,7 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$_nomeAtom = Atom(name: '_AuthStore._nome', context: context);
+  late final _$_nomeAtom = Atom(name: '_ClientStore._nome', context: context);
 
   @override
   String get _nome {
@@ -102,7 +102,7 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$_emailAtom = Atom(name: '_AuthStore._email', context: context);
+  late final _$_emailAtom = Atom(name: '_ClientStore._email', context: context);
 
   @override
   String get _email {
@@ -118,7 +118,7 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   late final _$_passwordAtom =
-      Atom(name: '_AuthStore._password', context: context);
+      Atom(name: '_ClientStore._password', context: context);
 
   @override
   String get _password {
@@ -134,7 +134,7 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   late final _$_telefoneAtom =
-      Atom(name: '_AuthStore._telefone', context: context);
+      Atom(name: '_ClientStore._telefone', context: context);
 
   @override
   String get _telefone {
@@ -150,7 +150,7 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   late final _$_numContratoAtom =
-      Atom(name: '_AuthStore._numContrato', context: context);
+      Atom(name: '_ClientStore._numContrato', context: context);
 
   @override
   String get _numContrato {
@@ -166,7 +166,7 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   late final _$textErrorAtom =
-      Atom(name: '_AuthStore.textError', context: context);
+      Atom(name: '_ClientStore.textError', context: context);
 
   @override
   String get textError {
@@ -181,7 +181,8 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$isErrorAtom = Atom(name: '_AuthStore.isError', context: context);
+  late final _$isErrorAtom =
+      Atom(name: '_ClientStore.isError', context: context);
 
   @override
   bool get isError {
@@ -196,25 +197,8 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$signInWithEmailPasswordAsyncAction =
-      AsyncAction('_AuthStore.signInWithEmailPassword', context: context);
-
-  @override
-  Future<void> signInWithEmailPassword(BuildContext context) {
-    return _$signInWithEmailPasswordAsyncAction
-        .run(() => super.signInWithEmailPassword(context));
-  }
-
-  late final _$signOutAsyncAction =
-      AsyncAction('_AuthStore.signOut', context: context);
-
-  @override
-  Future<void> signOut() {
-    return _$signOutAsyncAction.run(() => super.signOut());
-  }
-
   late final _$cadastroUsuarioAsyncAction =
-      AsyncAction('_AuthStore.cadastroUsuario', context: context);
+      AsyncAction('_ClientStore.cadastroUsuario', context: context);
 
   @override
   Future<void> cadastroUsuario() {
@@ -222,7 +206,7 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   late final _$addDetalhesUsuariosAsyncAction =
-      AsyncAction('_AuthStore.addDetalhesUsuarios', context: context);
+      AsyncAction('_ClientStore.addDetalhesUsuarios', context: context);
 
   @override
   Future<dynamic> addDetalhesUsuarios(
@@ -231,158 +215,160 @@ mixin _$AuthStore on _AuthStore, Store {
         .run(() => super.addDetalhesUsuarios(usuariosMap, id));
   }
 
-  late final _$recuperacaoDadosAsyncAction =
-      AsyncAction('_AuthStore.recuperacaoDados', context: context);
-
-  @override
-  Future<void> recuperacaoDados(String currentUser) {
-    return _$recuperacaoDadosAsyncAction
-        .run(() => super.recuperacaoDados(currentUser));
-  }
-
-  late final _$_AuthStoreActionController =
-      ActionController(name: '_AuthStore', context: context);
+  late final _$_ClientStoreActionController =
+      ActionController(name: '_ClientStore', context: context);
 
   @override
   dynamic getEmail() {
-    final _$actionInfo =
-        _$_AuthStoreActionController.startAction(name: '_AuthStore.getEmail');
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.getEmail');
     try {
       return super.getEmail();
     } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
+      _$_ClientStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   dynamic getNome() {
-    final _$actionInfo =
-        _$_AuthStoreActionController.startAction(name: '_AuthStore.getNome');
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.getNome');
     try {
       return super.getNome();
     } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
+      _$_ClientStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   dynamic getCPF() {
     final _$actionInfo =
-        _$_AuthStoreActionController.startAction(name: '_AuthStore.getCPF');
+        _$_ClientStoreActionController.startAction(name: '_ClientStore.getCPF');
     try {
       return super.getCPF();
     } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
+      _$_ClientStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   dynamic getTelefone() {
-    final _$actionInfo = _$_AuthStoreActionController.startAction(
-        name: '_AuthStore.getTelefone');
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.getTelefone');
     try {
       return super.getTelefone();
     } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
+      _$_ClientStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   dynamic getPassword() {
-    final _$actionInfo = _$_AuthStoreActionController.startAction(
-        name: '_AuthStore.getPassword');
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.getPassword');
     try {
       return super.getPassword();
     } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
+      _$_ClientStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   dynamic usuarioUID() {
-    final _$actionInfo =
-        _$_AuthStoreActionController.startAction(name: '_AuthStore.usuarioUID');
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.usuarioUID');
     try {
       return super.usuarioUID();
     } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
+      _$_ClientStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setCPF(String cpf) {
     final _$actionInfo =
-        _$_AuthStoreActionController.startAction(name: '_AuthStore.setCPF');
+        _$_ClientStoreActionController.startAction(name: '_ClientStore.setCPF');
     try {
       return super.setCPF(cpf);
     } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
+      _$_ClientStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setNome(String nome) {
-    final _$actionInfo =
-        _$_AuthStoreActionController.startAction(name: '_AuthStore.setNome');
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.setNome');
     try {
       return super.setNome(nome);
     } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
+      _$_ClientStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setEmail(String email) {
-    final _$actionInfo =
-        _$_AuthStoreActionController.startAction(name: '_AuthStore.setEmail');
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.setEmail');
     try {
       return super.setEmail(email);
     } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
+      _$_ClientStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setPassword(String password) {
-    final _$actionInfo = _$_AuthStoreActionController.startAction(
-        name: '_AuthStore.setPassword');
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.setPassword');
     try {
       return super.setPassword(password);
     } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
+      _$_ClientStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setTelefone(String telefone) {
-    final _$actionInfo = _$_AuthStoreActionController.startAction(
-        name: '_AuthStore.setTelefone');
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.setTelefone');
     try {
       return super.setTelefone(telefone);
     } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
+      _$_ClientStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setNumContrato(String numContrato) {
-    final _$actionInfo = _$_AuthStoreActionController.startAction(
-        name: '_AuthStore.setNumContrato');
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.setNumContrato');
     try {
       return super.setNumContrato(numContrato);
     } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
+      _$_ClientStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void visible() {
-    final _$actionInfo =
-        _$_AuthStoreActionController.startAction(name: '_AuthStore.visible');
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.visible');
     try {
       return super.visible();
     } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void recuperacaoDados(String currentUser) {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.recuperacaoDados');
+    try {
+      return super.recuperacaoDados(currentUser);
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
     }
   }
 

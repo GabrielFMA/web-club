@@ -25,7 +25,7 @@ class TextFieldString extends StatelessWidget {
     TextEditingController _textController = TextEditingController(text: text);
 
     return Container(
-      margin: const EdgeInsets.only(top: 10, bottom: 10),
+      margin: const EdgeInsets.only(top: 5, bottom: 5),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
