@@ -4,9 +4,10 @@ import 'package:web_simclub/components/auth/textfield_password.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
 import 'package:web_simclub/store/auth.store.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:web_simclub/store/employee.store.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -15,7 +16,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -30,8 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius:
-                    BorderRadius.circular(10), // Define a borda arredondada
+                borderRadius: BorderRadius.circular(10),
               ),
               width: MediaQuery.of(context).size.width * 0.3,
               margin: const EdgeInsets.only(left: 20, right: 10),
@@ -50,6 +49,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           textAlign: TextAlign.center,
                         ),
                       ),
+
+                      //Email field
                       TextFieldString(
                         icon: const Icon(Icons.email),
                         hintText: "Digite seu email",
@@ -63,6 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           return null;
                         },
                       ),
+
+                      //Password field
                       TextFieldPassword(
                         password: _passwordController.text,
                         shouldValidate: true,
@@ -76,7 +79,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           return null;
                         },
                       ),
+
+                      //Space
                       const SizedBox(height: 10),
+
+                      //Button
                       buttonDefault(
                         context,
                         () {
@@ -85,8 +92,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         },
                       ),
+
+                      //Space
                       const SizedBox(height: 15),
-                      Container(
+
+                      //Login erros
+                      SizedBox(
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: Text(
                           store.textError,
@@ -114,11 +125,12 @@ class _LoginScreenState extends State<LoginScreen> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8), color: Colors.green[500]),
       child: TextButton(
-          onPressed: onClick,
-          child: const Text(
-            "LOGIN",
-            style: TextStyle(color: Colors.white),
-          )),
+        onPressed: onClick,
+        child: const Text(
+          "LOGIN",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
     );
   }
 }

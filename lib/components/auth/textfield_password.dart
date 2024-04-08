@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -17,33 +19,37 @@ class TextFieldPassword extends StatelessWidget {
   Widget build(BuildContext context) {
     final store = Provider.of<AuthStore>(context);
 
-    TextEditingController passwordController =
+    TextEditingController _passwordController =
         TextEditingController(text: password);
 
     return Container(
-        margin: const EdgeInsets.only(top: 5, bottom: 5),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: Colors.green[500]?.withOpacity(.3)),
-        child: Observer(
-          builder: (_) => TextFormField(
-            controller: passwordController,
-            validator: shouldValidate ? validator : null,
-            obscureText: !store.isVisible,
-            decoration: InputDecoration(
-                icon: const Icon(Icons.lock),
-                border: InputBorder.none,
-                hintText: "Senha",
-                suffixIcon: IconButton(
-                    onPressed: () {
-                      store.visible();
-                    },
-                    icon: Icon(store.isVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off))),
+      margin: const EdgeInsets.only(top: 5, bottom: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.green[500]?.withOpacity(.3),
+      ),
+      child: Observer(
+        builder: (_) => TextFormField(
+          controller: _passwordController,
+          validator: shouldValidate ? validator : null,
+          obscureText: !store.isVisible,
+          decoration: InputDecoration(
+            icon: const Icon(Icons.lock),
+            border: InputBorder.none,
+            hintText: "Senha",
+            suffixIcon: IconButton(
+              onPressed: () {
+                store.visible();
+              },
+              icon: Icon(
+                store.isVisible ? Icons.visibility : Icons.visibility_off,
+              ),
+            ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
 
@@ -63,8 +69,9 @@ class TextFieldConfirmPassword extends StatelessWidget {
       margin: const EdgeInsets.only(top: 5, bottom: 5),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Colors.green[500]?.withOpacity(.3)),
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.green[500]?.withOpacity(.3),
+      ),
       child: Observer(
         builder: (_) => TextFormField(
           controller: confirmPasswordController,
@@ -76,16 +83,17 @@ class TextFieldConfirmPassword extends StatelessWidget {
           },
           obscureText: !store.isVisible,
           decoration: InputDecoration(
-              icon: const Icon(Icons.lock),
-              border: InputBorder.none,
-              hintText: "Confirmar Senha",
-              suffixIcon: IconButton(
-                  onPressed: () {
-                    store.visible();
-                  },
-                  icon: Icon(store.isVisible
-                      ? Icons.visibility
-                      : Icons.visibility_off))),
+            icon: const Icon(Icons.lock),
+            border: InputBorder.none,
+            hintText: "Confirmar Senha",
+            suffixIcon: IconButton(
+              onPressed: () {
+                store.visible();
+              },
+              icon: Icon(
+                  store.isVisible ? Icons.visibility : Icons.visibility_off),
+            ),
+          ),
         ),
       ),
     );

@@ -7,7 +7,7 @@ import 'package:web_simclub/components/auth/textfield_password.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
 
 class RegistroScreen extends StatefulWidget {
-  const RegistroScreen({Key? key}) : super(key: key);
+  const RegistroScreen({super.key});
 
   @override
   State<RegistroScreen> createState() => _RegistroScreenState();
@@ -17,8 +17,8 @@ class _RegistroScreenState extends State<RegistroScreen> {
   final _nomeController = TextEditingController();
   final _emailController = TextEditingController();
   final _cpfController = TextEditingController();
-  final _telefoneController = TextEditingController();
-  final _contratoController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _contractController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
@@ -27,6 +27,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ClientStore>(context);
+
     return Scaffold(
       backgroundColor: Colors.green[200],
       body: Row(
@@ -41,8 +42,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(
-                            10), // Define a borda arredondada
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       width: MediaQuery.of(context).size.width * 0.3,
                       child: Padding(
@@ -62,60 +62,66 @@ class _RegistroScreenState extends State<RegistroScreen> {
                                   textAlign: TextAlign.center,
                                 ),
                               ),
+
                               //Nome field
                               TextFieldString(
-                                  icon: const Icon(Icons.person),
-                                  hintText: "Digite seu Nome",
-                                  text: _nomeController.text,
-                                  shouldValidate: true,
-                                  validator: (text) {
-                                    if (text!.isEmpty) {
-                                      return "Digite um nome";
-                                    }
-                                    if (text.length < 6) {
-                                      return 'Digite seu nome completo';
-                                    }
-                                    store.setNome(text);
-                                    return null;
-                                  }),
+                                icon: const Icon(Icons.person),
+                                hintText: "Digite seu Nome",
+                                text: _nomeController.text,
+                                shouldValidate: true,
+                                validator: (text) {
+                                  if (text!.isEmpty) {
+                                    return "Digite um nome";
+                                  }
+                                  if (text.length < 6) {
+                                    return 'Digite seu nome completo';
+                                  }
+                                  store.setName(text);
+                                  return null;
+                                },
+                              ),
+
                               //CPF field
                               TextFieldString(
-                                  icon: const Icon(Icons.document_scanner),
-                                  hintText: "CPF",
-                                  text: _cpfController.text,
-                                  shouldValidate: true,
-                                  validator: (text) {
-                                    if (text!.isEmpty) {
-                                      return "Digite seu CPF";
-                                    }
-                                    // Verifica se contém apenas números
-                                    if (!RegExp(r'^[0-9]+$').hasMatch(text)) {
-                                      return "Digite apenas números";
-                                    }
-                                    if (text.length != 11) {
-                                      return 'Digite um CPF válido';
-                                    }
-                                    store.setCPF(text);
-                                    return null;
-                                  }),
+                                icon: const Icon(Icons.document_scanner),
+                                hintText: "CPF",
+                                text: _cpfController.text,
+                                shouldValidate: true,
+                                validator: (text) {
+                                  if (text!.isEmpty) {
+                                    return "Digite seu CPF";
+                                  }
+                                  if (!RegExp(r'^[0-9]+$').hasMatch(text)) {
+                                    return "Digite apenas números";
+                                  }
+                                  if (text.length != 11) {
+                                    return 'Digite um CPF válido';
+                                  }
+                                  store.setCPF(text);
+                                  return null;
+                                },
+                              ),
+
                               //Email field
                               TextFieldString(
-                                  icon: const Icon(Icons.email),
-                                  hintText: "Digite seu email",
-                                  text: _emailController.text,
-                                  shouldValidate: true,
-                                  validator: (text) {
-                                    if (text!.isEmpty) {
-                                      return "Digite seu Email";
-                                    }
-                                    store.setEmail(text);
-                                    return null;
-                                  }),
+                                icon: const Icon(Icons.email),
+                                hintText: "Digite seu email",
+                                text: _emailController.text,
+                                shouldValidate: true,
+                                validator: (text) {
+                                  if (text!.isEmpty) {
+                                    return "Digite seu Email";
+                                  }
+                                  store.setEmail(text);
+                                  return null;
+                                },
+                              ),
+
                               //Telefone field
                               TextFieldString(
                                 icon: const Icon(Icons.phone),
                                 hintText: "Telefone",
-                                text: _telefoneController.text,
+                                text: _phoneController.text,
                                 shouldValidate: true,
                                 validator: (text) {
                                   if (text!.isEmpty) {
@@ -128,29 +134,32 @@ class _RegistroScreenState extends State<RegistroScreen> {
                                   if (text.length != 11) {
                                     return "Digite um Telefone válido";
                                   }
-                                  store.setTelefone(text);
+                                  store.setPhone(text);
                                   return null;
                                 },
                               ),
-                              //Contrato field
+
+                              //Contract field
                               TextFieldString(
-                                  icon: const Icon(
-                                      Icons.insert_drive_file_rounded),
-                                  hintText: "Contrato",
-                                  text: _contratoController.text,
-                                  shouldValidate: true,
-                                  validator: (text) {
-                                    if (text!.isEmpty) {
-                                      return "Digite seu Contrato";
-                                    }
-                                    // Verifica se contém apenas números
-                                    if (!RegExp(r'^[0-9]+$').hasMatch(text)) {
-                                      return "Digite apenas números";
-                                    }
-                                    store.setNumContrato(text);
-                                    return null;
-                                  }),
-                              //Senha field
+                                icon:
+                                    const Icon(Icons.insert_drive_file_rounded),
+                                hintText: "Contrato",
+                                text: _contractController.text,
+                                shouldValidate: true,
+                                validator: (text) {
+                                  if (text!.isEmpty) {
+                                    return "Digite seu Contrato";
+                                  }
+                                  // Verifica se contém apenas números
+                                  if (!RegExp(r'^[0-9]+$').hasMatch(text)) {
+                                    return "Digite apenas números";
+                                  }
+                                  store.setNumContract(text);
+                                  return null;
+                                },
+                              ),
+
+                              //Password field
                               TextFieldPassword(
                                 password: _passwordController.text,
                                 shouldValidate: true,
@@ -164,17 +173,26 @@ class _RegistroScreenState extends State<RegistroScreen> {
                                   return null;
                                 },
                               ),
-                              //Confirmar Senha field
+
+                              //Confirm Password field
                               TextFieldConfirmPassword(
                                 confirmPassword:
                                     _confirmPasswordController.text,
                               ),
+
+                              //Space
                               const SizedBox(height: 15),
-                              buttonDefault(context, () async {
-                                if (formKey.currentState!.validate()) {
-                                  await store.signUpWithEmailPassword(context);
-                                }
-                              })
+
+                              //Button
+                              buttonDefault(
+                                context,
+                                () async {
+                                  if (formKey.currentState!.validate()) {
+                                    await store
+                                        .signUpWithEmailPassword(context);
+                                  }
+                                },
+                              ),
                             ],
                           ),
                         ),
@@ -197,11 +215,12 @@ class _RegistroScreenState extends State<RegistroScreen> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8), color: Colors.green[500]),
       child: TextButton(
-          onPressed: onClick,
-          child: const Text(
-            "REGISTRAR",
-            style: TextStyle(color: Colors.white),
-          )),
+        onPressed: onClick,
+        child: const Text(
+          "REGISTRAR",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
     );
   }
 }

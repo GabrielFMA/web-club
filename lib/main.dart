@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:web_simclub/screen/auth/login.dart';
 import 'package:web_simclub/screen/home_page.dart';
 import 'package:web_simclub/store/auth.store.dart';
 import 'package:web_simclub/store/client.store.dart';
+import 'package:web_simclub/store/employee.store.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,14 +20,15 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         Provider<AuthStore>(create: (_) => AuthStore()),
-        Provider<ClientStore>(create: (_) => ClientStore())
+        Provider<ClientStore>(create: (_) => ClientStore()),
+        Provider<EmployeeStore>(create: (_) => EmployeeStore(),)
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -41,9 +45,9 @@ class MyApp extends StatelessWidget {
             if (currentUser != null) {
               final store = Provider.of<AuthStore>(context);
 
-              store.recuperacaoDados(currentUser.uid);
+              store.recoveryData(currentUser.uid);
               print('Usuário logado: ${currentUser.uid}');
-              
+
               return const HomePage();
             } else {
               print('Sem usuario');

@@ -1,5 +1,5 @@
 
-// ignore_for_file: library_private_types_in_public_api, avoid_print, use_build_context_synchronously
+// ignore_for_file: library_private_types_in_public_api, unused_field, avoid_print, use_build_context_synchronously
 
 import 'dart:convert';
 
@@ -10,11 +10,12 @@ import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
 import 'package:web_simclub/screen/auth/login.dart';
 
-part 'client.store.g.dart';
+part 'employee.store.g.dart';
 
-class ClientStore = _ClientStore with _$ClientStore;
+class EmployeeStore = _EmployeeStore with _$EmployeeStore;
 
-abstract class _ClientStore with Store {
+abstract class _EmployeeStore with Store {
+  
   static const _url =
       'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBlb1hQGuNgpJs0dkTKhAQ-l5YqS3XVM88';
 
@@ -33,9 +34,6 @@ abstract class _ClientStore with Store {
   String _uidUser = '';
 
   @observable
-  String _cpf = '';
-
-  @observable
   String _name = '';
 
   @observable
@@ -47,8 +45,8 @@ abstract class _ClientStore with Store {
   @observable
   String _phone = '';
 
-  @observable
-  String _numContract = '';
+  @observable 
+  String _cargo = '';
 
   @observable
   String textError = ' ';
@@ -63,13 +61,8 @@ abstract class _ClientStore with Store {
   }
 
   @action
-  getName() {
+  getNome() {
     return _name;
-  }
-
-  @action
-  getCPF() {
-    return _cpf;
   }
 
   @action
@@ -80,6 +73,11 @@ abstract class _ClientStore with Store {
   @action
   getPassword() {
     return _password;
+  }
+
+  @action
+  getCargo(){
+    return _cargo;
   }
 
   @action
@@ -96,11 +94,6 @@ abstract class _ClientStore with Store {
   }
 
   //Set funçoes
-  @action
-  void setCPF(String cpf) {
-    _cpf = cpf;
-  }
-
   @action
   void setName(String name) {
     _name = name;
@@ -122,10 +115,10 @@ abstract class _ClientStore with Store {
   }
 
   @action
-  void setNumContract(String numContract) {
-    _numContract = numContract;
+  void setCargo(String cargo){
+    _cargo = cargo;
   }
-
+  
   //Password field
   @action
   void visible() {
@@ -151,7 +144,7 @@ abstract class _ClientStore with Store {
         _token = responseData['idToken'];
         _uidUser = responseData['localId'];
 
-        recoveryData(_uidUser);
+        await registrationUser();
 
         Navigator.pushAndRemoveUntil(
           context,
@@ -181,10 +174,9 @@ abstract class _ClientStore with Store {
       Map<String, dynamic> usuariosInfoMap = {
         "ID": _uidUser,
         "Nome": _name,
-        "CPF": _cpf,
         "Email": _email,
         "Telefone": _phone,
-        "Contrato": _numContract,
+        "Cargo": _cargo,
       };
       await addDetailsUsers(usuariosInfoMap, _uidUser);
     } catch (e) {
@@ -195,7 +187,7 @@ abstract class _ClientStore with Store {
   @action
   Future addDetailsUsers(
       Map<String, dynamic> usuariosMap, String id) async {
-    return await db.collection("Usuarios").doc(id).set(usuariosMap);
+    return await db.collection("Funcionarios").doc(id).set(usuariosMap);
   }
 
   @action
@@ -203,14 +195,13 @@ abstract class _ClientStore with Store {
     _uidUser = currentUser;
     try {
       db.collection(_uidUser);
-      final docRef = db.collection("Usuarios").doc(_uidUser);
+      final docRef = db.collection("Funcionarios").doc(_uidUser);
       docRef.get().then(
         (DocumentSnapshot doc) {
           final data = doc.data() as Map<String, dynamic>;
 
           setName(data['Nome']);
           setEmail(data['Email']);
-          setCPF(data['CPF']);
           setPhone(data['Telefone']);
         },
         onError: (e) => print("Error getting document: $e"),

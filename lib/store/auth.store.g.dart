@@ -87,18 +87,18 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$_nomeAtom = Atom(name: '_AuthStore._nome', context: context);
+  late final _$_nameAtom = Atom(name: '_AuthStore._name', context: context);
 
   @override
-  String get _nome {
-    _$_nomeAtom.reportRead();
-    return super._nome;
+  String get _name {
+    _$_nameAtom.reportRead();
+    return super._name;
   }
 
   @override
-  set _nome(String value) {
-    _$_nomeAtom.reportWrite(value, super._nome, () {
-      super._nome = value;
+  set _name(String value) {
+    _$_nameAtom.reportWrite(value, super._name, () {
+      super._name = value;
     });
   }
 
@@ -133,35 +133,34 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$_telefoneAtom =
-      Atom(name: '_AuthStore._telefone', context: context);
+  late final _$_phoneAtom = Atom(name: '_AuthStore._phone', context: context);
 
   @override
-  String get _telefone {
-    _$_telefoneAtom.reportRead();
-    return super._telefone;
+  String get _phone {
+    _$_phoneAtom.reportRead();
+    return super._phone;
   }
 
   @override
-  set _telefone(String value) {
-    _$_telefoneAtom.reportWrite(value, super._telefone, () {
-      super._telefone = value;
+  set _phone(String value) {
+    _$_phoneAtom.reportWrite(value, super._phone, () {
+      super._phone = value;
     });
   }
 
-  late final _$_numContratoAtom =
-      Atom(name: '_AuthStore._numContrato', context: context);
+  late final _$_numContractAtom =
+      Atom(name: '_AuthStore._numContract', context: context);
 
   @override
-  String get _numContrato {
-    _$_numContratoAtom.reportRead();
-    return super._numContrato;
+  String get _numContract {
+    _$_numContractAtom.reportRead();
+    return super._numContract;
   }
 
   @override
-  set _numContrato(String value) {
-    _$_numContratoAtom.reportWrite(value, super._numContrato, () {
-      super._numContrato = value;
+  set _numContract(String value) {
+    _$_numContractAtom.reportWrite(value, super._numContract, () {
+      super._numContract = value;
     });
   }
 
@@ -213,31 +212,29 @@ mixin _$AuthStore on _AuthStore, Store {
     return _$signOutAsyncAction.run(() => super.signOut());
   }
 
-  late final _$cadastroUsuarioAsyncAction =
-      AsyncAction('_AuthStore.cadastroUsuario', context: context);
+  late final _$registrationUserAsyncAction =
+      AsyncAction('_AuthStore.registrationUser', context: context);
 
   @override
-  Future<void> cadastroUsuario() {
-    return _$cadastroUsuarioAsyncAction.run(() => super.cadastroUsuario());
+  Future<void> registrationUser() {
+    return _$registrationUserAsyncAction.run(() => super.registrationUser());
   }
 
-  late final _$addDetalhesUsuariosAsyncAction =
-      AsyncAction('_AuthStore.addDetalhesUsuarios', context: context);
+  late final _$addDetailsUsersAsyncAction =
+      AsyncAction('_AuthStore.addDetailsUsers', context: context);
 
   @override
-  Future<dynamic> addDetalhesUsuarios(
-      Map<String, dynamic> usuariosMap, String id) {
-    return _$addDetalhesUsuariosAsyncAction
-        .run(() => super.addDetalhesUsuarios(usuariosMap, id));
+  Future<dynamic> addDetailsUsers(Map<String, dynamic> usuariosMap, String id) {
+    return _$addDetailsUsersAsyncAction
+        .run(() => super.addDetailsUsers(usuariosMap, id));
   }
 
-  late final _$recuperacaoDadosAsyncAction =
-      AsyncAction('_AuthStore.recuperacaoDados', context: context);
+  late final _$recoveryDataAsyncAction =
+      AsyncAction('_AuthStore.recoveryData', context: context);
 
   @override
-  Future<void> recuperacaoDados(String currentUser) {
-    return _$recuperacaoDadosAsyncAction
-        .run(() => super.recuperacaoDados(currentUser));
+  Future<void> recoveryData(String currentUser) {
+    return _$recoveryDataAsyncAction.run(() => super.recoveryData(currentUser));
   }
 
   late final _$_AuthStoreActionController =
@@ -255,11 +252,11 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   @override
-  dynamic getNome() {
+  dynamic getName() {
     final _$actionInfo =
-        _$_AuthStoreActionController.startAction(name: '_AuthStore.getNome');
+        _$_AuthStoreActionController.startAction(name: '_AuthStore.getName');
     try {
-      return super.getNome();
+      return super.getName();
     } finally {
       _$_AuthStoreActionController.endAction(_$actionInfo);
     }
@@ -277,11 +274,11 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   @override
-  dynamic getTelefone() {
-    final _$actionInfo = _$_AuthStoreActionController.startAction(
-        name: '_AuthStore.getTelefone');
+  dynamic getPhone() {
+    final _$actionInfo =
+        _$_AuthStoreActionController.startAction(name: '_AuthStore.getPhone');
     try {
-      return super.getTelefone();
+      return super.getPhone();
     } finally {
       _$_AuthStoreActionController.endAction(_$actionInfo);
     }
@@ -321,11 +318,11 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   @override
-  void setNome(String nome) {
+  void setName(String name) {
     final _$actionInfo =
-        _$_AuthStoreActionController.startAction(name: '_AuthStore.setNome');
+        _$_AuthStoreActionController.startAction(name: '_AuthStore.setName');
     try {
-      return super.setNome(nome);
+      return super.setName(name);
     } finally {
       _$_AuthStoreActionController.endAction(_$actionInfo);
     }
@@ -354,22 +351,22 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   @override
-  void setTelefone(String telefone) {
-    final _$actionInfo = _$_AuthStoreActionController.startAction(
-        name: '_AuthStore.setTelefone');
+  void setPhone(String phone) {
+    final _$actionInfo =
+        _$_AuthStoreActionController.startAction(name: '_AuthStore.setPhone');
     try {
-      return super.setTelefone(telefone);
+      return super.setPhone(phone);
     } finally {
       _$_AuthStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setNumContrato(String numContrato) {
+  void setNumContract(String numContract) {
     final _$actionInfo = _$_AuthStoreActionController.startAction(
-        name: '_AuthStore.setNumContrato');
+        name: '_AuthStore.setNumContract');
     try {
-      return super.setNumContrato(numContrato);
+      return super.setNumContract(numContract);
     } finally {
       _$_AuthStoreActionController.endAction(_$actionInfo);
     }

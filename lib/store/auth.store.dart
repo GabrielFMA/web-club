@@ -1,13 +1,9 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print
-
-import 'dart:convert';
+// ignore_for_file: library_private_types_in_public_api, avoid_print, use_build_context_synchronously, unused_field
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:http/http.dart' as http;
-import 'package:web_simclub/screen/auth/login.dart';
 import 'package:web_simclub/screen/home_page.dart';
 
 part 'auth.store.g.dart';
@@ -16,9 +12,6 @@ class AuthStore = _AuthStore with _$AuthStore;
 
 abstract class _AuthStore with Store {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  static const _url =
-      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBlb1hQGuNgpJs0dkTKhAQ-l5YqS3XVM88';
-
   FirebaseFirestore db = FirebaseFirestore.instance;
 
   @observable
@@ -37,7 +30,7 @@ abstract class _AuthStore with Store {
   String _cpf = '';
 
   @observable
-  String _nome = '';
+  String _name = '';
 
   @observable
   String _email = '';
@@ -46,10 +39,10 @@ abstract class _AuthStore with Store {
   String _password = '';
 
   @observable
-  String _telefone = '';
+  String _phone = '';
 
   @observable
-  String _numContrato = '';
+  String _numContract = '';
 
   @observable
   String textError = ' ';
@@ -57,15 +50,15 @@ abstract class _AuthStore with Store {
   @observable
   bool isError = false;
 
-  //Get funções
+  //Get functions
   @action
   getEmail() {
     return _email;
   }
 
   @action
-  getNome() {
-    return _nome;
+  getName() {
+    return _name;
   }
 
   @action
@@ -74,8 +67,8 @@ abstract class _AuthStore with Store {
   }
 
   @action
-  getTelefone() {
-    return _telefone;
+  getPhone() {
+    return _phone;
   }
 
   @action
@@ -96,35 +89,35 @@ abstract class _AuthStore with Store {
     return isError;
   }
 
-  //Set funçoes
+  //Set functions
   @action
   void setCPF(String cpf) {
-    this._cpf = cpf;
+    _cpf = cpf;
   }
 
   @action
-  void setNome(String nome) {
-    this._nome = nome;
+  void setName(String name) {
+    _name = name;
   }
 
   @action
   void setEmail(String email) {
-    this._email = email;
+    _email = email;
   }
 
   @action
   void setPassword(String password) {
-    this._password = password;
+    _password = password;
   }
 
   @action
-  void setTelefone(String telefone) {
-    this._telefone = telefone;
+  void setPhone(String phone) {
+    _phone = phone;
   }
 
   @action
-  void setNumContrato(String numContrato) {
-    this._numContrato = numContrato;
+  void setNumContract(String numContract) {
+    _numContract = numContract;
   }
 
   //Password field
@@ -133,7 +126,7 @@ abstract class _AuthStore with Store {
     isVisible = !isVisible;
   }
 
-  //Auth Firebase Funções
+  //Auth Firebase Functions
   @action
   Future<void> signInWithEmailPassword(BuildContext context) async {
     try {
@@ -142,11 +135,13 @@ abstract class _AuthStore with Store {
         password: _password,
       );
 
-      // Usuário logado com sucesso
       print('Usuário logado com sucesso: ${credential.user!.uid}');
       _uidUser = credential.user!.uid;
 
-      recuperacaoDados(_uidUser);
+      recoveryData(_uidUser);
+      _password = ' ';
+      print('senha:');
+      print(_password);
 
       Navigator.pushAndRemoveUntil(
           context,
@@ -175,7 +170,7 @@ abstract class _AuthStore with Store {
     }
   }
 
-  //Função para Deslogar
+  //Logout function
   @action
   Future<void> signOut() async {
     try {
@@ -186,34 +181,33 @@ abstract class _AuthStore with Store {
     }
   }
 
-  //Firestore db
+  //Firestore database
   @action
-  Future<void> cadastroUsuario() async {
-    print("ID do usuario ${_uidUser}");
+  Future<void> registrationUser() async {
+    print("ID do usuario $_uidUser");
     try {
       Map<String, dynamic> usuariosInfoMap = {
         "ID": _uidUser,
-        "Nome": _nome,
+        "Nome": _name,
         "CPF": _cpf,
         "Email": _email,
-        "Telefone": _telefone,
-        "Contrato": _numContrato,
+        "Telefone": _phone,
+        "Contrato": _numContract,
       };
-      await addDetalhesUsuarios(usuariosInfoMap, _uidUser);
+      await addDetailsUsers(usuariosInfoMap, _uidUser);
     } catch (e) {
       print(e);
     }
   }
 
   @action
-  Future addDetalhesUsuarios(
+  Future addDetailsUsers(
       Map<String, dynamic> usuariosMap, String id) async {
     return await db.collection("Usuarios").doc(id).set(usuariosMap);
   }
 
-  //Setar dados após login
   @action
-  Future<void> recuperacaoDados(String currentUser) async {
+  Future<void> recoveryData(String currentUser) async {
     _uidUser = currentUser;
     try {
       db.collection(_uidUser);
@@ -222,15 +216,15 @@ abstract class _AuthStore with Store {
         (DocumentSnapshot doc) {
           final data = doc.data() as Map<String, dynamic>;
 
-          setNome(data['Nome']);
+          setName(data['Nome']);
           setEmail(data['Email']);
           setCPF(data['CPF']);
-          setTelefone(data['Telefone']);
+          setPhone(data['Telefone']);
           print('try2');
-          print(_nome);
+          print(_name);
           print(_email);
           print(_cpf);
-          print(_telefone);
+          print(_phone);
         },
         onError: (e) => print("Error getting document: $e"),
       );

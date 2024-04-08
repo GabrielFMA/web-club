@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'client.store.dart';
+part of 'employee.store.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,9 +8,9 @@ part of 'client.store.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$ClientStore on _ClientStore, Store {
+mixin _$EmployeeStore on _EmployeeStore, Store {
   late final _$_currentUserAtom =
-      Atom(name: '_ClientStore._currentUser', context: context);
+      Atom(name: '_EmployeeStore._currentUser', context: context);
 
   @override
   User? get _currentUser {
@@ -26,7 +26,7 @@ mixin _$ClientStore on _ClientStore, Store {
   }
 
   late final _$isVisibleAtom =
-      Atom(name: '_ClientStore.isVisible', context: context);
+      Atom(name: '_EmployeeStore.isVisible', context: context);
 
   @override
   bool get isVisible {
@@ -41,7 +41,8 @@ mixin _$ClientStore on _ClientStore, Store {
     });
   }
 
-  late final _$_tokenAtom = Atom(name: '_ClientStore._token', context: context);
+  late final _$_tokenAtom =
+      Atom(name: '_EmployeeStore._token', context: context);
 
   @override
   String get _token {
@@ -57,7 +58,7 @@ mixin _$ClientStore on _ClientStore, Store {
   }
 
   late final _$_uidUserAtom =
-      Atom(name: '_ClientStore._uidUser', context: context);
+      Atom(name: '_EmployeeStore._uidUser', context: context);
 
   @override
   String get _uidUser {
@@ -72,22 +73,7 @@ mixin _$ClientStore on _ClientStore, Store {
     });
   }
 
-  late final _$_cpfAtom = Atom(name: '_ClientStore._cpf', context: context);
-
-  @override
-  String get _cpf {
-    _$_cpfAtom.reportRead();
-    return super._cpf;
-  }
-
-  @override
-  set _cpf(String value) {
-    _$_cpfAtom.reportWrite(value, super._cpf, () {
-      super._cpf = value;
-    });
-  }
-
-  late final _$_nameAtom = Atom(name: '_ClientStore._name', context: context);
+  late final _$_nameAtom = Atom(name: '_EmployeeStore._name', context: context);
 
   @override
   String get _name {
@@ -102,7 +88,8 @@ mixin _$ClientStore on _ClientStore, Store {
     });
   }
 
-  late final _$_emailAtom = Atom(name: '_ClientStore._email', context: context);
+  late final _$_emailAtom =
+      Atom(name: '_EmployeeStore._email', context: context);
 
   @override
   String get _email {
@@ -118,7 +105,7 @@ mixin _$ClientStore on _ClientStore, Store {
   }
 
   late final _$_passwordAtom =
-      Atom(name: '_ClientStore._password', context: context);
+      Atom(name: '_EmployeeStore._password', context: context);
 
   @override
   String get _password {
@@ -133,7 +120,8 @@ mixin _$ClientStore on _ClientStore, Store {
     });
   }
 
-  late final _$_phoneAtom = Atom(name: '_ClientStore._phone', context: context);
+  late final _$_phoneAtom =
+      Atom(name: '_EmployeeStore._phone', context: context);
 
   @override
   String get _phone {
@@ -148,24 +136,24 @@ mixin _$ClientStore on _ClientStore, Store {
     });
   }
 
-  late final _$_numContractAtom =
-      Atom(name: '_ClientStore._numContract', context: context);
+  late final _$_cargoAtom =
+      Atom(name: '_EmployeeStore._cargo', context: context);
 
   @override
-  String get _numContract {
-    _$_numContractAtom.reportRead();
-    return super._numContract;
+  String get _cargo {
+    _$_cargoAtom.reportRead();
+    return super._cargo;
   }
 
   @override
-  set _numContract(String value) {
-    _$_numContractAtom.reportWrite(value, super._numContract, () {
-      super._numContract = value;
+  set _cargo(String value) {
+    _$_cargoAtom.reportWrite(value, super._cargo, () {
+      super._cargo = value;
     });
   }
 
   late final _$textErrorAtom =
-      Atom(name: '_ClientStore.textError', context: context);
+      Atom(name: '_EmployeeStore.textError', context: context);
 
   @override
   String get textError {
@@ -181,7 +169,7 @@ mixin _$ClientStore on _ClientStore, Store {
   }
 
   late final _$isErrorAtom =
-      Atom(name: '_ClientStore.isError', context: context);
+      Atom(name: '_EmployeeStore.isError', context: context);
 
   @override
   bool get isError {
@@ -197,7 +185,7 @@ mixin _$ClientStore on _ClientStore, Store {
   }
 
   late final _$registrationUserAsyncAction =
-      AsyncAction('_ClientStore.registrationUser', context: context);
+      AsyncAction('_EmployeeStore.registrationUser', context: context);
 
   @override
   Future<void> registrationUser() {
@@ -205,7 +193,7 @@ mixin _$ClientStore on _ClientStore, Store {
   }
 
   late final _$addDetailsUsersAsyncAction =
-      AsyncAction('_ClientStore.addDetailsUsers', context: context);
+      AsyncAction('_EmployeeStore.addDetailsUsers', context: context);
 
   @override
   Future<dynamic> addDetailsUsers(Map<String, dynamic> usuariosMap, String id) {
@@ -213,160 +201,149 @@ mixin _$ClientStore on _ClientStore, Store {
         .run(() => super.addDetailsUsers(usuariosMap, id));
   }
 
-  late final _$_ClientStoreActionController =
-      ActionController(name: '_ClientStore', context: context);
+  late final _$_EmployeeStoreActionController =
+      ActionController(name: '_EmployeeStore', context: context);
 
   @override
   dynamic getEmail() {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.getEmail');
+    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
+        name: '_EmployeeStore.getEmail');
     try {
       return super.getEmail();
     } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
+      _$_EmployeeStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  dynamic getName() {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.getName');
+  dynamic getNome() {
+    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
+        name: '_EmployeeStore.getNome');
     try {
-      return super.getName();
+      return super.getNome();
     } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic getCPF() {
-    final _$actionInfo =
-        _$_ClientStoreActionController.startAction(name: '_ClientStore.getCPF');
-    try {
-      return super.getCPF();
-    } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
+      _$_EmployeeStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   dynamic getTelefone() {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.getTelefone');
+    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
+        name: '_EmployeeStore.getTelefone');
     try {
       return super.getTelefone();
     } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
+      _$_EmployeeStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   dynamic getPassword() {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.getPassword');
+    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
+        name: '_EmployeeStore.getPassword');
     try {
       return super.getPassword();
     } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
+      _$_EmployeeStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic getCargo() {
+    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
+        name: '_EmployeeStore.getCargo');
+    try {
+      return super.getCargo();
+    } finally {
+      _$_EmployeeStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   dynamic usuarioUID() {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.usuarioUID');
+    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
+        name: '_EmployeeStore.usuarioUID');
     try {
       return super.usuarioUID();
     } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setCPF(String cpf) {
-    final _$actionInfo =
-        _$_ClientStoreActionController.startAction(name: '_ClientStore.setCPF');
-    try {
-      return super.setCPF(cpf);
-    } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
+      _$_EmployeeStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setName(String name) {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.setName');
+    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
+        name: '_EmployeeStore.setName');
     try {
       return super.setName(name);
     } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
+      _$_EmployeeStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setEmail(String email) {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.setEmail');
+    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
+        name: '_EmployeeStore.setEmail');
     try {
       return super.setEmail(email);
     } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
+      _$_EmployeeStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setPassword(String password) {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.setPassword');
+    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
+        name: '_EmployeeStore.setPassword');
     try {
       return super.setPassword(password);
     } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
+      _$_EmployeeStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setPhone(String phone) {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.setPhone');
+    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
+        name: '_EmployeeStore.setPhone');
     try {
       return super.setPhone(phone);
     } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
+      _$_EmployeeStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setNumContract(String numContract) {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.setNumContract');
+  void setCargo(String cargo) {
+    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
+        name: '_EmployeeStore.setCargo');
     try {
-      return super.setNumContract(numContract);
+      return super.setCargo(cargo);
     } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
+      _$_EmployeeStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void visible() {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.visible');
+    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
+        name: '_EmployeeStore.visible');
     try {
       return super.visible();
     } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
+      _$_EmployeeStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void recoveryData(String currentUser) {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.recoveryData');
+    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
+        name: '_EmployeeStore.recoveryData');
     try {
       return super.recoveryData(currentUser);
     } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
+      _$_EmployeeStoreActionController.endAction(_$actionInfo);
     }
   }
 
