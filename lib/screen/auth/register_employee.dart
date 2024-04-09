@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +9,7 @@ import 'package:web_simclub/components/menu.dart';
 import 'package:web_simclub/store/employee.store.dart';
 
 class RegisterEmployee extends StatefulWidget {
-  const RegisterEmployee({super.key});
+  const RegisterEmployee({Key? key});
 
   @override
   State<RegisterEmployee> createState() => _RegisterEmployeeState();
@@ -72,7 +74,8 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
 
                               //Cargo
                               Container(
-                                padding: const EdgeInsets.only(left: 10, right: 10),
+                                padding:
+                                    const EdgeInsets.only(left: 10, right: 10),
                                 decoration: BoxDecoration(
                                     border: Border.all(
                                         color: Colors.green, width: 2),
@@ -189,8 +192,51 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                   if (formKey.currentState!.validate() &&
                                       valueCargo !=
                                           'Clique aqui para selecionar um cargo') {
-                                    await store
-                                        .signUpWithEmailPassword(context);
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text(
+                                              'Registrar Funcionário'),
+                                          content: const Text(
+                                              'Tem certeza que deseja registrar este funcionário?'),
+                                          actions: <Widget>[
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                botaoPadrao(
+                                                  text: 'SIM',
+                                                  onClick: () async {
+                                                    await store
+                                                        .signUpWithEmailPassword(
+                                                            context);
+
+                                                    Navigator
+                                                        .pushAndRemoveUntil(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const RegisterEmployee(),
+                                                      ),
+                                                      (route) => false,
+                                                    );
+                                                  },
+                                                ),
+                                                botaoPadrao(
+                                                  text: 'NÃO',
+                                                  onClick: () {
+                                                    Navigator.pop(
+                                                        context); // Fechar o AlertDialog
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   }
                                 },
                               ),
@@ -205,6 +251,24 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget botaoPadrao({required String text, VoidCallback? onClick}) {
+    return Container(
+      height: 40,
+      width: 105,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.green[500],
+      ),
+      child: TextButton(
+        onPressed: onClick,
+        child: Text(
+          text,
+          style: const TextStyle(color: Colors.white),
+        ),
       ),
     );
   }

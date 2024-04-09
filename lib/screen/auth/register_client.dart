@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -6,14 +8,14 @@ import 'package:web_simclub/store/client.store.dart';
 import 'package:web_simclub/components/auth/textfield_password.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
 
-class RegistroScreen extends StatefulWidget {
-  const RegistroScreen({super.key});
+class RegisterClient extends StatefulWidget {
+  const RegisterClient({super.key});
 
   @override
-  State<RegistroScreen> createState() => _RegistroScreenState();
+  State<RegisterClient> createState() => _RegisterClientState();
 }
 
-class _RegistroScreenState extends State<RegistroScreen> {
+class _RegisterClientState extends State<RegisterClient> {
   final _nomeController = TextEditingController();
   final _emailController = TextEditingController();
   final _cpfController = TextEditingController();
@@ -184,13 +186,56 @@ class _RegistroScreenState extends State<RegistroScreen> {
                               const SizedBox(height: 15),
 
                               //Button
+
                               buttonDefault(
                                 context,
                                 () async {
                                   if (formKey.currentState!.validate()) {
-                                    
-                                    await store
-                                        .signUpWithEmailPassword(context);
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title:
+                                              const Text('Registrar Cliente'),
+                                          content: const Text(
+                                              'Tem certeza que deseja registrar este cliente?'),
+                                          actions: <Widget>[
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                botaoPadrao(
+                                                  text: 'SIM',
+                                                  onClick: () async {
+                                                    await store
+                                                        .signUpWithEmailPassword(
+                                                            context);
+
+                                                    Navigator
+                                                        .pushAndRemoveUntil(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const RegisterClient(),
+                                                      ),
+                                                      (route) => false,
+                                                    );
+                                                  },
+                                                ),
+                                                botaoPadrao(
+                                                  text: 'NÃO',
+                                                  onClick: () {
+                                                    Navigator.pop(
+                                                        context); // Fechar o AlertDialog
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   }
                                 },
                               ),
@@ -205,6 +250,24 @@ class _RegistroScreenState extends State<RegistroScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget botaoPadrao({required String text, VoidCallback? onClick}) {
+    return Container(
+      height: 40,
+      width: 105,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.green[500],
+      ),
+      child: TextButton(
+        onPressed: onClick,
+        child: Text(
+          text,
+          style: const TextStyle(color: Colors.white),
+        ),
       ),
     );
   }
@@ -224,13 +287,4 @@ class _RegistroScreenState extends State<RegistroScreen> {
       ),
     );
   }
-
-  // menuWidgetConfig(BuildContext context){
-  //   final store = Provider.of<AuthStore>(context);
-  //   if(store.admin){
-  //     return const MenuWidget();
-  //   } else {
-  //     return const MenuEmployeeWidget();
-  //   }
-  // }
 }

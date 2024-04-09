@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
 import 'package:web_simclub/screen/auth/login.dart';
+import 'package:web_simclub/screen/home_page.dart';
 
 part 'client.store.g.dart';
 
@@ -132,13 +133,7 @@ abstract class _ClientStore with Store {
         _token = responseData['idToken'];
         _uidUser = responseData['localId'];
 
-        recoveryData(_uidUser);
-
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-          (route) => false,
-        );
+        await registrationUser();
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
@@ -177,27 +172,5 @@ abstract class _ClientStore with Store {
   Future addDetailsUsers(
       Map<String, dynamic> usuariosMap, String id) async {
     return await db.collection("Usuarios").doc(id).set(usuariosMap);
-  }
-
-  @action
-  void recoveryData(String currentUser) {
-    _uidUser = currentUser;
-    try {
-      db.collection(_uidUser);
-      final docRef = db.collection("Usuarios").doc(_uidUser);
-      docRef.get().then(
-        (DocumentSnapshot doc) {
-          final data = doc.data() as Map<String, dynamic>;
-
-          setName(data['Nome']);
-          setEmail(data['Email']);
-          setCPF(data['CPF']);
-          setPhone(data['Telefone']);
-        },
-        onError: (e) => print("Error getting document: $e"),
-      );
-    } catch (e) {
-      print(e);
-    }
   }
 }

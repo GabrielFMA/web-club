@@ -45,7 +45,7 @@ class MenuWidget extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              botaoPadrao(
+                              buttonDefault(
                                 text: 'SIM',
                                 onClick: () {
                                   store.signOut();
@@ -58,7 +58,7 @@ class MenuWidget extends StatelessWidget {
                                   );
                                 },
                               ),
-                              botaoPadrao(
+                              buttonDefault(
                                 text: 'NÃO',
                                 onClick: () {
                                   Navigator.pop(
@@ -81,7 +81,7 @@ class MenuWidget extends StatelessWidget {
                 onClick: () => {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const RegistroScreen(),
+                      builder: (context) => const RegisterClient(),
                     ),
                   ),
                 },
@@ -91,11 +91,12 @@ class MenuWidget extends StatelessWidget {
                 icon: getIcon(store.admin),
                 color:  getColor(store.admin),
                 onClick: () => {
+                  if (store.admin) {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => const RegisterEmployee(),
                     ),
-                  )
+                  )}
                 },
               ),
             ],
@@ -116,7 +117,7 @@ class MenuWidget extends StatelessWidget {
     );
   }
 
-  Widget botaoPadrao({required String text, VoidCallback? onClick}) {
+  Widget buttonDefault({required String text, VoidCallback? onClick}) {
     return Container(
       height: 40,
       width: 105,

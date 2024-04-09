@@ -56,7 +56,7 @@ abstract class _AuthStore with Store {
   //Get functions
   //Verification
   @action
-  bool getAdmin(){
+  bool getAdmin() {
     return admin;
   }
 
@@ -64,7 +64,7 @@ abstract class _AuthStore with Store {
   getIsError() {
     return isError;
   }
-  
+
   getTextError() {
     return textError;
   }
@@ -96,7 +96,7 @@ abstract class _AuthStore with Store {
   }
 
   @action
-  getCargo(){
+  getCargo() {
     return _cargo;
   }
 
@@ -123,7 +123,7 @@ abstract class _AuthStore with Store {
   }
 
   @action
-  void setCargo(String cargo){
+  void setCargo(String cargo) {
     _cargo = cargo;
   }
 
@@ -148,20 +148,10 @@ abstract class _AuthStore with Store {
       recoveryData(_uidUser);
       _password = ' ';
 
-      if(_cargo == ('Administrador') || _cargo == ('Gerente') || _cargo == ('Funcionario')){
-        print("adm ou gerente ou funcionario");
-        
-        Navigator.pushAndRemoveUntil(
+      Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
           (route) => false);
-
-      }else{
-        print("sem permissão");
-        textError == 'Você não tem permissão para entrar no sistema';
-        restoreData();
-        signOut();
-      }
 
       textError = ' ';
     } on FirebaseAuthException catch (e) {
@@ -203,35 +193,42 @@ abstract class _AuthStore with Store {
   Future<void> recoveryData(String currentUser) async {
     _uidUser = currentUser;
     try {
-      db.collection(_uidUser);
-      final docRef = db.collection("Funcionarios").doc(_uidUser);
-      docRef.get().then(
-        (DocumentSnapshot doc) {
-          final data = doc.data() as Map<String, dynamic>;
+      final userCollection = db.collection("Usuarios");
+      final userDoc = await userCollection.doc(_uidUser).get();
+      if (userDoc.exists) {
+        textError = 'Você não tem permissão';
+        restoreData();
+        signOut();
+      } else {
+        final docRef = db.collection("Funcionarios").doc(_uidUser);
+        docRef.get().then(
+          (DocumentSnapshot doc) {
+            final data = doc.data() as Map<String, dynamic>;
 
-          setName(data['Nome']);
-          setEmail(data['Email']);
-          setPhone(data['Telefone']);
-          setCargo(data['Cargo']);
+            setName(data['Nome']);
+            setEmail(data['Email']);
+            setPhone(data['Telefone']);
+            setCargo(data['Cargo']);
 
-          print('admin antes do if $admin');
+            print('admin antes do if $admin');
 
-          if(_cargo == 'Administrador' || _cargo == 'Gerente'){
-            admin = true;
-          }else{
-            admin = false;
-          }
+            if (_cargo == 'Administrador' || _cargo == 'Gerente') {
+              admin = true;
+            } else {
+              admin = false;
+            }
 
-          print('admin depois do if $admin');
-        },
-        onError: (e) => print("Error getting document: $e"),
-      );
+            print('admin depois do if $admin');
+          },
+          onError: (e) => print("Error getting document: $e"),
+        );
+      }
     } catch (e) {
       print(e);
     }
   }
 
-  restoreData(){
+  restoreData() {
     setName('');
     setEmail('');
     setPhone('');

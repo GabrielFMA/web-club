@@ -305,17 +305,6 @@ mixin _$ClientStore on _ClientStore, Store {
   }
 
   @override
-  void recoveryData(String currentUser) {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.recoveryData');
-    try {
-      return super.recoveryData(currentUser);
-    } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 isVisible: ${isVisible},

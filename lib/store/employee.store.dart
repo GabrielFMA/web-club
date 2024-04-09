@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
 import 'package:web_simclub/screen/auth/login.dart';
+import 'package:web_simclub/screen/home_page.dart';
 
 part 'employee.store.g.dart';
 
@@ -126,12 +127,6 @@ abstract class _EmployeeStore with Store {
         _uidUser = responseData['localId'];
 
         await registrationUser();
-
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-          (route) => false,
-        );
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
