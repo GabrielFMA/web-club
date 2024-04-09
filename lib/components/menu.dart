@@ -7,7 +7,7 @@ import 'package:web_simclub/screen/auth/register_employee.dart';
 import 'package:web_simclub/store/auth.store.dart';
 
 class MenuWidget extends StatelessWidget {
-  const MenuWidget({Key? key});
+  const MenuWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,61 +30,105 @@ class MenuWidget extends StatelessWidget {
           builder: (_) => Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              ListTile(
-                leading: const Icon(Icons.logout, color: Colors.white),
-                title: const Text(
-                  'Sair',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+              buildMenuItem(
+                text: 'Sair',
+                icon: Icons.logout,
+                color: Colors.white,
+                onClick: () => {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Sair da conta'),
+                        content: const Text('Tem certeza que quer sair?'),
+                        actions: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              botaoPadrao(
+                                text: 'SIM',
+                                onClick: () {
+                                  store.signOut();
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const LoginScreen(),
+                                    ),
+                                    (route) => false,
+                                  );
+                                },
+                              ),
+                              botaoPadrao(
+                                text: 'NÃO',
+                                onClick: () {
+                                  Navigator.pop(
+                                      context); // Fechar o AlertDialog
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
                   ),
-                ),
-                onTap: () {
-                  store.signOut();
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginScreen(),
-                    ),
-                    (route) => false,
-                  );
                 },
               ),
               const Divider(color: Colors.white),
-              ListTile(
-                leading: const Icon(Icons.people, color: Colors.white),
-                title: const Text(
-                  'Registro Cliente',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+              buildMenuItem(
+                text: 'Registro Cliente',
+                icon: Icons.people,
+                color: Colors.white,
+                onClick: () => {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const RegistroScreen(),
+                    ),
                   ),
-                ),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const RegistroScreen(),
-                  ));
                 },
               ),
-              ListTile(
-                leading: Icon(getIcon(store.admin), color: getColor(store.admin)),
-                title: Text(
-                  'Registro Funcionario',
-                  style: TextStyle(
-                    color: getColor(store.admin),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                onTap: () {
-                  if (store.admin) {
-                    Navigator.of(context).push(MaterialPageRoute(
+              buildMenuItem(
+                text: 'Registro Funcionário',
+                icon: getIcon(store.admin),
+                color:  getColor(store.admin),
+                onClick: () => {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
                       builder: (context) => const RegisterEmployee(),
-                    ));
-                  }
+                    ),
+                  )
                 },
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+
+  Widget buildMenuItem(
+      {required String text, required IconData icon, required Color color, VoidCallback? onClick}) {
+
+    return ListTile(
+      leading: Icon(icon, color: color),
+      title: Text(text, style: TextStyle(color: color)),
+      onTap: onClick,
+    );
+  }
+
+  Widget botaoPadrao({required String text, VoidCallback? onClick}) {
+    return Container(
+      height: 40,
+      width: 105,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.green[500],
+      ),
+      child: TextButton(
+        onPressed: onClick,
+        child: Text(
+          text,
+          style: const TextStyle(color: Colors.white),
         ),
       ),
     );

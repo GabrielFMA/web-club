@@ -188,6 +188,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                                 context,
                                 () async {
                                   if (formKey.currentState!.validate()) {
+                                    
                                     await store
                                         .signUpWithEmailPassword(context);
                                   }
