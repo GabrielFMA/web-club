@@ -8,8 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
-import 'package:web_simclub/screen/auth/login.dart';
-import 'package:web_simclub/screen/home_page.dart';
 
 part 'employee.store.g.dart';
 

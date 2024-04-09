@@ -1,4 +1,3 @@
-
 // ignore_for_file: library_private_types_in_public_api, avoid_print, use_build_context_synchronously
 
 import 'dart:convert';
@@ -8,8 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
-import 'package:web_simclub/screen/auth/login.dart';
-import 'package:web_simclub/screen/home_page.dart';
 
 part 'client.store.g.dart';
 
@@ -135,14 +132,6 @@ abstract class _ClientStore with Store {
 
         await registrationUser();
       }
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'email-already-in-use') {
-        print('Email já está em uso.');
-      } else if (e.code == 'weak-password') {
-        print('A senha fornecida é muito fraca.');
-      } else {
-        print('Erro de autenticação: ${e.message}');
-      }
     } catch (e) {
       print('Erro ao fazer registro: $e');
       print('Tipo de exceção: ${e.runtimeType}');
@@ -164,13 +153,13 @@ abstract class _ClientStore with Store {
       };
       await addDetailsUsers(usuariosInfoMap, _uidUser);
     } catch (e) {
-      print(e);
+      print('Erro ao fazer registro: $e');
+      print('Tipo de exceção: ${e.runtimeType}');
     }
   }
 
   @action
-  Future addDetailsUsers(
-      Map<String, dynamic> usuariosMap, String id) async {
+  Future addDetailsUsers(Map<String, dynamic> usuariosMap, String id) async {
     return await db.collection("Usuarios").doc(id).set(usuariosMap);
   }
 }

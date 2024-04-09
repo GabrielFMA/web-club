@@ -55,8 +55,11 @@ class TextFieldPassword extends StatelessWidget {
 
 class TextFieldConfirmPassword extends StatelessWidget {
   final String confirmPassword;
+  final bool shouldValidate;
+  final String? Function(String?)? validator;
 
-  const TextFieldConfirmPassword({super.key, required this.confirmPassword});
+  const TextFieldConfirmPassword({super.key, required this.confirmPassword,  required this.shouldValidate,
+      required this.validator});
 
   @override
   Widget build(BuildContext context) {
@@ -75,12 +78,7 @@ class TextFieldConfirmPassword extends StatelessWidget {
       child: Observer(
         builder: (_) => TextFormField(
           controller: confirmPasswordController,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return "Digite uma senha";
-            }
-            return null;
-          },
+          validator: shouldValidate ? validator : null,
           obscureText: !store.isVisible,
           decoration: InputDecoration(
             icon: const Icon(Icons.lock),

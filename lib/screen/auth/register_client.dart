@@ -180,6 +180,15 @@ class _RegisterClientState extends State<RegisterClient> {
                               TextFieldConfirmPassword(
                                 confirmPassword:
                                     _confirmPasswordController.text,
+                                shouldValidate: true,
+                                validator: (text) {
+                                  if (text!.isEmpty) {
+                                    return "Confirme sua senha";
+                                  }
+                                  if (text != _passwordController.text) {
+                                    return "As senhas não são iguais!";
+                                  }
+                                },
                               ),
 
                               //Space
@@ -205,7 +214,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                botaoPadrao(
+                                                buttonDialog(
                                                   text: 'SIM',
                                                   onClick: () async {
                                                     await store
@@ -223,7 +232,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                                     );
                                                   },
                                                 ),
-                                                botaoPadrao(
+                                                buttonDialog(
                                                   text: 'NÃO',
                                                   onClick: () {
                                                     Navigator.pop(
@@ -254,7 +263,7 @@ class _RegisterClientState extends State<RegisterClient> {
     );
   }
 
-  Widget botaoPadrao({required String text, VoidCallback? onClick}) {
+  Widget buttonDialog({required String text, VoidCallback? onClick}) {
     return Container(
       height: 40,
       width: 105,

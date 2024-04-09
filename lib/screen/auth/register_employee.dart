@@ -181,6 +181,15 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                               TextFieldConfirmPassword(
                                 confirmPassword:
                                     _confirmPasswordController.text,
+                                shouldValidate: true,
+                                validator: (text) {
+                                  if (text!.isEmpty) {
+                                    return "Confirme sua senha";
+                                  }
+                                  if (text != _passwordController.text) {
+                                    return "As senhas não são iguais";
+                                  }
+                                },
                               ),
 
                               //Space
@@ -206,7 +215,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                botaoPadrao(
+                                                buttonDialog(
                                                   text: 'SIM',
                                                   onClick: () async {
                                                     await store
@@ -224,7 +233,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                                     );
                                                   },
                                                 ),
-                                                botaoPadrao(
+                                                buttonDialog(
                                                   text: 'NÃO',
                                                   onClick: () {
                                                     Navigator.pop(
@@ -255,7 +264,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
     );
   }
 
-  Widget botaoPadrao({required String text, VoidCallback? onClick}) {
+  Widget buttonDialog({required String text, VoidCallback? onClick}) {
     return Container(
       height: 40,
       width: 105,
