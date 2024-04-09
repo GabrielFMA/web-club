@@ -9,22 +9,6 @@ part of 'employee.store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$EmployeeStore on _EmployeeStore, Store {
-  late final _$_currentUserAtom =
-      Atom(name: '_EmployeeStore._currentUser', context: context);
-
-  @override
-  User? get _currentUser {
-    _$_currentUserAtom.reportRead();
-    return super._currentUser;
-  }
-
-  @override
-  set _currentUser(User? value) {
-    _$_currentUserAtom.reportWrite(value, super._currentUser, () {
-      super._currentUser = value;
-    });
-  }
-
   late final _$isVisibleAtom =
       Atom(name: '_EmployeeStore.isVisible', context: context);
 
@@ -38,6 +22,54 @@ mixin _$EmployeeStore on _EmployeeStore, Store {
   set isVisible(bool value) {
     _$isVisibleAtom.reportWrite(value, super.isVisible, () {
       super.isVisible = value;
+    });
+  }
+
+  late final _$isErrorAtom =
+      Atom(name: '_EmployeeStore.isError', context: context);
+
+  @override
+  bool get isError {
+    _$isErrorAtom.reportRead();
+    return super.isError;
+  }
+
+  @override
+  set isError(bool value) {
+    _$isErrorAtom.reportWrite(value, super.isError, () {
+      super.isError = value;
+    });
+  }
+
+  late final _$textErrorAtom =
+      Atom(name: '_EmployeeStore.textError', context: context);
+
+  @override
+  String get textError {
+    _$textErrorAtom.reportRead();
+    return super.textError;
+  }
+
+  @override
+  set textError(String value) {
+    _$textErrorAtom.reportWrite(value, super.textError, () {
+      super.textError = value;
+    });
+  }
+
+  late final _$_currentUserAtom =
+      Atom(name: '_EmployeeStore._currentUser', context: context);
+
+  @override
+  User? get _currentUser {
+    _$_currentUserAtom.reportRead();
+    return super._currentUser;
+  }
+
+  @override
+  set _currentUser(User? value) {
+    _$_currentUserAtom.reportWrite(value, super._currentUser, () {
+      super._currentUser = value;
     });
   }
 
@@ -152,38 +184,6 @@ mixin _$EmployeeStore on _EmployeeStore, Store {
     });
   }
 
-  late final _$textErrorAtom =
-      Atom(name: '_EmployeeStore.textError', context: context);
-
-  @override
-  String get textError {
-    _$textErrorAtom.reportRead();
-    return super.textError;
-  }
-
-  @override
-  set textError(String value) {
-    _$textErrorAtom.reportWrite(value, super.textError, () {
-      super.textError = value;
-    });
-  }
-
-  late final _$isErrorAtom =
-      Atom(name: '_EmployeeStore.isError', context: context);
-
-  @override
-  bool get isError {
-    _$isErrorAtom.reportRead();
-    return super.isError;
-  }
-
-  @override
-  set isError(bool value) {
-    _$isErrorAtom.reportWrite(value, super.isError, () {
-      super.isError = value;
-    });
-  }
-
   late final _$registrationUserAsyncAction =
       AsyncAction('_EmployeeStore.registrationUser', context: context);
 
@@ -205,66 +205,11 @@ mixin _$EmployeeStore on _EmployeeStore, Store {
       ActionController(name: '_EmployeeStore', context: context);
 
   @override
-  dynamic getEmail() {
+  dynamic userUID() {
     final _$actionInfo = _$_EmployeeStoreActionController.startAction(
-        name: '_EmployeeStore.getEmail');
+        name: '_EmployeeStore.userUID');
     try {
-      return super.getEmail();
-    } finally {
-      _$_EmployeeStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic getNome() {
-    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
-        name: '_EmployeeStore.getNome');
-    try {
-      return super.getNome();
-    } finally {
-      _$_EmployeeStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic getTelefone() {
-    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
-        name: '_EmployeeStore.getTelefone');
-    try {
-      return super.getTelefone();
-    } finally {
-      _$_EmployeeStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic getPassword() {
-    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
-        name: '_EmployeeStore.getPassword');
-    try {
-      return super.getPassword();
-    } finally {
-      _$_EmployeeStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic getCargo() {
-    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
-        name: '_EmployeeStore.getCargo');
-    try {
-      return super.getCargo();
-    } finally {
-      _$_EmployeeStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic usuarioUID() {
-    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
-        name: '_EmployeeStore.usuarioUID');
-    try {
-      return super.usuarioUID();
+      return super.userUID();
     } finally {
       _$_EmployeeStoreActionController.endAction(_$actionInfo);
     }
@@ -340,8 +285,8 @@ mixin _$EmployeeStore on _EmployeeStore, Store {
   String toString() {
     return '''
 isVisible: ${isVisible},
-textError: ${textError},
-isError: ${isError}
+isError: ${isError},
+textError: ${textError}
     ''';
   }
 }

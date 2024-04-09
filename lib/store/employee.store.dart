@@ -21,11 +21,20 @@ abstract class _EmployeeStore with Store {
 
   FirebaseFirestore db = FirebaseFirestore.instance;
 
-  @observable
-  User? _currentUser;
-
+  //Verification
   @observable
   bool isVisible = false;
+
+  //Errors
+  @observable
+  bool isError = false;
+
+  @observable
+  String textError = ' ';
+
+  //Info Users
+  @observable
+  User? _currentUser;
 
   @observable
   String _token = '';
@@ -48,52 +57,24 @@ abstract class _EmployeeStore with Store {
   @observable 
   String _cargo = '';
 
-  @observable
-  String textError = ' ';
-
-  @observable
-  bool isError = false;
-
   //Get funções
-  @action
-  getEmail() {
-    return _email;
-  }
-
-  @action
-  getNome() {
-    return _name;
-  }
-
-  @action
-  getTelefone() {
-    return _phone;
-  }
-
-  @action
-  getPassword() {
-    return _password;
-  }
-
-  @action
-  getCargo(){
-    return _cargo;
-  }
-
-  @action
-  usuarioUID() {
-    return _uidUser;
+  //Errors
+  getIsError() {
+    return isError;
   }
 
   getTextError() {
     return textError;
   }
 
-  getIsError() {
-    return isError;
+  //Info Users
+  @action
+  userUID() {
+    return _uidUser;
   }
 
   //Set funçoes
+  //Info Users
   @action
   void setName(String name) {
     _name = name;

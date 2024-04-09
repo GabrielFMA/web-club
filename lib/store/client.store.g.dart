@@ -9,22 +9,6 @@ part of 'client.store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$ClientStore on _ClientStore, Store {
-  late final _$_currentUserAtom =
-      Atom(name: '_ClientStore._currentUser', context: context);
-
-  @override
-  User? get _currentUser {
-    _$_currentUserAtom.reportRead();
-    return super._currentUser;
-  }
-
-  @override
-  set _currentUser(User? value) {
-    _$_currentUserAtom.reportWrite(value, super._currentUser, () {
-      super._currentUser = value;
-    });
-  }
-
   late final _$isVisibleAtom =
       Atom(name: '_ClientStore.isVisible', context: context);
 
@@ -38,6 +22,54 @@ mixin _$ClientStore on _ClientStore, Store {
   set isVisible(bool value) {
     _$isVisibleAtom.reportWrite(value, super.isVisible, () {
       super.isVisible = value;
+    });
+  }
+
+  late final _$isErrorAtom =
+      Atom(name: '_ClientStore.isError', context: context);
+
+  @override
+  bool get isError {
+    _$isErrorAtom.reportRead();
+    return super.isError;
+  }
+
+  @override
+  set isError(bool value) {
+    _$isErrorAtom.reportWrite(value, super.isError, () {
+      super.isError = value;
+    });
+  }
+
+  late final _$textErrorAtom =
+      Atom(name: '_ClientStore.textError', context: context);
+
+  @override
+  String get textError {
+    _$textErrorAtom.reportRead();
+    return super.textError;
+  }
+
+  @override
+  set textError(String value) {
+    _$textErrorAtom.reportWrite(value, super.textError, () {
+      super.textError = value;
+    });
+  }
+
+  late final _$_currentUserAtom =
+      Atom(name: '_ClientStore._currentUser', context: context);
+
+  @override
+  User? get _currentUser {
+    _$_currentUserAtom.reportRead();
+    return super._currentUser;
+  }
+
+  @override
+  set _currentUser(User? value) {
+    _$_currentUserAtom.reportWrite(value, super._currentUser, () {
+      super._currentUser = value;
     });
   }
 
@@ -72,21 +104,6 @@ mixin _$ClientStore on _ClientStore, Store {
     });
   }
 
-  late final _$_cpfAtom = Atom(name: '_ClientStore._cpf', context: context);
-
-  @override
-  String get _cpf {
-    _$_cpfAtom.reportRead();
-    return super._cpf;
-  }
-
-  @override
-  set _cpf(String value) {
-    _$_cpfAtom.reportWrite(value, super._cpf, () {
-      super._cpf = value;
-    });
-  }
-
   late final _$_nameAtom = Atom(name: '_ClientStore._name', context: context);
 
   @override
@@ -114,6 +131,21 @@ mixin _$ClientStore on _ClientStore, Store {
   set _email(String value) {
     _$_emailAtom.reportWrite(value, super._email, () {
       super._email = value;
+    });
+  }
+
+  late final _$_cpfAtom = Atom(name: '_ClientStore._cpf', context: context);
+
+  @override
+  String get _cpf {
+    _$_cpfAtom.reportRead();
+    return super._cpf;
+  }
+
+  @override
+  set _cpf(String value) {
+    _$_cpfAtom.reportWrite(value, super._cpf, () {
+      super._cpf = value;
     });
   }
 
@@ -164,38 +196,6 @@ mixin _$ClientStore on _ClientStore, Store {
     });
   }
 
-  late final _$textErrorAtom =
-      Atom(name: '_ClientStore.textError', context: context);
-
-  @override
-  String get textError {
-    _$textErrorAtom.reportRead();
-    return super.textError;
-  }
-
-  @override
-  set textError(String value) {
-    _$textErrorAtom.reportWrite(value, super.textError, () {
-      super.textError = value;
-    });
-  }
-
-  late final _$isErrorAtom =
-      Atom(name: '_ClientStore.isError', context: context);
-
-  @override
-  bool get isError {
-    _$isErrorAtom.reportRead();
-    return super.isError;
-  }
-
-  @override
-  set isError(bool value) {
-    _$isErrorAtom.reportWrite(value, super.isError, () {
-      super.isError = value;
-    });
-  }
-
   late final _$registrationUserAsyncAction =
       AsyncAction('_ClientStore.registrationUser', context: context);
 
@@ -217,77 +217,11 @@ mixin _$ClientStore on _ClientStore, Store {
       ActionController(name: '_ClientStore', context: context);
 
   @override
-  dynamic getEmail() {
+  dynamic userUID() {
     final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.getEmail');
+        name: '_ClientStore.userUID');
     try {
-      return super.getEmail();
-    } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic getName() {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.getName');
-    try {
-      return super.getName();
-    } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic getCPF() {
-    final _$actionInfo =
-        _$_ClientStoreActionController.startAction(name: '_ClientStore.getCPF');
-    try {
-      return super.getCPF();
-    } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic getTelefone() {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.getTelefone');
-    try {
-      return super.getTelefone();
-    } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic getPassword() {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.getPassword');
-    try {
-      return super.getPassword();
-    } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic usuarioUID() {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.usuarioUID');
-    try {
-      return super.usuarioUID();
-    } finally {
-      _$_ClientStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setCPF(String cpf) {
-    final _$actionInfo =
-        _$_ClientStoreActionController.startAction(name: '_ClientStore.setCPF');
-    try {
-      return super.setCPF(cpf);
+      return super.userUID();
     } finally {
       _$_ClientStoreActionController.endAction(_$actionInfo);
     }
@@ -310,6 +244,17 @@ mixin _$ClientStore on _ClientStore, Store {
         name: '_ClientStore.setEmail');
     try {
       return super.setEmail(email);
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setCPF(String cpf) {
+    final _$actionInfo =
+        _$_ClientStoreActionController.startAction(name: '_ClientStore.setCPF');
+    try {
+      return super.setCPF(cpf);
     } finally {
       _$_ClientStoreActionController.endAction(_$actionInfo);
     }
@@ -374,8 +319,8 @@ mixin _$ClientStore on _ClientStore, Store {
   String toString() {
     return '''
 isVisible: ${isVisible},
-textError: ${textError},
-isError: ${isError}
+isError: ${isError},
+textError: ${textError}
     ''';
   }
 }

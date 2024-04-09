@@ -20,11 +20,20 @@ abstract class _ClientStore with Store {
 
   FirebaseFirestore db = FirebaseFirestore.instance;
 
-  @observable
-  User? _currentUser;
-
+  //Verification
   @observable
   bool isVisible = false;
+
+  //Errors
+  @observable
+  bool isError = false;
+
+  @observable
+  String textError = ' ';
+
+  //Info Users
+  @observable
+  User? _currentUser;
 
   @observable
   String _token = '';
@@ -33,13 +42,13 @@ abstract class _ClientStore with Store {
   String _uidUser = '';
 
   @observable
-  String _cpf = '';
-
-  @observable
   String _name = '';
 
   @observable
   String _email = '';
+
+  @observable
+  String _cpf = '';
 
   @observable
   String _password = '';
@@ -50,57 +59,24 @@ abstract class _ClientStore with Store {
   @observable
   String _numContract = '';
 
-  @observable
-  String textError = ' ';
-
-  @observable
-  bool isError = false;
-
   //Get funções
-  @action
-  getEmail() {
-    return _email;
-  }
-
-  @action
-  getName() {
-    return _name;
-  }
-
-  @action
-  getCPF() {
-    return _cpf;
-  }
-
-  @action
-  getTelefone() {
-    return _phone;
-  }
-
-  @action
-  getPassword() {
-    return _password;
-  }
-
-  @action
-  usuarioUID() {
-    return _uidUser;
+  //Errors
+  getIsError() {
+    return isError;
   }
 
   getTextError() {
     return textError;
   }
 
-  getIsError() {
-    return isError;
+  //Info Users
+  @action
+  userUID() {
+    return _uidUser;
   }
 
   //Set funçoes
-  @action
-  void setCPF(String cpf) {
-    _cpf = cpf;
-  }
-
+  //Info Users
   @action
   void setName(String name) {
     _name = name;
@@ -109,6 +85,11 @@ abstract class _ClientStore with Store {
   @action
   void setEmail(String email) {
     _email = email;
+  }
+
+  @action
+  void setCPF(String cpf) {
+    _cpf = cpf;
   }
 
   @action

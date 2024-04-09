@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, use_build_context_synchronously, library_private_types_in_public_api, unused_field, prefer_final_fields
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,11 +14,23 @@ abstract class _AuthStore with Store {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseFirestore db = FirebaseFirestore.instance;
 
-  @observable
-  User? _currentUser;
-
+  //Verification
   @observable
   bool isVisible = false;
+
+  @observable
+  bool admin = false;
+
+  //Errors
+  @observable
+  bool isError = false;
+
+  @observable
+  String textError = '';
+
+  //Info Users
+  @observable
+  User? _currentUser;
 
   @observable
   String _token = '';
@@ -31,27 +45,34 @@ abstract class _AuthStore with Store {
   String _email = '';
 
   @observable
-  String _cargo = 'Funcionario';
-
-  @observable
   String _password = '';
 
   @observable
   String _phone = '';
 
   @observable
-  String textError = '';
-
-  @observable
-  bool isError = false;
-
-  @observable
-  bool admin = false;
+  String _cargo = '';
 
   //Get functions
+  //Verification
   @action
-  getEmail() {
-    return _email;
+  bool getAdmin(){
+    return admin;
+  }
+
+  //Errors
+  getIsError() {
+    return isError;
+  }
+  
+  getTextError() {
+    return textError;
+  }
+
+  //Info Users
+  @action
+  userUID() {
+    return _uidUser;
   }
 
   @action
@@ -60,13 +81,8 @@ abstract class _AuthStore with Store {
   }
 
   @action
-  getCargo(){
-    return _cargo;
-  }
-
-  @action
-  getPhone() {
-    return _phone;
+  getEmail() {
+    return _email;
   }
 
   @action
@@ -75,24 +91,17 @@ abstract class _AuthStore with Store {
   }
 
   @action
-  usuarioUID() {
-    return _uidUser;
+  getPhone() {
+    return _phone;
   }
 
   @action
-  bool getAdmin(){
-    return admin;
-  }
-
-  getTextError() {
-    return textError;
-  }
-
-  getIsError() {
-    return isError;
+  getCargo(){
+    return _cargo;
   }
 
   //Set functions
+  //Info Users
   @action
   void setName(String name) {
     _name = name;
@@ -104,11 +113,6 @@ abstract class _AuthStore with Store {
   }
 
   @action
-  void setCargo(String cargo){
-    _cargo = cargo;
-  }
-
-  @action
   void setPassword(String password) {
     _password = password;
   }
@@ -116,6 +120,11 @@ abstract class _AuthStore with Store {
   @action
   void setPhone(String phone) {
     _phone = phone;
+  }
+
+  @action
+  void setCargo(String cargo){
+    _cargo = cargo;
   }
 
   //Password field
@@ -184,7 +193,7 @@ abstract class _AuthStore with Store {
       await _auth.signOut();
       _currentUser = null;
       admin = false;
-      print('admin depois do sigout ${admin}');
+      print('admin depois do sigout $admin');
     } catch (e) {
       print(e);
     }
@@ -205,7 +214,7 @@ abstract class _AuthStore with Store {
           setPhone(data['Telefone']);
           setCargo(data['Cargo']);
 
-          print('admin antes do if ${admin}');
+          print('admin antes do if $admin');
 
           if(_cargo == 'Administrador' || _cargo == 'Gerente'){
             admin = true;
@@ -213,7 +222,7 @@ abstract class _AuthStore with Store {
             admin = false;
           }
 
-          print('admin depois do if ${admin}');
+          print('admin depois do if $admin');
         },
         onError: (e) => print("Error getting document: $e"),
       );
@@ -226,6 +235,6 @@ abstract class _AuthStore with Store {
     setName('');
     setEmail('');
     setPhone('');
-    setCargo('Funcionario');
+    setCargo('');
   }
 }
