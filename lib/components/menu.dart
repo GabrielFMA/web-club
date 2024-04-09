@@ -7,11 +7,19 @@ import 'package:web_simclub/screen/auth/register_employee.dart';
 import 'package:web_simclub/store/auth.store.dart';
 
 class MenuWidget extends StatelessWidget {
-  const MenuWidget({super.key});
+  const MenuWidget({Key? key});
 
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<AuthStore>(context);
+
+    Color getColor(bool verification) {
+      return verification ? Colors.white : Colors.grey;
+    }
+
+    IconData getIcon(bool verification) {
+      return verification ? Icons.admin_panel_settings : Icons.lock;
+    }
 
     return Container(
       width: 300,
@@ -23,10 +31,7 @@ class MenuWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ListTile(
-                
-                //Line
                 leading: const Icon(Icons.logout, color: Colors.white),
-                
                 title: const Text(
                   'Sair',
                   style: TextStyle(
@@ -51,24 +56,31 @@ class MenuWidget extends StatelessWidget {
                 title: const Text(
                   'Registro Cliente',
                   style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const RegistroScreen()));
+                    builder: (context) => const RegistroScreen(),
+                  ));
                 },
               ),
               ListTile(
-                leading:
-                    const Icon(Icons.admin_panel_settings, color: Colors.white),
-                title: const Text(
+                leading: Icon(getIcon(store.admin), color: getColor(store.admin)),
+                title: Text(
                   'Registro Funcionario',
                   style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                    color: getColor(store.admin),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const RegisterEmployee()));
+                  if (store.admin) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const RegisterEmployee(),
+                    ));
+                  }
                 },
               ),
             ],

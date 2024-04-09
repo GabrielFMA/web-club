@@ -26,7 +26,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
     'Clique aqui para selecionar um cargo',
     'Administrador',
     'Gerente',
-    'Funcionário',
+    'Funcionario',
   ];
 
   final formKey = GlobalKey<FormState>();
@@ -34,6 +34,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<EmployeeStore>(context);
+
     return Scaffold(
       backgroundColor: Colors.green[200],
       body: Row(
@@ -60,7 +61,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                             children: [
                               const ListTile(
                                 title: Text(
-                                  "Registrar",
+                                  "Registrar Funcionário",
                                   style: TextStyle(
                                     fontSize: 45,
                                     fontWeight: FontWeight.bold,

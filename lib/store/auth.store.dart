@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api, avoid_print, use_build_context_synchronously, unused_field
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,13 +25,13 @@ abstract class _AuthStore with Store {
   String _uidUser = '';
 
   @observable
-  String _cpf = '';
-
-  @observable
   String _name = '';
 
   @observable
   String _email = '';
+
+  @observable
+  String _cargo = 'Funcionario';
 
   @observable
   String _password = '';
@@ -42,13 +40,13 @@ abstract class _AuthStore with Store {
   String _phone = '';
 
   @observable
-  String _numContract = '';
-
-  @observable
-  String textError = ' ';
+  String textError = '';
 
   @observable
   bool isError = false;
+
+  @observable
+  bool admin = false;
 
   //Get functions
   @action
@@ -62,8 +60,8 @@ abstract class _AuthStore with Store {
   }
 
   @action
-  getCPF() {
-    return _cpf;
+  getCargo(){
+    return _cargo;
   }
 
   @action
@@ -81,6 +79,11 @@ abstract class _AuthStore with Store {
     return _uidUser;
   }
 
+  @action
+  bool getAdmin(){
+    return admin;
+  }
+
   getTextError() {
     return textError;
   }
@@ -90,11 +93,6 @@ abstract class _AuthStore with Store {
   }
 
   //Set functions
-  @action
-  void setCPF(String cpf) {
-    _cpf = cpf;
-  }
-
   @action
   void setName(String name) {
     _name = name;
@@ -106,6 +104,11 @@ abstract class _AuthStore with Store {
   }
 
   @action
+  void setCargo(String cargo){
+    _cargo = cargo;
+  }
+
+  @action
   void setPassword(String password) {
     _password = password;
   }
@@ -113,11 +116,6 @@ abstract class _AuthStore with Store {
   @action
   void setPhone(String phone) {
     _phone = phone;
-  }
-
-  @action
-  void setNumContract(String numContract) {
-    _numContract = numContract;
   }
 
   //Password field
@@ -140,13 +138,21 @@ abstract class _AuthStore with Store {
 
       recoveryData(_uidUser);
       _password = ' ';
-      print('senha:');
-      print(_password);
 
-      Navigator.pushAndRemoveUntil(
+      if(_cargo == ('Administrador') || _cargo == ('Gerente') || _cargo == ('Funcionario')){
+        print("adm ou gerente ou funcionario");
+        
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
           (route) => false);
+
+      }else{
+        print("sem permissão");
+        textError == 'Você não tem permissão para entrar no sistema';
+        restoreData();
+        signOut();
+      }
 
       textError = ' ';
     } on FirebaseAuthException catch (e) {
@@ -165,6 +171,7 @@ abstract class _AuthStore with Store {
         print('Muitas tentativas de login');
       }
     } catch (e) {
+      textError = 'Sem permissão para acessar o sistema';
       print('Erro ao fazer login: $e');
       print('Tipo de exceção: ${e.runtimeType}');
     }
@@ -176,34 +183,11 @@ abstract class _AuthStore with Store {
     try {
       await _auth.signOut();
       _currentUser = null;
+      admin = false;
+      print('admin depois do sigout ${admin}');
     } catch (e) {
       print(e);
     }
-  }
-
-  //Firestore database
-  @action
-  Future<void> registrationUser() async {
-    print("ID do usuario $_uidUser");
-    try {
-      Map<String, dynamic> usuariosInfoMap = {
-        "ID": _uidUser,
-        "Nome": _name,
-        "CPF": _cpf,
-        "Email": _email,
-        "Telefone": _phone,
-        "Contrato": _numContract,
-      };
-      await addDetailsUsers(usuariosInfoMap, _uidUser);
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  @action
-  Future addDetailsUsers(
-      Map<String, dynamic> usuariosMap, String id) async {
-    return await db.collection("Usuarios").doc(id).set(usuariosMap);
   }
 
   @action
@@ -211,25 +195,37 @@ abstract class _AuthStore with Store {
     _uidUser = currentUser;
     try {
       db.collection(_uidUser);
-      final docRef = db.collection("Usuarios").doc(_uidUser);
+      final docRef = db.collection("Funcionarios").doc(_uidUser);
       docRef.get().then(
         (DocumentSnapshot doc) {
           final data = doc.data() as Map<String, dynamic>;
 
           setName(data['Nome']);
           setEmail(data['Email']);
-          setCPF(data['CPF']);
           setPhone(data['Telefone']);
-          print('try2');
-          print(_name);
-          print(_email);
-          print(_cpf);
-          print(_phone);
+          setCargo(data['Cargo']);
+
+          print('admin antes do if ${admin}');
+
+          if(_cargo == 'Administrador' || _cargo == 'Gerente'){
+            admin = true;
+          }else{
+            admin = false;
+          }
+
+          print('admin depois do if ${admin}');
         },
         onError: (e) => print("Error getting document: $e"),
       );
     } catch (e) {
       print(e);
     }
+  }
+
+  restoreData(){
+    setName('');
+    setEmail('');
+    setPhone('');
+    setCargo('Funcionario');
   }
 }

@@ -54,7 +54,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                             children: [
                               const ListTile(
                                 title: Text(
-                                  "Registrar",
+                                  "Registrar Cliente",
                                   style: TextStyle(
                                     fontSize: 45,
                                     fontWeight: FontWeight.bold,
@@ -223,4 +223,13 @@ class _RegistroScreenState extends State<RegistroScreen> {
       ),
     );
   }
+
+  // menuWidgetConfig(BuildContext context){
+  //   final store = Provider.of<AuthStore>(context);
+  //   if(store.admin){
+  //     return const MenuWidget();
+  //   } else {
+  //     return const MenuEmployeeWidget();
+  //   }
+  // }
 }

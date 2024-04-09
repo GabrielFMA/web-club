@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:web_simclub/components/menu.dart';
 
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -22,4 +23,5 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
 }

@@ -189,25 +189,5 @@ abstract class _EmployeeStore with Store {
       Map<String, dynamic> usuariosMap, String id) async {
     return await db.collection("Funcionarios").doc(id).set(usuariosMap);
   }
-
-  @action
-  void recoveryData(String currentUser) {
-    _uidUser = currentUser;
-    try {
-      db.collection(_uidUser);
-      final docRef = db.collection("Funcionarios").doc(_uidUser);
-      docRef.get().then(
-        (DocumentSnapshot doc) {
-          final data = doc.data() as Map<String, dynamic>;
-
-          setName(data['Nome']);
-          setEmail(data['Email']);
-          setPhone(data['Telefone']);
-        },
-        onError: (e) => print("Error getting document: $e"),
-      );
-    } catch (e) {
-      print(e);
-    }
-  }
+  
 }

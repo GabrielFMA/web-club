@@ -4,7 +4,6 @@ import 'package:web_simclub/components/auth/textfield_password.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
 import 'package:web_simclub/store/auth.store.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:web_simclub/store/employee.store.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

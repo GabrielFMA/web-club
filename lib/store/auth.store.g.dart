@@ -72,21 +72,6 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$_cpfAtom = Atom(name: '_AuthStore._cpf', context: context);
-
-  @override
-  String get _cpf {
-    _$_cpfAtom.reportRead();
-    return super._cpf;
-  }
-
-  @override
-  set _cpf(String value) {
-    _$_cpfAtom.reportWrite(value, super._cpf, () {
-      super._cpf = value;
-    });
-  }
-
   late final _$_nameAtom = Atom(name: '_AuthStore._name', context: context);
 
   @override
@@ -114,6 +99,21 @@ mixin _$AuthStore on _AuthStore, Store {
   set _email(String value) {
     _$_emailAtom.reportWrite(value, super._email, () {
       super._email = value;
+    });
+  }
+
+  late final _$_cargoAtom = Atom(name: '_AuthStore._cargo', context: context);
+
+  @override
+  String get _cargo {
+    _$_cargoAtom.reportRead();
+    return super._cargo;
+  }
+
+  @override
+  set _cargo(String value) {
+    _$_cargoAtom.reportWrite(value, super._cargo, () {
+      super._cargo = value;
     });
   }
 
@@ -148,22 +148,6 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$_numContractAtom =
-      Atom(name: '_AuthStore._numContract', context: context);
-
-  @override
-  String get _numContract {
-    _$_numContractAtom.reportRead();
-    return super._numContract;
-  }
-
-  @override
-  set _numContract(String value) {
-    _$_numContractAtom.reportWrite(value, super._numContract, () {
-      super._numContract = value;
-    });
-  }
-
   late final _$textErrorAtom =
       Atom(name: '_AuthStore.textError', context: context);
 
@@ -195,6 +179,21 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
+  late final _$adminAtom = Atom(name: '_AuthStore.admin', context: context);
+
+  @override
+  bool get admin {
+    _$adminAtom.reportRead();
+    return super.admin;
+  }
+
+  @override
+  set admin(bool value) {
+    _$adminAtom.reportWrite(value, super.admin, () {
+      super.admin = value;
+    });
+  }
+
   late final _$signInWithEmailPasswordAsyncAction =
       AsyncAction('_AuthStore.signInWithEmailPassword', context: context);
 
@@ -210,23 +209,6 @@ mixin _$AuthStore on _AuthStore, Store {
   @override
   Future<void> signOut() {
     return _$signOutAsyncAction.run(() => super.signOut());
-  }
-
-  late final _$registrationUserAsyncAction =
-      AsyncAction('_AuthStore.registrationUser', context: context);
-
-  @override
-  Future<void> registrationUser() {
-    return _$registrationUserAsyncAction.run(() => super.registrationUser());
-  }
-
-  late final _$addDetailsUsersAsyncAction =
-      AsyncAction('_AuthStore.addDetailsUsers', context: context);
-
-  @override
-  Future<dynamic> addDetailsUsers(Map<String, dynamic> usuariosMap, String id) {
-    return _$addDetailsUsersAsyncAction
-        .run(() => super.addDetailsUsers(usuariosMap, id));
   }
 
   late final _$recoveryDataAsyncAction =
@@ -263,11 +245,11 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   @override
-  dynamic getCPF() {
+  dynamic getCargo() {
     final _$actionInfo =
-        _$_AuthStoreActionController.startAction(name: '_AuthStore.getCPF');
+        _$_AuthStoreActionController.startAction(name: '_AuthStore.getCargo');
     try {
-      return super.getCPF();
+      return super.getCargo();
     } finally {
       _$_AuthStoreActionController.endAction(_$actionInfo);
     }
@@ -307,11 +289,11 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   @override
-  void setCPF(String cpf) {
+  bool getAdmin() {
     final _$actionInfo =
-        _$_AuthStoreActionController.startAction(name: '_AuthStore.setCPF');
+        _$_AuthStoreActionController.startAction(name: '_AuthStore.getAdmin');
     try {
-      return super.setCPF(cpf);
+      return super.getAdmin();
     } finally {
       _$_AuthStoreActionController.endAction(_$actionInfo);
     }
@@ -340,6 +322,17 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   @override
+  void setCargo(String cargo) {
+    final _$actionInfo =
+        _$_AuthStoreActionController.startAction(name: '_AuthStore.setCargo');
+    try {
+      return super.setCargo(cargo);
+    } finally {
+      _$_AuthStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setPassword(String password) {
     final _$actionInfo = _$_AuthStoreActionController.startAction(
         name: '_AuthStore.setPassword');
@@ -362,17 +355,6 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   @override
-  void setNumContract(String numContract) {
-    final _$actionInfo = _$_AuthStoreActionController.startAction(
-        name: '_AuthStore.setNumContract');
-    try {
-      return super.setNumContract(numContract);
-    } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void visible() {
     final _$actionInfo =
         _$_AuthStoreActionController.startAction(name: '_AuthStore.visible');
@@ -388,7 +370,8 @@ mixin _$AuthStore on _AuthStore, Store {
     return '''
 isVisible: ${isVisible},
 textError: ${textError},
-isError: ${isError}
+isError: ${isError},
+admin: ${admin}
     ''';
   }
 }
