@@ -156,6 +156,7 @@ abstract class _ClientStore with Store {
         "Nome": _name,
         "CPF": _cpf,
         "Email": _email,
+        "Endereço": _address,
         "Telefone": _phone,
         "Contrato": _numContract,
       };

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, library_private_types_in_public_api
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:mobx/mobx.dart';
@@ -8,8 +10,8 @@ class PartnerStore = _PartnerStore with _$PartnerStore;
 
 abstract class _PartnerStore with Store {
   FirebaseFirestore db = FirebaseFirestore.instance;
-  late DocumentReference _documentReference;
-  late CollectionReference _referenceExam;
+  // late DocumentReference _documentReference;
+  // late CollectionReference _referenceExam;
 
   //Errors
   @observable

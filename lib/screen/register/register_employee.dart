@@ -203,6 +203,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                   if (text != _password) {
                                     return "As senhas não são iguais";
                                   }
+                                  return null;
                                 },
                               ),
 
