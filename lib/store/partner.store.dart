@@ -148,7 +148,7 @@ abstract class _PartnerStore with Store {
         "CNPJ": _cnpj,
         "Email": _email,
         "Telefone": _phone,
-        "Endereco": _address,
+        "Endereço": _address,
       };
 
       await addDetailsClinic(clinicInfoMap, _idClinic);
