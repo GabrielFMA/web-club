@@ -14,10 +14,6 @@ class MenuWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final store = Provider.of<AuthStore>(context);
 
-    Color getColor(int verification) {
-      return verification < 2 ? Colors.white : Colors.grey;
-    }
-
     return Container(
       width: 300,
       color: Colors.green,

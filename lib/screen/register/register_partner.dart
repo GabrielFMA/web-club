@@ -66,8 +66,8 @@ class _RegisterPartnerState extends State<RegisterPartner> {
 
                               //Nome field
                               TextFieldString(
-                                icon: const Icon(Icons.house),
-                                hintText: "Digite o nome",
+                                icon: const Icon(Icons.supervised_user_circle_sharp),
+                                hintText: "Digite o nome do parceiro",
                                 text: _nomeController.text,
                                 shouldValidate: true,
                                 validator: (text) {
@@ -140,7 +140,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                               //Endereço field
                               TextFieldString(
                                 icon:
-                                    const Icon(Icons.insert_drive_file_rounded),
+                                    const Icon(Icons.location_on_sharp),
                                 hintText: "Endereço",
                                 text: _contractController.text,
                                 shouldValidate: true,

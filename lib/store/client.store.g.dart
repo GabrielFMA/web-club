@@ -134,6 +134,22 @@ mixin _$ClientStore on _ClientStore, Store {
     });
   }
 
+  late final _$_addressAtom =
+      Atom(name: '_ClientStore._address', context: context);
+
+  @override
+  String get _address {
+    _$_addressAtom.reportRead();
+    return super._address;
+  }
+
+  @override
+  set _address(String value) {
+    _$_addressAtom.reportWrite(value, super._address, () {
+      super._address = value;
+    });
+  }
+
   late final _$_cpfAtom = Atom(name: '_ClientStore._cpf', context: context);
 
   @override
@@ -244,6 +260,17 @@ mixin _$ClientStore on _ClientStore, Store {
         name: '_ClientStore.setEmail');
     try {
       return super.setEmail(email);
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setAddress(String address) {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.setAddress');
+    try {
+      return super.setAddress(address);
     } finally {
       _$_ClientStoreActionController.endAction(_$actionInfo);
     }

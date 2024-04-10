@@ -115,6 +115,22 @@ class _RegisterClientState extends State<RegisterClient> {
                                   return null;
                                 },
                               ),
+                              
+                              //Address field
+                              TextFieldString(
+                                icon:
+                                    const Icon(Icons.location_on_sharp),
+                                hintText: "Endereço",
+                                text: _contractController.text,
+                                shouldValidate: true,
+                                validator: (text) {
+                                  if (text!.isEmpty) {
+                                    return "Digite seu Endereço";
+                                  }
+                                  store.setAddress(text);
+                                  return null;
+                                },
+                              ),
 
                               //Telefone field
                               TextFieldString(

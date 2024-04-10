@@ -5,7 +5,7 @@ import 'package:web_simclub/components/menu.dart';
 import 'package:web_simclub/store/partner.store.dart';
 
 class RegisterExam extends StatefulWidget {
-  const RegisterExam({Key? key}) : super(key: key);
+  const RegisterExam({super.key});
 
   @override
   State<RegisterExam> createState() => _RegisterExamState();

@@ -46,6 +46,9 @@ abstract class _ClientStore with Store {
   String _email = '';
 
   @observable
+  String _address = '';
+
+  @observable
   String _cpf = '';
 
   @observable
@@ -83,6 +86,11 @@ abstract class _ClientStore with Store {
   @action
   void setEmail(String email) {
     _email = email;
+  }
+
+  @action
+  void setAddress(String address) {
+    _address = address;
   }
 
   @action
