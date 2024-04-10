@@ -9,6 +9,7 @@ import 'package:web_simclub/screen/auth/login.dart';
 import 'package:web_simclub/screen/home_page.dart';
 import 'package:web_simclub/store/auth.store.dart';
 import 'package:web_simclub/store/client.store.dart';
+import 'package:web_simclub/store/clinic.store.dart';
 import 'package:web_simclub/store/employee.store.dart';
 
 void main() async {
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
       providers: [
         Provider<AuthStore>(create: (_) => AuthStore()),
         Provider<ClientStore>(create: (_) => ClientStore()),
-        Provider<EmployeeStore>(create: (_) => EmployeeStore(),)
+        Provider<EmployeeStore>(create: (_) => EmployeeStore()),
+        Provider<ClinicStore>(create: (_) => ClinicStore())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

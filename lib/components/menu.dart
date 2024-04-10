@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:web_simclub/screen/auth/login.dart';
-import 'package:web_simclub/screen/auth/register_client.dart';
-import 'package:web_simclub/screen/auth/register_employee.dart';
+import 'package:web_simclub/screen/register/register_client.dart';
+import 'package:web_simclub/screen/register/register_clinic.dart';
+import 'package:web_simclub/screen/register/register_employee.dart';
 import 'package:web_simclub/store/auth.store.dart';
 
 class MenuWidget extends StatelessWidget {
@@ -89,16 +90,30 @@ class MenuWidget extends StatelessWidget {
               buildMenuItem(
                 text: 'Registro Funcionário',
                 icon: getIcon(store.level),
-                color:  getColor(store.level),
+                color: getColor(store.level),
                 onClick: () => {
-                  if (store.level < 2) {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const RegisterEmployee(),
-                    ),
-                  )}
+                  if (store.level < 2)
+                    {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const RegisterEmployee(),
+                        ),
+                      ),
+                    },
                 },
               ),
+              buildMenuItem(
+                text: 'Registro Clinica',
+                icon: Icons.home,
+                color: Colors.white,
+                onClick: () => {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const RegisterClinic(),
+                    ),
+                  ),
+                },
+              )
             ],
           ),
         ),
@@ -106,10 +121,11 @@ class MenuWidget extends StatelessWidget {
     );
   }
 
-
   Widget buildMenuItem(
-      {required String text, required IconData icon, required Color color, VoidCallback? onClick}) {
-
+      {required String text,
+      required IconData icon,
+      required Color color,
+      VoidCallback? onClick}) {
     return ListTile(
       leading: Icon(icon, color: color),
       title: Text(text, style: TextStyle(color: color)),
