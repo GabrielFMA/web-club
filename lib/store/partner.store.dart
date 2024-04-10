@@ -2,12 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:mobx/mobx.dart';
 
-part 'clinic.store.g.dart';
+part 'partner.store.g.dart';
 
-class ClinicStore = _ClinicStore with _$ClinicStore;
+class PartnerStore = _PartnerStore with _$PartnerStore;
 
-abstract class _ClinicStore with Store {
+abstract class _PartnerStore with Store {
   FirebaseFirestore db = FirebaseFirestore.instance;
+  late DocumentReference _documentReference;
+  late CollectionReference _referenceExam;
 
   //Errors
   @observable
@@ -37,6 +39,9 @@ abstract class _ClinicStore with Store {
 
   @observable
   int _exam = 1;
+
+  @observable
+  late List<String> _listExam;
 
   //Get functions
   //Errors
@@ -80,8 +85,13 @@ abstract class _ClinicStore with Store {
   }
 
   @action
-  getExan(){
+  getExam(){
     return _exam;
+  }
+
+  @action
+  getListExam(){
+    return _listExam;
   }
 
   //Set functions
@@ -123,9 +133,14 @@ abstract class _ClinicStore with Store {
   }
 
   @action
+  void setListExam(List<String> listExam){
+    _listExam = listExam; 
+  }
+
+  @action
   Future<void> registrationClinic() async {
     try {
-      Map<String, dynamic> usuariosInfoMap = {
+      Map<String, dynamic> clinicInfoMap = {
         "ID": _idClinic,
         "Nome": _name,
         "CNPJ": _cnpj,
@@ -133,7 +148,8 @@ abstract class _ClinicStore with Store {
         "Telefone": _phone,
         "Endereco": _address,
       };
-      await addDetailsUsers(usuariosInfoMap, _idClinic);
+
+      await addDetailsClinic(clinicInfoMap, _idClinic);
     } catch (e) {
       print('Erro ao fazer registro: $e');
       print('Tipo de exceção: ${e.runtimeType}');
@@ -141,9 +157,18 @@ abstract class _ClinicStore with Store {
   }
 
   @action
-  Future addDetailsUsers(Map<String, dynamic> usuariosMap, String id) async {
-    return await db.collection("Clinicas").doc(id).set(usuariosMap);
+  Future addDetailsClinic(Map<String, dynamic> clinicMap, String id) async {
+    return await db.collection("Clinicas").doc(id).set(clinicMap);
   }
+
+  //  @action
+  // Future addDetailsExam(Map<String, dynamic> examMap, String id) async {
+  //   _documentReference = FirebaseFirestore.instance.collection('Clinicas').doc('clinicasteste');
+  //   _referenceExam = _documentReference.collection('Exames').add;
+
+    
+  //   return await db.collection("Clinicas").doc(id).set(examMap);
+  // }
 
   restoreData() {
     setIdClinic('');

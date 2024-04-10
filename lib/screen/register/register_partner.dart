@@ -4,16 +4,16 @@ import 'package:provider/provider.dart';
 import 'package:web_simclub/components/menu.dart';
 import 'package:web_simclub/screen/register/register_exam.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
-import 'package:web_simclub/store/clinic.store.dart';
+import 'package:web_simclub/store/partner.store.dart';
 
-class RegisterClinic extends StatefulWidget {
-  const RegisterClinic({Key? key}) : super(key: key);
+class RegisterPartner extends StatefulWidget {
+  const RegisterPartner({Key? key}) : super(key: key);
 
   @override
-  State<RegisterClinic> createState() => _RegisterClinicState();
+  State<RegisterPartner> createState() => _RegisterPartnerState();
 }
 
-class _RegisterClinicState extends State<RegisterClinic> {
+class _RegisterPartnerState extends State<RegisterPartner> {
   final _nomeController = TextEditingController();
   final _emailController = TextEditingController();
   final _cpfController = TextEditingController();
@@ -23,11 +23,11 @@ class _RegisterClinicState extends State<RegisterClinic> {
   final formKey = GlobalKey<FormState>();
 
   List<int> listExam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  int valueExam = 1;
+  int valueExam = 1; 
 
   @override
   Widget build(BuildContext context) {
-    final store = Provider.of<ClinicStore>(context);
+    final store = Provider.of<PartnerStore>(context);
 
     return Scaffold(
       backgroundColor: Colors.green[200],
@@ -55,7 +55,7 @@ class _RegisterClinicState extends State<RegisterClinic> {
                             children: [
                               const ListTile(
                                 title: Text(
-                                  "Registrar Clinica",
+                                  "Registrar Parceiro",
                                   style: TextStyle(
                                     fontSize: 45,
                                     fontWeight: FontWeight.bold,

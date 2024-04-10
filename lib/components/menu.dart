@@ -3,7 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:web_simclub/screen/auth/login.dart';
 import 'package:web_simclub/screen/register/register_client.dart';
-import 'package:web_simclub/screen/register/register_clinic.dart';
+import 'package:web_simclub/screen/register/register_partner.dart';
 import 'package:web_simclub/screen/register/register_employee.dart';
 import 'package:web_simclub/store/auth.store.dart';
 
@@ -16,10 +16,6 @@ class MenuWidget extends StatelessWidget {
 
     Color getColor(int verification) {
       return verification < 2 ? Colors.white : Colors.grey;
-    }
-
-    IconData getIcon(int verification) {
-      return verification < 2 ? Icons.admin_panel_settings : Icons.lock;
     }
 
     return Container(
@@ -75,45 +71,45 @@ class MenuWidget extends StatelessWidget {
                 },
               ),
               const Divider(color: Colors.white),
-              buildMenuItem(
-                text: 'Registro Cliente',
-                icon: Icons.people,
-                color: Colors.white,
-                onClick: () => {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const RegisterClient(),
-                    ),
-                  ),
-                },
-              ),
-              buildMenuItem(
-                text: 'Registro Funcionário',
-                icon: getIcon(store.level),
-                color: getColor(store.level),
-                onClick: () => {
-                  if (store.level < 2)
-                    {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const RegisterEmployee(),
-                        ),
+              if (store.level < 3)
+                buildMenuItem(
+                  text: 'Registro Cliente',
+                  icon: Icons.person_add_alt_1_rounded,
+                  color: Colors.white,
+                  onClick: () => {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const RegisterClient(),
                       ),
-                    },
-                },
-              ),
-              buildMenuItem(
-                text: 'Registro Clinica',
-                icon: Icons.home,
-                color: Colors.white,
-                onClick: () => {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const RegisterClinic(),
                     ),
-                  ),
-                },
-              )
+                  },
+                ),
+              if (store.level < 2)
+                buildMenuItem(
+                  text: 'Registro Funcionário',
+                  icon: Icons.badge_outlined,
+                  color: Colors.white,
+                  onClick: () => {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const RegisterEmployee(),
+                      ),
+                    ),
+                  },
+                ),
+              if (store.level < 2)
+                buildMenuItem(
+                  text: 'Registro Parceiro',
+                  icon: Icons.handshake_outlined,
+                  color: Colors.white,
+                  onClick: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const RegisterPartner(),
+                      ),
+                    );
+                  },
+                ),
             ],
           ),
         ),

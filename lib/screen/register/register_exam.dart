@@ -1,25 +1,30 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 import 'package:web_simclub/components/menu.dart';
-import 'package:web_simclub/components/auth/textfield_string.dart';
+import 'package:web_simclub/store/partner.store.dart';
 
 class RegisterExam extends StatefulWidget {
-  const RegisterExam({super.key});
+  const RegisterExam({Key? key}) : super(key: key);
 
   @override
   State<RegisterExam> createState() => _RegisterExamState();
 }
 
 class _RegisterExamState extends State<RegisterExam> {
-  final _nomeController = TextEditingController();
-
   final formKey = GlobalKey<FormState>();
+  late List<TextEditingController> _textControllers;
+  late List<String> examValues;
+
+  @override
+  void initState() {
+    super.initState();
+    _textControllers = [];
+  }
 
   @override
   Widget build(BuildContext context) {
-    //final store = Provider.of<ClinicStore>(context);
+    final store = Provider.of<PartnerStore>(context);
 
     return Scaffold(
       backgroundColor: Colors.green[200],
@@ -55,32 +60,36 @@ class _RegisterExamState extends State<RegisterExam> {
                                   textAlign: TextAlign.center,
                                 ),
                               ),
-
-                              //Exame field
-                              TextFieldString(
-                                icon: const Icon(Icons.house),
-                                hintText: "Digite o primeiro exame",
-                                text: _nomeController.text,
-                                shouldValidate: true,
-                                validator: (text) {
-                                  if (text!.isEmpty) {
-                                    return "Digite um exame";
+                              // Exame fields
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: store.getExam(),
+                                itemBuilder: (context, index) {
+                                  // Criar um controlador de texto para cada campo
+                                  if (_textControllers.length <= index) {
+                                    _textControllers.add(TextEditingController());
                                   }
-                                  //store.setName(text);
-                                  return null;
+                                  return TextFieldExam(
+                                    context,
+                                    'Exame ${index + 1}',
+                                    _textControllers[index],
+                                  );
                                 },
                               ),
-                              //Space
+                              // Space
                               const SizedBox(height: 15),
-
-                              //Button
-
+                              // Button
                               buttonDefault(
                                 context,
                                 () async {
                                   if (formKey.currentState!.validate()) {
-                                    
+                                    // Coletar os valores escritos em cada campo
+                                    examValues = _textControllers.map((controller) => controller.text).toList();
+
+                                    print(examValues);
+                                    // Use examValues conforme necessário (por exemplo, envie para a função de submissão)
                                   }
+                                  
                                 },
                               ),
                             ],
@@ -98,35 +107,44 @@ class _RegisterExamState extends State<RegisterExam> {
     );
   }
 
-  Widget botaoPadrao({required String text, VoidCallback? onClick}) {
+  Widget buttonDefault(BuildContext context, VoidCallback? onClick) {
     return Container(
-      height: 40,
-      width: 105,
+      height: 50,
+      width: MediaQuery.of(context).size.width * .9,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: Colors.green[500],
       ),
       child: TextButton(
         onPressed: onClick,
-        child: Text(
-          text,
-          style: const TextStyle(color: Colors.white),
+        child: const Text(
+          "REGISTRAR",
+          style: TextStyle(color: Colors.white),
         ),
       ),
     );
   }
 
-  Widget buttonDefault(BuildContext context, VoidCallback? onClick) {
+  Widget TextFieldExam(BuildContext context, String hintText, TextEditingController controller) {
     return Container(
-      height: 50,
-      width: MediaQuery.of(context).size.width * .9,
+      margin: const EdgeInsets.only(top: 5, bottom: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8), color: Colors.green[500]),
-      child: TextButton(
-        onPressed: onClick,
-        child: const Text(
-          "PROSSEGUIR",
-          style: TextStyle(color: Colors.white),
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.green[500]?.withOpacity(.3),
+      ),
+      child: TextFormField(
+        controller: controller, // Atribuir o controlador de texto ao campo
+        validator: (text) {
+          if (text!.isEmpty) {
+            return "Digite um exame";
+          }
+          return null;
+        },
+        decoration: InputDecoration(
+          icon: const Icon(Icons.description_outlined),
+          border: InputBorder.none,
+          hintText: hintText,
         ),
       ),
     );
