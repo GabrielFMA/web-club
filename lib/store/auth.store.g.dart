@@ -25,18 +25,18 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$adminAtom = Atom(name: '_AuthStore.admin', context: context);
+  late final _$levelAtom = Atom(name: '_AuthStore.level', context: context);
 
   @override
-  bool get admin {
-    _$adminAtom.reportRead();
-    return super.admin;
+  int get level {
+    _$levelAtom.reportRead();
+    return super.level;
   }
 
   @override
-  set admin(bool value) {
-    _$adminAtom.reportWrite(value, super.admin, () {
-      super.admin = value;
+  set level(int value) {
+    _$levelAtom.reportWrite(value, super.level, () {
+      super.level = value;
     });
   }
 
@@ -223,11 +223,11 @@ mixin _$AuthStore on _AuthStore, Store {
       ActionController(name: '_AuthStore', context: context);
 
   @override
-  bool getAdmin() {
+  int getLevel() {
     final _$actionInfo =
-        _$_AuthStoreActionController.startAction(name: '_AuthStore.getAdmin');
+        _$_AuthStoreActionController.startAction(name: '_AuthStore.getLevel');
     try {
-      return super.getAdmin();
+      return super.getLevel();
     } finally {
       _$_AuthStoreActionController.endAction(_$actionInfo);
     }
@@ -369,7 +369,7 @@ mixin _$AuthStore on _AuthStore, Store {
   String toString() {
     return '''
 isVisible: ${isVisible},
-admin: ${admin},
+level: ${level},
 isError: ${isError},
 textError: ${textError}
     ''';

@@ -13,12 +13,12 @@ class MenuWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final store = Provider.of<AuthStore>(context);
 
-    Color getColor(bool verification) {
-      return verification ? Colors.white : Colors.grey;
+    Color getColor(int verification) {
+      return verification < 2 ? Colors.white : Colors.grey;
     }
 
-    IconData getIcon(bool verification) {
-      return verification ? Icons.admin_panel_settings : Icons.lock;
+    IconData getIcon(int verification) {
+      return verification < 2 ? Icons.admin_panel_settings : Icons.lock;
     }
 
     return Container(
@@ -88,10 +88,10 @@ class MenuWidget extends StatelessWidget {
               ),
               buildMenuItem(
                 text: 'Registro Funcionário',
-                icon: getIcon(store.admin),
-                color:  getColor(store.admin),
+                icon: getIcon(store.level),
+                color:  getColor(store.level),
                 onClick: () => {
-                  if (store.admin) {
+                  if (store.level < 2) {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => const RegisterEmployee(),

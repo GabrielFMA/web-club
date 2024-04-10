@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:web_simclub/components/menu.dart';
 import 'package:web_simclub/store/client.store.dart';
-import 'package:web_simclub/components/auth/textfield_password.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
 
 class RegisterClient extends StatefulWidget {
@@ -21,8 +20,6 @@ class _RegisterClientState extends State<RegisterClient> {
   final _cpfController = TextEditingController();
   final _phoneController = TextEditingController();
   final _contractController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
@@ -157,37 +154,8 @@ class _RegisterClientState extends State<RegisterClient> {
                                     return "Digite apenas números";
                                   }
                                   store.setNumContract(text);
-                                  return null;
-                                },
-                              ),
-
-                              //Password field
-                              TextFieldPassword(
-                                password: _passwordController.text,
-                                shouldValidate: true,
-                                validator: (text) {
-                                  if (text!.isEmpty) {
-                                    return "Digite uma senha";
-                                  } else if (text.length < 6) {
-                                    return "Digite uma senha maior";
-                                  }
                                   store.setPassword(text);
                                   return null;
-                                },
-                              ),
-
-                              //Confirm Password field
-                              TextFieldConfirmPassword(
-                                confirmPassword:
-                                    _confirmPasswordController.text,
-                                shouldValidate: true,
-                                validator: (text) {
-                                  if (text!.isEmpty) {
-                                    return "Confirme sua senha";
-                                  }
-                                  if (text != _passwordController.text) {
-                                    return "As senhas não são iguais!";
-                                  }
                                 },
                               ),
 
@@ -214,7 +182,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                buttonDialog(
+                                                botaoPadrao(
                                                   text: 'SIM',
                                                   onClick: () async {
                                                     await store
@@ -232,7 +200,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                                     );
                                                   },
                                                 ),
-                                                buttonDialog(
+                                                botaoPadrao(
                                                   text: 'NÃO',
                                                   onClick: () {
                                                     Navigator.pop(
@@ -263,7 +231,7 @@ class _RegisterClientState extends State<RegisterClient> {
     );
   }
 
-  Widget buttonDialog({required String text, VoidCallback? onClick}) {
+  Widget botaoPadrao({required String text, VoidCallback? onClick}) {
     return Container(
       height: 40,
       width: 105,

@@ -19,7 +19,7 @@ abstract class _AuthStore with Store {
   bool isVisible = false;
 
   @observable
-  bool admin = false;
+  int level = 3;
 
   //Errors
   @observable
@@ -56,8 +56,8 @@ abstract class _AuthStore with Store {
   //Get functions
   //Verification
   @action
-  bool getAdmin() {
-    return admin;
+  int getLevel() {
+    return level;
   }
 
   //Errors
@@ -101,6 +101,11 @@ abstract class _AuthStore with Store {
   }
 
   //Set functions
+  //Verification
+  void setLevel(int level) {
+    this.level = level;
+  }
+
   //Info Users
   @action
   void setName(String name) {
@@ -186,8 +191,8 @@ abstract class _AuthStore with Store {
     try {
       await _auth.signOut();
       _currentUser = null;
-      admin = false;
-      print('admin depois do sigout $admin');
+      level = 3;
+      print('admin depois do sigout $level');
     } catch (e) {
       print(e);
     }
@@ -213,16 +218,23 @@ abstract class _AuthStore with Store {
             setEmail(data['Email']);
             setPhone(data['Telefone']);
             setCargo(data['Cargo']);
+            setLevel(data['Level']);
 
-            print('admin antes do if $admin');
+            print('admin antes do if $level');
 
-            if (_cargo == 'Administrador' || _cargo == 'Gerente') {
-              admin = true;
-            } else {
-              admin = false;
+            switch (_cargo) {
+              case 'Administrador':
+                level = 0;
+                break;
+              case 'Gerente':
+                level = 1;
+                break;
+              case 'Funcionario':
+                level = 2;
+                break;
             }
 
-            print('admin depois do if $admin');
+            print('admin depois do if $level');
           },
           onError: (e) => print("Error getting document: $e"),
         );

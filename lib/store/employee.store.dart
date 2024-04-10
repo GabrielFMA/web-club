@@ -1,4 +1,3 @@
-
 // ignore_for_file: library_private_types_in_public_api, unused_field, avoid_print, use_build_context_synchronously
 
 import 'dart:convert';
@@ -56,6 +55,9 @@ abstract class _EmployeeStore with Store {
   @observable 
   String _cargo = '';
 
+  @observable
+  int _level = 3;
+
   //Get funções
   //Errors
   getIsError() {
@@ -99,6 +101,11 @@ abstract class _EmployeeStore with Store {
     _cargo = cargo;
   }
   
+  @action
+  void setLevel(int level){
+    _level = level;
+  }
+
   //Password field
   @action
   void visible() {
@@ -151,6 +158,7 @@ abstract class _EmployeeStore with Store {
         "Email": _email,
         "Telefone": _phone,
         "Cargo": _cargo,
+        "Level": _level,
       };
       await addDetailsUsers(usuariosInfoMap, _uidUser);
     } catch (e) {

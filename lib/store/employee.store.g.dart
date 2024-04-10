@@ -184,6 +184,22 @@ mixin _$EmployeeStore on _EmployeeStore, Store {
     });
   }
 
+  late final _$_levelAtom =
+      Atom(name: '_EmployeeStore._level', context: context);
+
+  @override
+  int get _level {
+    _$_levelAtom.reportRead();
+    return super._level;
+  }
+
+  @override
+  set _level(int value) {
+    _$_levelAtom.reportWrite(value, super._level, () {
+      super._level = value;
+    });
+  }
+
   late final _$registrationUserAsyncAction =
       AsyncAction('_EmployeeStore.registrationUser', context: context);
 
@@ -265,6 +281,17 @@ mixin _$EmployeeStore on _EmployeeStore, Store {
         name: '_EmployeeStore.setCargo');
     try {
       return super.setCargo(cargo);
+    } finally {
+      _$_EmployeeStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setLevel(int level) {
+    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
+        name: '_EmployeeStore.setLevel');
+    try {
+      return super.setLevel(level);
     } finally {
       _$_EmployeeStoreActionController.endAction(_$actionInfo);
     }

@@ -21,6 +21,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  String _password = ' ';
 
   String valueCargo = 'Clique aqui para selecionar um cargo';
 
@@ -93,6 +94,18 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                     setState(() {
                                       valueCargo = newValue!;
                                       store.setCargo(valueCargo);
+
+                                      switch (valueCargo) {
+                                        case 'Administrador':
+                                          store.setLevel(0);
+                                          break;
+                                        case 'Gerente':
+                                          store.setLevel(1);
+                                          break;
+                                        case 'Funcionario':
+                                          store.setLevel(2);
+                                          break;
+                                      }
                                     });
                                   },
                                   items: listCargo.map((String valueItem) {
@@ -172,6 +185,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                   } else if (text.length < 6) {
                                     return "Digite uma senha maior";
                                   }
+                                  _password = text;
                                   store.setPassword(text);
                                   return null;
                                 },
@@ -186,7 +200,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                   if (text!.isEmpty) {
                                     return "Confirme sua senha";
                                   }
-                                  if (text != _passwordController.text) {
+                                  if (text != _password) {
                                     return "As senhas não são iguais";
                                   }
                                 },
