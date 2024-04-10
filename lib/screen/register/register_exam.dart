@@ -1,10 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:web_simclub/components/menu.dart';
-import 'package:web_simclub/store/client.store.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
 
 class RegisterExam extends StatefulWidget {
@@ -16,10 +14,6 @@ class RegisterExam extends StatefulWidget {
 
 class _RegisterExamState extends State<RegisterExam> {
   final _nomeController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _cpfController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _contractController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
