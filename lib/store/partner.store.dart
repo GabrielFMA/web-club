@@ -1,8 +1,9 @@
-// ignore_for_file: avoid_print, library_private_types_in_public_api
+// ignore_for_file: avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:mobx/mobx.dart';
+import 'dart:math';
 
 part 'partner.store.g.dart';
 
@@ -10,8 +11,6 @@ class PartnerStore = _PartnerStore with _$PartnerStore;
 
 abstract class _PartnerStore with Store {
   FirebaseFirestore db = FirebaseFirestore.instance;
-  // late DocumentReference _documentReference;
-  // late CollectionReference _referenceExam;
 
   //Errors
   @observable
@@ -31,9 +30,6 @@ abstract class _PartnerStore with Store {
   String _email = '';
 
   @observable
-  String _address = '';
-
-  @observable
   String _phone = '';
 
   @observable
@@ -41,6 +37,21 @@ abstract class _PartnerStore with Store {
 
   @observable
   int _exam = 1;
+
+  @observable
+  String _cep = '';
+
+  @observable
+  String _street = '';
+
+  @observable
+  String _district = '';
+
+  @observable
+  String _city = '';
+
+  @observable
+  String _state = '';
 
   @observable
   late List<String> _listExam;
@@ -77,23 +88,43 @@ abstract class _PartnerStore with Store {
   }
 
   @action
-  getAddress() {
-    return _address;
-  }
-
-  @action
   getPhone() {
     return _phone;
   }
 
   @action
-  getExam(){
+  getExam() {
     return _exam;
   }
 
   @action
-  getListExam(){
+  getListExam() {
     return _listExam;
+  }
+
+  @action
+  getCEP(){
+    return _cep;
+  }
+
+  @action
+  getStreet(){
+    return _street;
+  }
+
+  @action
+  getDistrict(){
+    return _district;
+  }
+
+  @action
+  getCity(){
+    return _city;
+  }
+
+  @action
+  getState(){
+    return _state;
   }
 
   //Set functions
@@ -123,54 +154,136 @@ abstract class _PartnerStore with Store {
     _phone = phone;
   }
 
-
   @action
-  void setAddress(String address) {
-    _address = address;
+  void setCEP(String cep) {
+    _cep = cep;
   }
 
   @action
-  void setExam(int exam){
+  void setStreet(String street) {
+    _street = street;
+  }
+
+  @action
+  void setDistrict(String district) {
+    _district = district;
+  }
+
+  @action
+  void setCity(String city) {
+    _city = city;
+  }
+
+  @action
+  void setState(String state) {
+    _state = state;
+  }
+
+  @action
+  void setExam(int exam) {
     _exam = exam;
   }
 
   @action
-  void setListExam(List<String> listExam){
-    _listExam = listExam; 
+  void setListExam(List<String> listExam) {
+    _listExam = listExam;
   }
 
   @action
   Future<void> registrationClinic() async {
     try {
+      _idClinic = generateRandomId();
       Map<String, dynamic> clinicInfoMap = {
         "ID": _idClinic,
         "Nome": _name,
         "CNPJ": _cnpj,
         "Email": _email,
         "Telefone": _phone,
-        "Endereço": _address,
+        "CEP": _cep,
+        "Rua": _street,
+        "Bairro": _district,
+        "Cidade": _city,
+        "Estado": _state
       };
 
+      Map<String, dynamic> examMap = _listExam
+          .asMap()
+          .map((index, exam) => MapEntry(index.toString(), exam));
+
       await addDetailsClinic(clinicInfoMap, _idClinic);
+      await addSubcollectionData(_idClinic, examMap);
     } catch (e) {
       print('Erro ao fazer registro: $e');
       print('Tipo de exceção: ${e.runtimeType}');
     }
+    restoreData();
   }
 
   @action
   Future addDetailsClinic(Map<String, dynamic> clinicMap, String id) async {
-    return await db.collection("Clinicas").doc(id).set(clinicMap);
+    return await db.collection("Parceiros").doc(id).set(clinicMap);
   }
 
-  //  @action
-  // Future addDetailsExam(Map<String, dynamic> examMap, String id) async {
-  //   _documentReference = FirebaseFirestore.instance.collection('Clinicas').doc('clinicasteste');
-  //   _referenceExam = _documentReference.collection('Exames').add;
+  // Função para gerar um ID aleatório
+  String generateRandomId() {
+    Random random = Random();
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789';
+    String randomId = '';
+    for (var i = 0; i < 28; i++) {
+      randomId += chars[random.nextInt(chars.length)];
+    }
+    return randomId;
+  }
 
-    
-  //   return await db.collection("Clinicas").doc(id).set(examMap);
-  // }
+  Future<void> addSubcollectionData(String clinicId, dynamic data) async {
+    try {
+      // Gerar um ID aleatório para o documento dentro da subcoleção
+      String documentId = generateRandomId();
+      // Dados a serem adicionados
+      Map<String, dynamic> dataMap = {
+        "Exames": data,
+      };
+
+      // Adicionar os dados à subcoleção dentro da coleção "Clinicas"
+      await db
+          .collection("Parceiros")
+          .doc(clinicId)
+          .collection("Exames")
+          .doc(documentId)
+          .set(dataMap);
+    } catch (e) {
+      print('Erro ao adicionar dados à subcoleção: $e');
+    }
+  }
+
+  @action
+  Future<List<Map<String, dynamic>>> fetchClinics() async {
+    try {
+      QuerySnapshot querySnapshot = await db.collection("Parceiros").get();
+      List<Map<String, dynamic>> clinicDataList = [];
+
+      querySnapshot.docs.forEach((doc) {
+        Map<String, dynamic> clinicData = {
+          "ID": doc['ID'],
+          "CNPJ": doc["CNPJ"],
+          "Telefone": doc["Telefone"],
+          "Email": doc["Email"],
+          "CEP": doc["CEP"],
+          "Rua": doc["Rua"],
+          "Bairro": doc["Bairro"],
+          "Cidade": doc["Cidade"],
+          "Estado": doc["Estado"],
+        };
+        clinicDataList.add(clinicData);
+        print(clinicDataList);
+      });
+
+      return clinicDataList;
+    } catch (e) {
+      print('Erro ao buscar clínicas: $e');
+      return [];
+    }
+  }
 
   restoreData() {
     setIdClinic('');
@@ -178,6 +291,10 @@ abstract class _PartnerStore with Store {
     setCnpj('');
     setEmail('');
     setPhone('');
-    setAddress('');
+    setCEP('');
+    setStreet('');
+    setDistrict('');
+    setCity('');
+    setState('');
   }
 }

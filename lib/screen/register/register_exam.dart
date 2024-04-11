@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:web_simclub/components/menu.dart';
+import 'package:web_simclub/screen/register/register_partner.dart';
 import 'package:web_simclub/store/partner.store.dart';
 
 class RegisterExam extends StatefulWidget {
@@ -69,7 +70,8 @@ class _RegisterExamState extends State<RegisterExam> {
                                 itemBuilder: (context, index) {
                                   // Criar um controlador de texto para cada campo
                                   if (_textControllers.length <= index) {
-                                    _textControllers.add(TextEditingController());
+                                    _textControllers
+                                        .add(TextEditingController());
                                   }
                                   return TextFieldExam(
                                     context,
@@ -86,12 +88,22 @@ class _RegisterExamState extends State<RegisterExam> {
                                 () async {
                                   if (formKey.currentState!.validate()) {
                                     // Coletar os valores escritos em cada campo
-                                    examValues = _textControllers.map((controller) => controller.text).toList();
+                                    examValues = _textControllers
+                                        .map((controller) => controller.text)
+                                        .toList();
+                                    store.setListExam(examValues);
+                                    await store.registrationClinic();
 
+                                    store.fetchClinics();
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const RegisterPartner(),
+                                      ),
+                                    );
                                     print(examValues);
                                     // Use examValues conforme necessário (por exemplo, envie para a função de submissão)
                                   }
-                                  
                                 },
                               ),
                             ],
@@ -127,7 +139,8 @@ class _RegisterExamState extends State<RegisterExam> {
     );
   }
 
-  Widget TextFieldExam(BuildContext context, String hintText, TextEditingController controller) {
+  Widget TextFieldExam(
+      BuildContext context, String hintText, TextEditingController controller) {
     return Container(
       margin: const EdgeInsets.only(top: 5, bottom: 5),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),

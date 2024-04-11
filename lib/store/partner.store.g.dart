@@ -88,22 +88,6 @@ mixin _$PartnerStore on _PartnerStore, Store {
     });
   }
 
-  late final _$_addressAtom =
-      Atom(name: '_PartnerStore._address', context: context);
-
-  @override
-  String get _address {
-    _$_addressAtom.reportRead();
-    return super._address;
-  }
-
-  @override
-  set _address(String value) {
-    _$_addressAtom.reportWrite(value, super._address, () {
-      super._address = value;
-    });
-  }
-
   late final _$_phoneAtom =
       Atom(name: '_PartnerStore._phone', context: context);
 
@@ -150,6 +134,84 @@ mixin _$PartnerStore on _PartnerStore, Store {
     });
   }
 
+  late final _$_cepAtom = Atom(name: '_PartnerStore._cep', context: context);
+
+  @override
+  String get _cep {
+    _$_cepAtom.reportRead();
+    return super._cep;
+  }
+
+  @override
+  set _cep(String value) {
+    _$_cepAtom.reportWrite(value, super._cep, () {
+      super._cep = value;
+    });
+  }
+
+  late final _$_streetAtom =
+      Atom(name: '_PartnerStore._street', context: context);
+
+  @override
+  String get _street {
+    _$_streetAtom.reportRead();
+    return super._street;
+  }
+
+  @override
+  set _street(String value) {
+    _$_streetAtom.reportWrite(value, super._street, () {
+      super._street = value;
+    });
+  }
+
+  late final _$_districtAtom =
+      Atom(name: '_PartnerStore._district', context: context);
+
+  @override
+  String get _district {
+    _$_districtAtom.reportRead();
+    return super._district;
+  }
+
+  @override
+  set _district(String value) {
+    _$_districtAtom.reportWrite(value, super._district, () {
+      super._district = value;
+    });
+  }
+
+  late final _$_cityAtom = Atom(name: '_PartnerStore._city', context: context);
+
+  @override
+  String get _city {
+    _$_cityAtom.reportRead();
+    return super._city;
+  }
+
+  @override
+  set _city(String value) {
+    _$_cityAtom.reportWrite(value, super._city, () {
+      super._city = value;
+    });
+  }
+
+  late final _$_stateAtom =
+      Atom(name: '_PartnerStore._state', context: context);
+
+  @override
+  String get _state {
+    _$_stateAtom.reportRead();
+    return super._state;
+  }
+
+  @override
+  set _state(String value) {
+    _$_stateAtom.reportWrite(value, super._state, () {
+      super._state = value;
+    });
+  }
+
   late final _$_listExamAtom =
       Atom(name: '_PartnerStore._listExam', context: context);
 
@@ -186,6 +248,14 @@ mixin _$PartnerStore on _PartnerStore, Store {
   Future<dynamic> addDetailsClinic(Map<String, dynamic> clinicMap, String id) {
     return _$addDetailsClinicAsyncAction
         .run(() => super.addDetailsClinic(clinicMap, id));
+  }
+
+  late final _$fetchClinicsAsyncAction =
+      AsyncAction('_PartnerStore.fetchClinics', context: context);
+
+  @override
+  Future<List<Map<String, dynamic>>> fetchClinics() {
+    return _$fetchClinicsAsyncAction.run(() => super.fetchClinics());
   }
 
   late final _$_PartnerStoreActionController =
@@ -236,17 +306,6 @@ mixin _$PartnerStore on _PartnerStore, Store {
   }
 
   @override
-  dynamic getAddress() {
-    final _$actionInfo = _$_PartnerStoreActionController.startAction(
-        name: '_PartnerStore.getAddress');
-    try {
-      return super.getAddress();
-    } finally {
-      _$_PartnerStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   dynamic getPhone() {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
         name: '_PartnerStore.getPhone');
@@ -274,6 +333,61 @@ mixin _$PartnerStore on _PartnerStore, Store {
         name: '_PartnerStore.getListExam');
     try {
       return super.getListExam();
+    } finally {
+      _$_PartnerStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic getCEP() {
+    final _$actionInfo = _$_PartnerStoreActionController.startAction(
+        name: '_PartnerStore.getCEP');
+    try {
+      return super.getCEP();
+    } finally {
+      _$_PartnerStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic getStreet() {
+    final _$actionInfo = _$_PartnerStoreActionController.startAction(
+        name: '_PartnerStore.getStreet');
+    try {
+      return super.getStreet();
+    } finally {
+      _$_PartnerStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic getDistrict() {
+    final _$actionInfo = _$_PartnerStoreActionController.startAction(
+        name: '_PartnerStore.getDistrict');
+    try {
+      return super.getDistrict();
+    } finally {
+      _$_PartnerStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic getCity() {
+    final _$actionInfo = _$_PartnerStoreActionController.startAction(
+        name: '_PartnerStore.getCity');
+    try {
+      return super.getCity();
+    } finally {
+      _$_PartnerStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic getState() {
+    final _$actionInfo = _$_PartnerStoreActionController.startAction(
+        name: '_PartnerStore.getState');
+    try {
+      return super.getState();
     } finally {
       _$_PartnerStoreActionController.endAction(_$actionInfo);
     }
@@ -335,11 +449,55 @@ mixin _$PartnerStore on _PartnerStore, Store {
   }
 
   @override
-  void setAddress(String address) {
+  void setCEP(String cep) {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
-        name: '_PartnerStore.setAddress');
+        name: '_PartnerStore.setCEP');
     try {
-      return super.setAddress(address);
+      return super.setCEP(cep);
+    } finally {
+      _$_PartnerStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setStreet(String street) {
+    final _$actionInfo = _$_PartnerStoreActionController.startAction(
+        name: '_PartnerStore.setStreet');
+    try {
+      return super.setStreet(street);
+    } finally {
+      _$_PartnerStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setDistrict(String district) {
+    final _$actionInfo = _$_PartnerStoreActionController.startAction(
+        name: '_PartnerStore.setDistrict');
+    try {
+      return super.setDistrict(district);
+    } finally {
+      _$_PartnerStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setCity(String city) {
+    final _$actionInfo = _$_PartnerStoreActionController.startAction(
+        name: '_PartnerStore.setCity');
+    try {
+      return super.setCity(city);
+    } finally {
+      _$_PartnerStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setState(String state) {
+    final _$actionInfo = _$_PartnerStoreActionController.startAction(
+        name: '_PartnerStore.setState');
+    try {
+      return super.setState(state);
     } finally {
       _$_PartnerStoreActionController.endAction(_$actionInfo);
     }

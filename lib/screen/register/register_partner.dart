@@ -23,7 +23,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
   final formKey = GlobalKey<FormState>();
 
   List<int> listExam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  int valueExam = 1; 
+  int valueExam = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,8 @@ class _RegisterPartnerState extends State<RegisterPartner> {
 
                               //Nome field
                               TextFieldString(
-                                icon: const Icon(Icons.supervised_user_circle_sharp),
+                                icon: const Icon(
+                                    Icons.supervised_user_circle_sharp),
                                 hintText: "Digite o nome do parceiro",
                                 text: _nomeController.text,
                                 shouldValidate: true,
@@ -81,7 +82,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
 
                               //CNPJ field
                               TextFieldString(
-                                icon: const Icon(Icons.document_scanner),
+                                icon: const Icon(Icons.business_outlined),
                                 hintText: "CNPJ",
                                 text: _cpfController.text,
                                 shouldValidate: true,
@@ -115,7 +116,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                 },
                               ),
 
-                              //Telefone field
+                              //Phone field
                               TextFieldString(
                                 icon: const Icon(Icons.phone),
                                 hintText: "Telefone",
@@ -137,24 +138,91 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                 },
                               ),
 
-                              //Endereço field
+                              //Cep field
+                              TextFieldString(
+                                icon: const Icon(Icons.location_on),
+                                hintText: "CEP",
+                                text: _phoneController.text,
+                                shouldValidate: true,
+                                validator: (text) {
+                                  if (text!.isEmpty) {
+                                    return "Digite seu CEP";
+                                  }
+                                  // Verifica se contém apenas números
+                                  if (!RegExp(r'^[0-9]+$').hasMatch(text)) {
+                                    return "Digite apenas números";
+                                  }
+                                  if (text.length != 8) {
+                                    return "Digite um CEP válido";
+                                  }
+                                  store.setCEP(text);
+                                  return null;
+                                },
+                              ),
+
+                              //Street field
+                              TextFieldString(
+                                icon: const Icon(Icons.location_on_sharp),
+                                hintText: "Rua",
+                                text: _contractController.text,
+                                shouldValidate: true,
+                                validator: (text) {
+                                  if (text!.isEmpty) {
+                                    return "Digite sua Rua";
+                                  }
+                                  store.setStreet(text);
+                                  return null;
+                                },
+                              ),
+
+                              //District field
+                              TextFieldString(
+                                icon: const Icon(Icons.location_on_sharp),
+                                hintText: "Bairro",
+                                text: _contractController.text,
+                                shouldValidate: true,
+                                validator: (text) {
+                                  if (text!.isEmpty) {
+                                    return "Digite seu Bairro";
+                                  }
+                                  store.setDistrict(text);
+                                  return null;
+                                },
+                              ),
+
+                              //City field
+                              TextFieldString(
+                                icon: const Icon(Icons.location_on_sharp),
+                                hintText: "Cidade",
+                                text: _contractController.text,
+                                shouldValidate: true,
+                                validator: (text) {
+                                  if (text!.isEmpty) {
+                                    return "Digite sua Cidade";
+                                  }
+                                  store.setCity(text);
+                                  return null;
+                                },
+                              ),
+
+                              //State field
                               TextFieldString(
                                 icon:
-                                    const Icon(Icons.location_on_sharp),
+                                    const Icon(Icons.insert_drive_file_rounded),
                                 hintText: "Endereço",
                                 text: _contractController.text,
                                 shouldValidate: true,
                                 validator: (text) {
                                   if (text!.isEmpty) {
-                                    return "Digite seu Endereço";
+                                    return "Digite seu Estado";
                                   }
-                                  store.setAddress(text);
+                                  store.setState(text);
                                   return null;
                                 },
                               ),
-  
-                              const SizedBox(height: 10),
+
                               //Space
+                              const SizedBox(height: 10),
 
                               Container(
                                 padding:
