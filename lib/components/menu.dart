@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:web_simclub/screen/auth/login.dart';
 import 'package:web_simclub/screen/register/register_client.dart';
@@ -25,7 +26,7 @@ class MenuWidget extends StatelessWidget {
             children: [
               buildMenuItem(
                 text: 'Sair',
-                icon: Icons.logout,
+                icon: MdiIcons.exitToApp,
                 color: Colors.white,
                 onClick: () => {
                   showDialog(
@@ -70,7 +71,7 @@ class MenuWidget extends StatelessWidget {
               if (store.level < 3)
                 buildMenuItem(
                   text: 'Registro Cliente',
-                  icon: Icons.person_add_alt_1_rounded,
+                  icon: MdiIcons.accountPlusOutline,
                   color: Colors.white,
                   onClick: () => {
                     Navigator.of(context).push(
@@ -83,7 +84,7 @@ class MenuWidget extends StatelessWidget {
               if (store.level < 2)
                 buildMenuItem(
                   text: 'Registro Funcionário',
-                  icon: Icons.badge_outlined,
+                  icon: MdiIcons.badgeAccountHorizontalOutline,
                   color: Colors.white,
                   onClick: () => {
                     Navigator.of(context).push(
@@ -96,7 +97,7 @@ class MenuWidget extends StatelessWidget {
               if (store.level < 2)
                 buildMenuItem(
                   text: 'Registro Parceiro',
-                  icon: Icons.handshake_outlined,
+                  icon: MdiIcons.handshakeOutline,
                   color: Colors.white,
                   onClick: () {
                     Navigator.of(context).push(

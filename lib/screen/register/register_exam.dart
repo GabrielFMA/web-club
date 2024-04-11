@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:web_simclub/components/menu.dart';
 import 'package:web_simclub/screen/register/register_partner.dart';
@@ -157,7 +158,7 @@ class _RegisterExamState extends State<RegisterExam> {
           return null;
         },
         decoration: InputDecoration(
-          icon: const Icon(Icons.description_outlined),
+          icon: Icon(MdiIcons.fileDocumentPlusOutline),
           border: InputBorder.none,
           hintText: hintText,
         ),

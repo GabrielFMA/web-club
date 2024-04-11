@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:web_simclub/components/auth/textfield_password.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
@@ -51,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       //Email field
                       TextFieldString(
-                        icon: const Icon(Icons.email),
+                        icon: Icon(MdiIcons.emailOutline),
                         hintText: "Digite seu email",
                         text: _emailController.text,
                         shouldValidate: true,

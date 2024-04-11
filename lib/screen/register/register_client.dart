@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:web_simclub/components/menu.dart';
@@ -64,7 +65,7 @@ class _RegisterClientState extends State<RegisterClient> {
 
                               //Nome field
                               TextFieldString(
-                                icon: const Icon(Icons.person),
+                                icon: Icon(MdiIcons.accountCircleOutline),
                                 hintText: "Digite seu Nome",
                                 text: _nomeController.text,
                                 shouldValidate: true,
@@ -82,7 +83,7 @@ class _RegisterClientState extends State<RegisterClient> {
 
                               //CPF field
                               TextFieldString(
-                                icon: const Icon(Icons.document_scanner),
+                                icon: Icon(MdiIcons.textBoxOutline),
                                 hintText: "CPF",
                                 text: _cpfController.text,
                                 shouldValidate: true,
@@ -103,7 +104,7 @@ class _RegisterClientState extends State<RegisterClient> {
 
                               //Email field
                               TextFieldString(
-                                icon: const Icon(Icons.email),
+                                icon: Icon(MdiIcons.emailOutline),
                                 hintText: "Digite seu email",
                                 text: _emailController.text,
                                 shouldValidate: true,
@@ -115,11 +116,10 @@ class _RegisterClientState extends State<RegisterClient> {
                                   return null;
                                 },
                               ),
-                              
+
                               //Address field
                               TextFieldString(
-                                icon:
-                                    const Icon(Icons.location_on_sharp),
+                                icon: Icon(MdiIcons.mapMarkerOutline),
                                 hintText: "Endereço",
                                 text: _contractController.text,
                                 shouldValidate: true,
@@ -134,7 +134,7 @@ class _RegisterClientState extends State<RegisterClient> {
 
                               //Telefone field
                               TextFieldString(
-                                icon: const Icon(Icons.phone),
+                                icon: Icon(MdiIcons.phoneOutline),
                                 hintText: "Telefone",
                                 text: _phoneController.text,
                                 shouldValidate: true,
@@ -157,7 +157,7 @@ class _RegisterClientState extends State<RegisterClient> {
                               //Contract field
                               TextFieldString(
                                 icon:
-                                    const Icon(Icons.insert_drive_file_rounded),
+                                    Icon(MdiIcons.fileDocumentEditOutline),
                                 hintText: "Contrato",
                                 text: _contractController.text,
                                 shouldValidate: true,

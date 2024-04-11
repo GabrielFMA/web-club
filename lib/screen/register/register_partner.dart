@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:web_simclub/components/menu.dart';
 import 'package:web_simclub/screen/register/register_exam.dart';
@@ -66,8 +67,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
 
                               //Nome field
                               TextFieldString(
-                                icon: const Icon(
-                                    Icons.supervised_user_circle_sharp),
+                                icon: Icon(MdiIcons.accountSupervisorCircleOutline),
                                 hintText: "Digite o nome do parceiro",
                                 text: _nomeController.text,
                                 shouldValidate: true,
@@ -82,7 +82,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
 
                               //CNPJ field
                               TextFieldString(
-                                icon: const Icon(Icons.business_outlined),
+                                icon: Icon(MdiIcons.officeBuildingOutline),
                                 hintText: "CNPJ",
                                 text: _cpfController.text,
                                 shouldValidate: true,
@@ -103,7 +103,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
 
                               //Email field
                               TextFieldString(
-                                icon: const Icon(Icons.email),
+                                icon: Icon(MdiIcons.emailOutline),
                                 hintText: "Digite seu email",
                                 text: _emailController.text,
                                 shouldValidate: true,
@@ -118,7 +118,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
 
                               //Phone field
                               TextFieldString(
-                                icon: const Icon(Icons.phone),
+                                icon: Icon(MdiIcons.phoneOutline),
                                 hintText: "Telefone",
                                 text: _phoneController.text,
                                 shouldValidate: true,
@@ -140,7 +140,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
 
                               //Cep field
                               TextFieldString(
-                                icon: const Icon(Icons.location_on),
+                                icon: Icon(MdiIcons.homeMapMarker),
                                 hintText: "CEP",
                                 text: _phoneController.text,
                                 shouldValidate: true,
@@ -162,7 +162,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
 
                               //Street field
                               TextFieldString(
-                                icon: const Icon(Icons.location_on_sharp),
+                                icon: Icon(MdiIcons.roadVariant),
                                 hintText: "Rua",
                                 text: _contractController.text,
                                 shouldValidate: true,
@@ -177,7 +177,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
 
                               //District field
                               TextFieldString(
-                                icon: const Icon(Icons.location_on_sharp),
+                                icon: Icon(MdiIcons.homeCityOutline),
                                 hintText: "Bairro",
                                 text: _contractController.text,
                                 shouldValidate: true,
@@ -192,7 +192,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
 
                               //City field
                               TextFieldString(
-                                icon: const Icon(Icons.location_on_sharp),
+                                icon: Icon(MdiIcons.cityVariantOutline),
                                 hintText: "Cidade",
                                 text: _contractController.text,
                                 shouldValidate: true,
@@ -207,9 +207,8 @@ class _RegisterPartnerState extends State<RegisterPartner> {
 
                               //State field
                               TextFieldString(
-                                icon:
-                                    const Icon(Icons.insert_drive_file_rounded),
-                                hintText: "Endereço",
+                                icon: Icon(MdiIcons.mapOutline),
+                                hintText: "Estado",
                                 text: _contractController.text,
                                 shouldValidate: true,
                                 validator: (text) {

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:web_simclub/components/auth/textfield_password.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
@@ -122,7 +123,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
 
                               //Nome field
                               TextFieldString(
-                                icon: const Icon(Icons.person),
+                                icon: Icon(MdiIcons.accountTieOutline),
                                 hintText: "Digite seu Nome",
                                 text: _nomeController.text,
                                 shouldValidate: true,
@@ -140,7 +141,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
 
                               //Email field
                               TextFieldString(
-                                icon: const Icon(Icons.email),
+                                icon: Icon(MdiIcons.emailOutline),
                                 hintText: "Digite seu email",
                                 text: _emailController.text,
                                 shouldValidate: true,
@@ -155,7 +156,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
 
                               //Telefone field
                               TextFieldString(
-                                icon: const Icon(Icons.phone),
+                                icon: Icon(MdiIcons.phoneOutline),
                                 hintText: "Telefone",
                                 text: _phoneController.text,
                                 shouldValidate: true,

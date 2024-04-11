@@ -1,6 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:web_simclub/store/auth.store.dart';
@@ -35,7 +36,7 @@ class TextFieldPassword extends StatelessWidget {
           validator: shouldValidate ? validator : null,
           obscureText: !store.isVisible,
           decoration: InputDecoration(
-            icon: const Icon(Icons.lock),
+            icon: Icon(MdiIcons.lockOutline),
             border: InputBorder.none,
             hintText: "Senha",
             suffixIcon: IconButton(
@@ -81,7 +82,7 @@ class TextFieldConfirmPassword extends StatelessWidget {
           validator: shouldValidate ? validator : null,
           obscureText: !store.isVisible,
           decoration: InputDecoration(
-            icon: const Icon(Icons.lock),
+            icon: Icon(MdiIcons.lockOutline),
             border: InputBorder.none,
             hintText: "Confirmar Senha",
             suffixIcon: IconButton(
