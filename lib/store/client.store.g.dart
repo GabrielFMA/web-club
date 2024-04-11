@@ -134,19 +134,18 @@ mixin _$ClientStore on _ClientStore, Store {
     });
   }
 
-  late final _$_addressAtom =
-      Atom(name: '_ClientStore._address', context: context);
+  late final _$_cepAtom = Atom(name: '_ClientStore._cep', context: context);
 
   @override
-  String get _address {
-    _$_addressAtom.reportRead();
-    return super._address;
+  String get _cep {
+    _$_cepAtom.reportRead();
+    return super._cep;
   }
 
   @override
-  set _address(String value) {
-    _$_addressAtom.reportWrite(value, super._address, () {
-      super._address = value;
+  set _cep(String value) {
+    _$_cepAtom.reportWrite(value, super._cep, () {
+      super._cep = value;
     });
   }
 
@@ -229,6 +228,14 @@ mixin _$ClientStore on _ClientStore, Store {
         .run(() => super.addDetailsUsers(usuariosMap, id));
   }
 
+  late final _$searchCepAsyncAction =
+      AsyncAction('_ClientStore.searchCep', context: context);
+
+  @override
+  Future<dynamic> searchCep() {
+    return _$searchCepAsyncAction.run(() => super.searchCep());
+  }
+
   late final _$_ClientStoreActionController =
       ActionController(name: '_ClientStore', context: context);
 
@@ -266,11 +273,11 @@ mixin _$ClientStore on _ClientStore, Store {
   }
 
   @override
-  void setAddress(String address) {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.setAddress');
+  void setCep(String cep) {
+    final _$actionInfo =
+        _$_ClientStoreActionController.startAction(name: '_ClientStore.setCep');
     try {
-      return super.setAddress(address);
+      return super.setCep(cep);
     } finally {
       _$_ClientStoreActionController.endAction(_$actionInfo);
     }

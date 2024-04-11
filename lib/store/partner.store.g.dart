@@ -122,13 +122,13 @@ mixin _$PartnerStore on _PartnerStore, Store {
   late final _$_examAtom = Atom(name: '_PartnerStore._exam', context: context);
 
   @override
-  int get _exam {
+  int? get _exam {
     _$_examAtom.reportRead();
     return super._exam;
   }
 
   @override
-  set _exam(int value) {
+  set _exam(int? value) {
     _$_examAtom.reportWrite(value, super._exam, () {
       super._exam = value;
     });
@@ -504,7 +504,7 @@ mixin _$PartnerStore on _PartnerStore, Store {
   }
 
   @override
-  void setExam(int exam) {
+  void setExam(int? exam) {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
         name: '_PartnerStore.setExam');
     try {

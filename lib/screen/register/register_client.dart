@@ -120,14 +120,14 @@ class _RegisterClientState extends State<RegisterClient> {
                               //Address field
                               TextFieldString(
                                 icon: Icon(MdiIcons.mapMarkerOutline),
-                                hintText: "Endereço",
+                                hintText: "Cep",
                                 text: _contractController.text,
                                 shouldValidate: true,
                                 validator: (text) {
                                   if (text!.isEmpty) {
-                                    return "Digite seu Endereço";
+                                    return "Digite seu Cep";
                                   }
-                                  store.setAddress(text);
+                                  store.setCep(text);
                                   return null;
                                 },
                               ),
@@ -156,8 +156,7 @@ class _RegisterClientState extends State<RegisterClient> {
 
                               //Contract field
                               TextFieldString(
-                                icon:
-                                    Icon(MdiIcons.fileDocumentEditOutline),
+                                icon: Icon(MdiIcons.fileDocumentEditOutline),
                                 hintText: "Contrato",
                                 text: _contractController.text,
                                 shouldValidate: true,
@@ -184,54 +183,61 @@ class _RegisterClientState extends State<RegisterClient> {
                                 context,
                                 () async {
                                   if (formKey.currentState!.validate()) {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title:
-                                              const Text('Registrar Cliente'),
-                                          content: const Text(
-                                              'Tem certeza que deseja registrar este cliente?'),
-                                          actions: <Widget>[
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                botaoPadrao(
-                                                  text: 'SIM',
-                                                  onClick: () async {
-                                                    await store
-                                                        .signUpWithEmailPassword(
-                                                            context);
-
-                                                    Navigator
-                                                        .pushAndRemoveUntil(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            const RegisterClient(),
-                                                      ),
-                                                      (route) => false,
-                                                    );
-                                                  },
-                                                ),
-                                                botaoPadrao(
-                                                  text: 'NÃO',
-                                                  onClick: () {
-                                                    Navigator.pop(
-                                                        context); // Fechar o AlertDialog
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
+                                    await store.searchCep();
+                                    if (!store.getIsError()) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title:
+                                                const Text('Registrar Cliente'),
+                                            content: const Text(
+                                                'Tem certeza que deseja registrar este cliente?'),
+                                            actions: <Widget>[
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  botaoPadrao(
+                                                    text: 'SIM',
+                                                    onClick: () async {
+                                                      await store
+                                                          .signUpWithEmailPassword(
+                                                              context);
+                                                      if (!store.getIsError()) {
+                                                        Navigator
+                                                            .pushAndRemoveUntil(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                const RegisterClient(),
+                                                          ),
+                                                          (route) => false,
+                                                        );
+                                                      } else {
+                                                        Navigator.pop(context);
+                                                      }
+                                                    },
+                                                  ),
+                                                  botaoPadrao(
+                                                    text: 'NÃO',
+                                                    onClick: () {
+                                                      Navigator.pop(
+                                                          context); // Fechar o AlertDialog
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
                                   }
                                 },
                               ),
+                              Text(store.getTextError()),
                             ],
                           ),
                         ),

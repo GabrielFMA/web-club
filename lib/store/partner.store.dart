@@ -36,7 +36,7 @@ abstract class _PartnerStore with Store {
   String _cnpj = '';
 
   @observable
-  int _exam = 1;
+  int? _exam = 1;
 
   @observable
   String _cep = '';
@@ -180,7 +180,7 @@ abstract class _PartnerStore with Store {
   }
 
   @action
-  void setExam(int exam) {
+  void setExam(int? exam) {
     _exam = exam;
   }
 

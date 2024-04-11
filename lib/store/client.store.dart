@@ -18,6 +18,8 @@ abstract class _ClientStore with Store {
 
   FirebaseFirestore db = FirebaseFirestore.instance;
 
+  late http.Response rsp;
+
   //Verification
   @observable
   bool isVisible = false;
@@ -46,7 +48,7 @@ abstract class _ClientStore with Store {
   String _email = '';
 
   @observable
-  String _address = '';
+  String _cep = '';
 
   @observable
   String _cpf = '';
@@ -89,8 +91,8 @@ abstract class _ClientStore with Store {
   }
 
   @action
-  void setAddress(String address) {
-    _address = address;
+  void setCep(String cep) {
+    _cep = cep;
   }
 
   @action
@@ -125,6 +127,7 @@ abstract class _ClientStore with Store {
       print(_name);
       print(_email);
       print(_password);
+
       final response = await http.post(
         Uri.parse(_url),
         body: jsonEncode({
@@ -133,6 +136,7 @@ abstract class _ClientStore with Store {
           'returnSecureToken': true,
         }),
       );
+
       final responseData = jsonDecode(response.body);
       if (responseData.containsKey('idToken')) {
         _token = responseData['idToken'];
@@ -143,6 +147,7 @@ abstract class _ClientStore with Store {
     } catch (e) {
       print('Erro ao fazer registro: $e');
       print('Tipo de exceção: ${e.runtimeType}');
+      textError = 'Erro ao fazer registro: ${e.toString()}';
     }
   }
 
@@ -156,7 +161,7 @@ abstract class _ClientStore with Store {
         "Nome": _name,
         "CPF": _cpf,
         "Email": _email,
-        "Endereço": _address,
+        "Endereço": _cep,
         "Telefone": _phone,
         "Contrato": _numContract,
       };
@@ -170,5 +175,23 @@ abstract class _ClientStore with Store {
   @action
   Future addDetailsUsers(Map<String, dynamic> usuariosMap, String id) async {
     return await db.collection("Usuarios").doc(id).set(usuariosMap);
+  }
+
+  @action
+  Future searchCep() async {
+    try {
+      rsp = await http.get(Uri.parse("https://viacep.com.br/ws/$_cep/json/"));
+      print(isError);
+      print(rsp.body);
+    } on http.ClientException catch (_) {
+      textError = 'Cep invalido!';
+      print('Cep invalido!');
+      isError = true;
+    } catch (e) {
+      print('Erro ao fazer registro do Cep: $e');
+      print('Tipo de exceção: ${e.runtimeType}');
+    }
+    textError = "";
+    isError = false;
   }
 }
