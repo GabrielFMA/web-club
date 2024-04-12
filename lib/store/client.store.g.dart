@@ -228,6 +228,15 @@ mixin _$ClientStore on _ClientStore, Store {
         .run(() => super.addDetailsUsers(usuariosMap, id));
   }
 
+  late final _$duplicateEntryCheckAsyncAction =
+      AsyncAction('_ClientStore.duplicateEntryCheck', context: context);
+
+  @override
+  Future<dynamic> duplicateEntryCheck() {
+    return _$duplicateEntryCheckAsyncAction
+        .run(() => super.duplicateEntryCheck());
+  }
+
   late final _$searchCepAsyncAction =
       AsyncAction('_ClientStore.searchCep', context: context);
 

@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, unrelated_type_equality_checks
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -27,6 +27,8 @@ class _RegisterClientState extends State<RegisterClient> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ClientStore>(context);
+
+    store.textError = '';
 
     return Scaffold(
       backgroundColor: Colors.green[200],
@@ -63,7 +65,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                 ),
                               ),
 
-                              //Nome field
+                              //Name field
                               TextFieldString(
                                 icon: Icon(MdiIcons.accountCircleOutline),
                                 hintText: "Digite seu Nome",
@@ -112,6 +114,11 @@ class _RegisterClientState extends State<RegisterClient> {
                                   if (text!.isEmpty) {
                                     return "Digite seu Email";
                                   }
+                                  // Verificar se o email já termina com "@gmail.com"
+                                  if (!text.endsWith("@gmail.com")) {
+                                    // Adicionar "@gmail.com" ao final do email
+                                    text += "@gmail.com";
+                                  }
                                   store.setEmail(text);
                                   return null;
                                 },
@@ -132,7 +139,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                 },
                               ),
 
-                              //Telefone field
+                              //Phone field
                               TextFieldString(
                                 icon: Icon(MdiIcons.phoneOutline),
                                 hintText: "Telefone",
@@ -164,12 +171,15 @@ class _RegisterClientState extends State<RegisterClient> {
                                   if (text!.isEmpty) {
                                     return "Digite seu Contrato";
                                   }
-                                  // Verifica se contém apenas números
                                   if (!RegExp(r'^[0-9]+$').hasMatch(text)) {
                                     return "Digite apenas números";
                                   }
+                                  if (text.length < 6) {
+                                    return "O contrato deve ter pelo menos 6 dígitos";
+                                  }
                                   store.setNumContract(text);
-                                  store.setPassword(text);
+                                  store.setPassword(
+                                      text.substring(text.length - 6));
                                   return null;
                                 },
                               ),
@@ -178,66 +188,86 @@ class _RegisterClientState extends State<RegisterClient> {
                               const SizedBox(height: 15),
 
                               //Button
-
                               buttonDefault(
                                 context,
                                 () async {
                                   if (formKey.currentState!.validate()) {
-                                    await store.searchCep();
-                                    if (!store.getIsError()) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title:
-                                                const Text('Registrar Cliente'),
-                                            content: const Text(
-                                                'Tem certeza que deseja registrar este cliente?'),
-                                            actions: <Widget>[
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  botaoPadrao(
-                                                    text: 'SIM',
-                                                    onClick: () async {
-                                                      await store
-                                                          .signUpWithEmailPassword(
-                                                              context);
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title:
+                                              const Text('Registrar Cliente'),
+                                          content: const Text(
+                                              'Tem certeza que deseja registrar este cliente?'),
+                                          actions: <Widget>[
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                buttonDialogDefault(
+                                                  text: 'SIM',
+                                                  onClick: () async {
+                                                    await store
+                                                        .duplicateEntryCheck();
+
+                                                    if (!store.getIsError()) {
+                                                      await store.searchCep();
+
                                                       if (!store.getIsError()) {
-                                                        Navigator
-                                                            .pushAndRemoveUntil(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                const RegisterClient(),
-                                                          ),
-                                                          (route) => false,
-                                                        );
-                                                      } else {
-                                                        Navigator.pop(context);
+                                                        await store
+                                                            .signUpWithEmailPassword(
+                                                                context);
+
+                                                        if (!store
+                                                            .getIsError()) {
+                                                          Navigator
+                                                              .pushAndRemoveUntil(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  const RegisterClient(),
+                                                            ),
+                                                            (route) => false,
+                                                          );
+                                                        }
                                                       }
-                                                    },
-                                                  ),
-                                                  botaoPadrao(
-                                                    text: 'NÃO',
-                                                    onClick: () {
-                                                      Navigator.pop(
-                                                          context); // Fechar o AlertDialog
-                                                    },
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    }
+                                                    }
+
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                                buttonDialogDefault(
+                                                  text: 'NÃO',
+                                                  onClick: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   }
                                 },
                               ),
-                              Text(store.getTextError()),
+
+                              //Space
+                              const SizedBox(height: 15),
+
+                              //Register erros
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                child: Text(
+                                  store.textError,
+                                  style: const TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -253,7 +283,7 @@ class _RegisterClientState extends State<RegisterClient> {
     );
   }
 
-  Widget botaoPadrao({required String text, VoidCallback? onClick}) {
+  Widget buttonDialogDefault({required String text, VoidCallback? onClick}) {
     return Container(
       height: 40,
       width: 105,

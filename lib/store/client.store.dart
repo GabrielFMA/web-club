@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, avoid_print, use_build_context_synchronously
+// ignore_for_file: library_private_types_in_public_api, avoid_print, use_build_context_synchronously, unnecessary_null_comparison, dead_code
 
 import 'dart:convert';
 
@@ -124,9 +124,9 @@ abstract class _ClientStore with Store {
   //Auth Firebase Funções
   Future<void> signUpWithEmailPassword(BuildContext context) async {
     try {
-      print(_name);
-      print(_email);
-      print(_password);
+      print('');
+      print('Registro, Nome: $_name, Email: $_email, Senha: $_password');
+      print('');
 
       final response = await http.post(
         Uri.parse(_url),
@@ -141,13 +141,13 @@ abstract class _ClientStore with Store {
       if (responseData.containsKey('idToken')) {
         _token = responseData['idToken'];
         _uidUser = responseData['localId'];
-
+        textError = '';
+        isError = true;
         await registrationUser();
       }
     } catch (e) {
       print('Erro ao fazer registro: $e');
       print('Tipo de exceção: ${e.runtimeType}');
-      textError = 'Erro ao fazer registro: ${e.toString()}';
     }
   }
 
@@ -178,20 +178,75 @@ abstract class _ClientStore with Store {
   }
 
   @action
+  Future duplicateEntryCheck() async {
+    try {
+      List<String> duplicates = [];
+
+      Map<String, Future<QuerySnapshot>> queries = {
+        'Nome': FirebaseFirestore.instance
+            .collection("Usuarios")
+            .where("Nome", isEqualTo: _name)
+            .get(),
+        'Email': FirebaseFirestore.instance
+            .collection("Usuarios")
+            .where("Email", isEqualTo: _email)
+            .get(),
+        'CPF': FirebaseFirestore.instance
+            .collection("Usuarios")
+            .where("CPF", isEqualTo: _cpf)
+            .get(),
+        'Contrato': FirebaseFirestore.instance
+            .collection("Usuarios")
+            .where("Contrato", isEqualTo: _numContract)
+            .get(),
+      };
+
+      await Future.forEach(queries.entries, (entry) async {
+        QuerySnapshot snapshot = await entry.value;
+        if (snapshot.docs.isNotEmpty) {
+          duplicates.add(entry.key);
+        }
+      });
+
+      if (duplicates.isNotEmpty) {
+        textError = duplicates.join(', ');
+        if (duplicates.length > 1) {
+          int lastCommaIndex = textError.lastIndexOf(',');
+          textError = textError.replaceRange(
+            lastCommaIndex,
+            lastCommaIndex + 1,
+            ' e',
+          );
+        }
+        textError += duplicates.length > 1
+            ? ' já foram cadastrados'
+            : ' já foi cadastrado';
+        isError = true;
+      } else {
+        isError = false;
+      }
+    } catch (e) {
+      print('Erro ao verificar duplicidades: $e');
+      rethrow;
+    }
+  }
+
+  @action
   Future searchCep() async {
+    print('CEP');
     try {
       rsp = await http.get(Uri.parse("https://viacep.com.br/ws/$_cep/json/"));
-      print(isError);
-      print(rsp.body);
+      print('CEP2');
     } on http.ClientException catch (_) {
-      textError = 'Cep invalido!';
-      print('Cep invalido!');
+      textError = 'CEP inválido';
       isError = true;
+      return;
     } catch (e) {
       print('Erro ao fazer registro do Cep: $e');
       print('Tipo de exceção: ${e.runtimeType}');
     }
-    textError = "";
+    print('CEP3');
+    textError = '';
     isError = false;
   }
 }
