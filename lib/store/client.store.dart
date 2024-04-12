@@ -185,19 +185,19 @@ abstract class _ClientStore with Store {
       Map<String, Future<QuerySnapshot>> queries = {
         'Nome': FirebaseFirestore.instance
             .collection("Usuarios")
-            .where("Nome", isEqualTo: _name)
+            .where("Nome", isEqualTo: _name.toLowerCase())
             .get(),
         'Email': FirebaseFirestore.instance
             .collection("Usuarios")
-            .where("Email", isEqualTo: _email)
+            .where("Email", isEqualTo: _email.toLowerCase())
             .get(),
         'CPF': FirebaseFirestore.instance
             .collection("Usuarios")
-            .where("CPF", isEqualTo: _cpf)
+            .where("CPF", isEqualTo: _cpf.toLowerCase())
             .get(),
         'Contrato': FirebaseFirestore.instance
             .collection("Usuarios")
-            .where("Contrato", isEqualTo: _numContract)
+            .where("Contrato", isEqualTo: _numContract.toLowerCase())
             .get(),
       };
 

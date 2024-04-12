@@ -67,7 +67,12 @@ class _RegisterClientState extends State<RegisterClient> {
 
                               //Name field
                               TextFieldString(
-                                icon: Icon(MdiIcons.accountCircleOutline),
+                                icon: Icon(
+                                  MdiIcons.accountCircleOutline,
+                                  color: store.textError.contains('Nome')
+                                      ? Colors.red
+                                      : null,
+                                ),
                                 hintText: "Digite seu Nome",
                                 text: _nomeController.text,
                                 shouldValidate: true,
@@ -85,7 +90,12 @@ class _RegisterClientState extends State<RegisterClient> {
 
                               //CPF field
                               TextFieldString(
-                                icon: Icon(MdiIcons.textBoxOutline),
+                                icon: Icon(
+                                  MdiIcons.textBoxOutline,
+                                  color: store.textError.contains('CPF')
+                                      ? Colors.red
+                                      : null,
+                                ),
                                 hintText: "CPF",
                                 text: _cpfController.text,
                                 shouldValidate: true,
@@ -106,7 +116,12 @@ class _RegisterClientState extends State<RegisterClient> {
 
                               //Email field
                               TextFieldString(
-                                icon: Icon(MdiIcons.emailOutline),
+                                icon: Icon(
+                                  MdiIcons.emailOutline,
+                                  color: store.textError.contains('Email')
+                                      ? Colors.red
+                                      : null,
+                                ),
                                 hintText: "Digite seu email",
                                 text: _emailController.text,
                                 shouldValidate: true,
@@ -163,7 +178,12 @@ class _RegisterClientState extends State<RegisterClient> {
 
                               //Contract field
                               TextFieldString(
-                                icon: Icon(MdiIcons.fileDocumentEditOutline),
+                                icon: Icon(
+                                  MdiIcons.fileDocumentEditOutline,
+                                  color: store.textError.contains('Contrato')
+                                      ? Colors.red
+                                      : null,
+                                ),
                                 hintText: "Contrato",
                                 text: _contractController.text,
                                 shouldValidate: true,
