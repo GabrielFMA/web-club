@@ -125,7 +125,7 @@ abstract class _ClientStore with Store {
   Future<void> signUpWithEmailPassword(BuildContext context) async {
     try {
       print('');
-      print('Registro, Nome: $_name, Email: $_email, Senha: $_password');
+      print('Registro: Nome: $_name, Email: $_email, Senha: $_password');
       print('');
 
       final response = await http.post(
@@ -141,8 +141,7 @@ abstract class _ClientStore with Store {
       if (responseData.containsKey('idToken')) {
         _token = responseData['idToken'];
         _uidUser = responseData['localId'];
-        textError = '';
-        isError = true;
+
         await registrationUser();
       }
     } catch (e) {
@@ -231,22 +230,39 @@ abstract class _ClientStore with Store {
     }
   }
 
-  @action
-  Future searchCep() async {
+  Future<void> searchCep() async {
     print('CEP');
     try {
-      rsp = await http.get(Uri.parse("https://viacep.com.br/ws/$_cep/json/"));
-      print('CEP2');
+      textError = '';
+      isError = false;
+      var rsp =
+          await http.get(Uri.parse("https://viacep.com.br/ws/$_cep/json/"));
+
+      if (rsp.body.contains('"erro": true')) {
+        textError = 'CEP inválido';
+        isError = true;
+        return;
+      } else {
+        Map<String, dynamic> responseData = json.decode(rsp.body);
+
+        String cep = responseData['cep'];
+        String rua = responseData['logradouro'];
+        String bairro = responseData['bairro'];
+        String cidade = responseData['localidade'];
+        String estado = responseData['uf'];
+
+        print('CEP: $cep');
+        print('Logradouro: $rua');
+        print('Bairro: $bairro');
+        print('Cidade: $cidade');
+        print('Estado: $estado');
+      }
     } on http.ClientException catch (_) {
       textError = 'CEP inválido';
       isError = true;
       return;
     } catch (e) {
-      print('Erro ao fazer registro do Cep: $e');
-      print('Tipo de exceção: ${e.runtimeType}');
+      print('Erro ao fazer registro do CEP: $e');
     }
-    print('CEP3');
-    textError = '';
-    isError = false;
   }
 }

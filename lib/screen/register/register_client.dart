@@ -212,30 +212,29 @@ class _RegisterClientState extends State<RegisterClient> {
                                 context,
                                 () async {
                                   if (formKey.currentState!.validate()) {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title:
-                                              const Text('Registrar Cliente'),
-                                          content: const Text(
-                                              'Tem certeza que deseja registrar este cliente?'),
-                                          actions: <Widget>[
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                buttonDialogDefault(
-                                                  text: 'SIM',
-                                                  onClick: () async {
-                                                    await store
-                                                        .duplicateEntryCheck();
+                                    await store.duplicateEntryCheck();
 
-                                                    if (!store.getIsError()) {
-                                                      await store.searchCep();
+                                    if (!store.getIsError()) {
+                                      await store.searchCep();
 
-                                                      if (!store.getIsError()) {
+                                      if (!store.getIsError()) {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text(
+                                                  'Registrar Cliente'),
+                                              content: const Text(
+                                                  'Tem certeza que deseja registrar este cliente?'),
+                                              actions: <Widget>[
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    buttonDialogDefault(
+                                                      text: 'SIM',
+                                                      onClick: () async {
                                                         await store
                                                             .signUpWithEmailPassword(
                                                                 context);
@@ -251,25 +250,26 @@ class _RegisterClientState extends State<RegisterClient> {
                                                             ),
                                                             (route) => false,
                                                           );
+                                                        } else {
+                                                          Navigator.pop(
+                                                              context);
                                                         }
-                                                      }
-                                                    }
-
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                                buttonDialogDefault(
-                                                  text: 'NÃO',
-                                                  onClick: () {
-                                                    Navigator.pop(context);
-                                                  },
+                                                      },
+                                                    ),
+                                                    buttonDialogDefault(
+                                                      text: 'NÃO',
+                                                      onClick: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
+                                                  ],
                                                 ),
                                               ],
-                                            ),
-                                          ],
+                                            );
+                                          },
                                         );
-                                      },
-                                    );
+                                      }
+                                    }
                                   }
                                 },
                               ),
