@@ -2,8 +2,11 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:mobx/mobx.dart';
+import 'dart:convert';
 import 'dart:math';
+
+import 'package:mobx/mobx.dart';
+import 'package:http/http.dart' as http;
 
 part 'partner.store.g.dart';
 
@@ -11,6 +14,7 @@ class PartnerStore = _PartnerStore with _$PartnerStore;
 
 abstract class _PartnerStore with Store {
   FirebaseFirestore db = FirebaseFirestore.instance;
+  late http.Response rsp;
 
   //Errors
   @observable
@@ -52,6 +56,9 @@ abstract class _PartnerStore with Store {
 
   @observable
   String _state = '';
+
+  @observable
+  bool trueCEP = false;
 
   @observable
   late List<String> _listExam;
@@ -103,28 +110,33 @@ abstract class _PartnerStore with Store {
   }
 
   @action
-  getCEP(){
+  getCEP() {
     return _cep;
   }
 
   @action
-  getStreet(){
+  getStreet() {
     return _street;
   }
 
   @action
-  getDistrict(){
+  getDistrict() {
     return _district;
   }
 
   @action
-  getCity(){
+  getCity() {
     return _city;
   }
 
   @action
-  getState(){
+  getState() {
     return _state;
+  }
+
+  @action
+  bool getTrueCEP() {
+    return trueCEP;
   }
 
   //Set functions
@@ -190,6 +202,11 @@ abstract class _PartnerStore with Store {
   }
 
   @action
+  void setTrueCEP(bool value) {
+    trueCEP = value;
+  }
+
+  @action
   Future<void> registrationClinic() async {
     try {
       _idClinic = generateRandomId();
@@ -227,7 +244,8 @@ abstract class _PartnerStore with Store {
   // Função para gerar um ID aleatório
   String generateRandomId() {
     Random random = Random();
-    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789';
+    const chars =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789';
     String randomId = '';
     for (var i = 0; i < 28; i++) {
       randomId += chars[random.nextInt(chars.length)];
@@ -237,9 +255,7 @@ abstract class _PartnerStore with Store {
 
   Future<void> addSubcollectionData(String clinicId, dynamic data) async {
     try {
-      // Gerar um ID aleatório para o documento dentro da subcoleção
       String documentId = generateRandomId();
-      // Dados a serem adicionados
       Map<String, dynamic> dataMap = {
         "Exames": data,
       };
@@ -285,6 +301,95 @@ abstract class _PartnerStore with Store {
     }
   }
 
+  @action
+  Future duplicateEntryCheck() async {
+    try {
+      List<String> duplicates = [];
+
+      Map<String, Future<QuerySnapshot>> queries = {
+        'Nome': FirebaseFirestore.instance
+            .collection("Parceiros")
+            .where("Nome", isEqualTo: _name.toLowerCase())
+            .get(),
+        'Email': FirebaseFirestore.instance
+            .collection("Parceiros")
+            .where("Email", isEqualTo: _email.toLowerCase())
+            .get(),
+        'CNPJ': FirebaseFirestore.instance
+            .collection("Parceiros")
+            .where("CNPJ", isEqualTo: _cnpj.toLowerCase())
+            .get(),
+      };
+
+      await Future.forEach(queries.entries, (entry) async {
+        QuerySnapshot snapshot = await entry.value;
+        if (snapshot.docs.isNotEmpty) {
+          duplicates.add(entry.key);
+        }
+      });
+
+      if (duplicates.isNotEmpty) {
+        textError = duplicates.join(', ');
+        if (duplicates.length > 1) {
+          int lastCommaIndex = textError.lastIndexOf(',');
+          textError = textError.replaceRange(
+            lastCommaIndex,
+            lastCommaIndex + 1,
+            ' e',
+          );
+        }
+        textError += duplicates.length > 1
+            ? ' já foram cadastrados'
+            : ' já foi cadastrado';
+        isError = true;
+      } else {
+        isError = false;
+      }
+    } catch (e) {
+      print('Erro ao verificar duplicidades: $e');
+      rethrow;
+    }
+  }
+
+  @action
+  Future<void> searchCep(String cep) async {
+    print('CEP');
+    try {
+      textError = '';
+      isError = false;
+      restoreData();
+      var rsp =
+          await http.get(Uri.parse("https://viacep.com.br/ws/$cep/json/"));
+
+      if (rsp.body.contains('"erro": true')) {
+        textError = 'CEP inválido';
+        isError = true;
+        return;
+      } else {
+        Map<String, dynamic> responseData = json.decode(rsp.body);
+
+        _cep = responseData['cep'];
+        _street = responseData['logradouro'];
+        _district = responseData['bairro'];
+        _city = responseData['localidade'];
+        _state = responseData['uf'];
+
+        trueCEP = true;
+        print('CEP: $cep');
+        print('Logradouro: $_street');
+        print('Bairro: $_district');
+        print('Cidade: $_city');
+        print('Estado: $_state');
+      }
+    } on http.ClientException catch (_) {
+      textError = 'CEP inválido';
+      isError = true;
+      return;
+    } catch (e) {
+      print('Erro ao fazer registro do CEP: $e');
+    }
+  }
+
   restoreData() {
     setIdClinic('');
     setName('');
@@ -296,5 +401,6 @@ abstract class _PartnerStore with Store {
     setDistrict('');
     setCity('');
     setState('');
+    setTrueCEP(false);
   }
 }

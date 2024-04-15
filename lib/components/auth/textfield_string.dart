@@ -9,6 +9,8 @@ class TextFieldString extends StatelessWidget {
   final bool shouldValidate;
   final String? Function(String?)? validator;
   final Widget? suffixIcon;
+  final Function(String)? onChanged;
+  final bool? enabled;
 
   const TextFieldString({
     super.key,
@@ -17,7 +19,9 @@ class TextFieldString extends StatelessWidget {
     required this.text,
     required this.shouldValidate,
     required this.validator,
+    this.onChanged,
     this.suffixIcon,
+    this.enabled,
   });
 
   @override
@@ -33,6 +37,8 @@ class TextFieldString extends StatelessWidget {
       ),
       child: TextFormField(
         initialValue: _textController.text,
+        onChanged: onChanged,
+        enabled: enabled,
         validator: shouldValidate ? validator : null,
         decoration: InputDecoration(
           icon: icon,
