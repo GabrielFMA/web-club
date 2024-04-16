@@ -19,10 +19,12 @@ class _RegisterClientState extends State<RegisterClient> {
   final _nomeController = TextEditingController();
   final _emailController = TextEditingController();
   final _cpfController = TextEditingController();
+  final _cepController = TextEditingController();
   final _phoneController = TextEditingController();
   final _contractController = TextEditingController();
 
-  final formKey = GlobalKey<FormState>();
+  final formKey1 = GlobalKey<FormState>();
+  final formKey2 = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -42,254 +44,378 @@ class _RegisterClientState extends State<RegisterClient> {
                   builder: (_) => Padding(
                     padding: const EdgeInsets.all(0.0),
                     child: Container(
+                      width: MediaQuery.of(context).size.width * 0.6,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      width: MediaQuery.of(context).size.width * 0.3,
                       child: Padding(
                         padding: const EdgeInsets.all(50.0),
-                        child: Form(
-                          key: formKey,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const ListTile(
-                                title: Text(
-                                  "Registrar Cliente",
-                                  style: TextStyle(
-                                    fontSize: 45,
-                                    fontWeight: FontWeight.bold,
+                        child: Column(
+                          children: [
+                            const ListTile(
+                              title: Text(
+                                "Registrar Cliente",
+                                style: TextStyle(
+                                  fontSize: 45,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Form(
+                                    key: formKey1,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        TextFieldString(
+                                          icon: Icon(MdiIcons
+                                              .accountSupervisorCircleOutline),
+                                          hintText: "Digite o nome do parceiro",
+                                          text: _nomeController.text,
+                                          shouldValidate: true,
+                                          validator: (text) {
+                                            if (text!.isEmpty) {
+                                              return "Digite um nome";
+                                            }
+                                            store.setName(text);
+                                            return null;
+                                          },
+                                        ),
+                                        TextFieldString(
+                                          icon: Icon(
+                                              MdiIcons.officeBuildingOutline),
+                                          hintText: "CNPJ",
+                                          text: _cpfController.text,
+                                          shouldValidate: true,
+                                          validator: (text) {
+                                            if (text!.isEmpty) {
+                                              return "Digite o CNPJ";
+                                            }
+                                            if (!RegExp(r'^[0-9]+$')
+                                                .hasMatch(text)) {
+                                              return "Digite apenas números";
+                                            }
+                                            if (text.length != 14) {
+                                              return 'Digite um CNPJ válido';
+                                            }
+                                            store.setCPF(text);
+                                            return null;
+                                          },
+                                        ),
+                                        TextFieldString(
+                                          icon: Icon(MdiIcons.emailOutline),
+                                          hintText: "Digite seu email",
+                                          text: _emailController.text,
+                                          shouldValidate: true,
+                                          validator: (text) {
+                                            if (text!.isEmpty) {
+                                              return "Digite seu Email";
+                                            }
+                                            store.setEmail(text);
+                                            return null;
+                                          },
+                                        ),
+                                        TextFieldString(
+                                          icon: Icon(MdiIcons.phoneOutline),
+                                          hintText: "Telefone",
+                                          text: _phoneController.text,
+                                          shouldValidate: true,
+                                          validator: (text) {
+                                            if (text!.isEmpty) {
+                                              return "Digite seu Telefone";
+                                            }
+                                            if (!RegExp(r'^[0-9]+$')
+                                                .hasMatch(text)) {
+                                              return "Digite apenas números";
+                                            }
+                                            if (text.length != 11) {
+                                              return "Digite um Telefone válido";
+                                            }
+                                            store.setPhone(text);
+                                            return null;
+                                          },
+                                        ),
+
+                                        //Contract field
+                                        TextFieldString(
+                                          icon: Icon(
+                                            MdiIcons.fileDocumentEditOutline,
+                                            color: store.textError
+                                                    .contains('Contrato')
+                                                ? Colors.red
+                                                : null,
+                                          ),
+                                          hintText: "Contrato",
+                                          text: _contractController.text,
+                                          shouldValidate: true,
+                                          validator: (text) {
+                                            if (text!.isEmpty) {
+                                              return "Digite seu Contrato";
+                                            }
+                                            if (!RegExp(r'^[0-9]+$')
+                                                .hasMatch(text)) {
+                                              return "Digite apenas números";
+                                            }
+                                            if (text.length < 6) {
+                                              return "O contrato deve ter pelo menos 6 dígitos";
+                                            }
+                                            store.setNumContract(text);
+                                            store.setPassword(text
+                                                .substring(text.length - 6));
+                                            return null;
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  textAlign: TextAlign.center,
                                 ),
-                              ),
-
-                              //Name field
-                              TextFieldString(
-                                icon: Icon(
-                                  MdiIcons.accountCircleOutline,
-                                  color: store.textError.contains('Nome')
-                                      ? Colors.red
-                                      : null,
+                                const SizedBox(width: 20),
+                                Expanded(
+                                  child: Form(
+                                    key: formKey2,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        TextFieldString(
+                                          icon: Icon(MdiIcons.mapMarkerOutline),
+                                          hintText: "CEP",
+                                          text: _cepController.text,
+                                          shouldValidate: true,
+                                          onChanged: (text) async {
+                                            if (text.length == 8) {
+                                              await store.searchCep(text);
+                                            } else {
+                                              store.restoreData();
+                                            }
+                                            setState(() {});
+                                          },
+                                          validator: (text) {
+                                            if (text!.isEmpty) {
+                                              return "Digite seu CEP";
+                                            }
+                                            if (!RegExp(r'^[0-9]+$')
+                                                .hasMatch(text)) {
+                                              return "Digite apenas números";
+                                            }
+                                            if (text.length != 8) {
+                                              return "Digite um CEP válido";
+                                            }
+                                            store.setCEP(text);
+                                            return null;
+                                          },
+                                        ),
+                                        TextFieldString(
+                                          icon: Icon(
+                                            store.trueCEP
+                                                ? MdiIcons.lockOutline
+                                                : MdiIcons.lockOpenOutline,
+                                            color: store.trueCEP
+                                                ? Colors.black54
+                                                : null,
+                                          ),
+                                          hintText: store.getTrueCEP()
+                                              ? store.getStreet()
+                                              : "Rua",
+                                          enabled: !store.trueCEP,
+                                          text: _contractController.text,
+                                          shouldValidate: true,
+                                          validator: (_) {
+                                            if (store.getStreet()!.isEmpty) {
+                                              return "Digite sua Rua";
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: TextFieldString(
+                                                icon: Icon(
+                                                    MdiIcons.pencilOutline),
+                                                hintText: "Número",
+                                                text: _contractController.text,
+                                                shouldValidate: true,
+                                                validator: (text) {
+                                                  if (text!.isEmpty) {
+                                                    return "Digite o número";
+                                                  }
+                                                  return null;
+                                                },
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Expanded(
+                                              child: TextFieldString(
+                                                icon: Icon(
+                                                    MdiIcons.pencilOutline),
+                                                hintText: "Complemento",
+                                                text: _contractController.text,
+                                                shouldValidate: true,
+                                                validator: (text) {
+                                                  return null;
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        TextFieldString(
+                                          icon: Icon(
+                                            store.trueCEP
+                                                ? MdiIcons.lockOutline
+                                                : MdiIcons.lockOpenOutline,
+                                            color: store.trueCEP
+                                                ? Colors.black54
+                                                : null,
+                                          ),
+                                          hintText: store.getTrueCEP()
+                                              ? store.getDistrict()
+                                              : "Bairro",
+                                          enabled: !store.trueCEP,
+                                          text: _contractController.text,
+                                          shouldValidate: true,
+                                          validator: (_) {
+                                            if (store.getDistrict()!.isEmpty) {
+                                              return "Digite seu Bairro";
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: TextFieldString(
+                                                icon: Icon(
+                                                  store.trueCEP
+                                                      ? MdiIcons.lockOutline
+                                                      : MdiIcons
+                                                          .lockOpenOutline,
+                                                  color: store.trueCEP
+                                                      ? Colors.black54
+                                                      : null,
+                                                ),
+                                                hintText: store.getTrueCEP()
+                                                    ? store.getCity()
+                                                    : "Cidade",
+                                                enabled: !store.trueCEP,
+                                                text: _contractController.text,
+                                                shouldValidate: true,
+                                                validator: (_) {
+                                                  if (store
+                                                      .getCity()!
+                                                      .isEmpty) {
+                                                    return "Digite sua Cidade";
+                                                  }
+                                                  return null;
+                                                },
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Expanded(
+                                              child: TextFieldString(
+                                                icon: Icon(
+                                                  store.trueCEP
+                                                      ? MdiIcons.lockOutline
+                                                      : MdiIcons
+                                                          .lockOpenOutline,
+                                                  color: store.trueCEP
+                                                      ? Colors.black54
+                                                      : null,
+                                                ),
+                                                hintText: store.getTrueCEP()
+                                                    ? store.getState()
+                                                    : "Estado",
+                                                enabled: !store.trueCEP,
+                                                text: _contractController.text,
+                                                shouldValidate: true,
+                                                validator: (_) {
+                                                  if (store
+                                                      .getState()!
+                                                      .isEmpty) {
+                                                    return "Digite seu Estado";
+                                                  }
+                                                  return null;
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                                hintText: "Digite seu Nome",
-                                text: _nomeController.text,
-                                shouldValidate: true,
-                                validator: (text) {
-                                  if (text!.isEmpty) {
-                                    return "Digite um nome";
-                                  }
-                                  if (text.length < 6) {
-                                    return 'Digite seu nome completo';
-                                  }
-                                  store.setName(text);
-                                  return null;
-                                },
-                              ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            
+                            buttonDefault(
+                              context,
+                              () async {
+                                final isForm1Valid =
+                                    formKey1.currentState!.validate();
+                                final isForm2Valid =
+                                    formKey2.currentState!.validate();
 
-                              //CPF field
-                              TextFieldString(
-                                icon: Icon(
-                                  MdiIcons.textBoxOutline,
-                                  color: store.textError.contains('CPF')
-                                      ? Colors.red
-                                      : null,
-                                ),
-                                hintText: "CPF",
-                                text: _cpfController.text,
-                                shouldValidate: true,
-                                validator: (text) {
-                                  if (text!.isEmpty) {
-                                    return "Digite seu CPF";
-                                  }
-                                  if (!RegExp(r'^[0-9]+$').hasMatch(text)) {
-                                    return "Digite apenas números";
-                                  }
-                                  if (text.length != 11) {
-                                    return 'Digite um CPF válido';
-                                  }
-                                  store.setCPF(text);
-                                  return null;
-                                },
-                              ),
+                                if (isForm1Valid && isForm2Valid) {
+                                  await store.duplicateEntryCheck();
 
-                              //Email field
-                              TextFieldString(
-                                icon: Icon(
-                                  MdiIcons.emailOutline,
-                                  color: store.textError.contains('Email')
-                                      ? Colors.red
-                                      : null,
-                                ),
-                                hintText: "Digite seu email",
-                                text: _emailController.text,
-                                shouldValidate: true,
-                                validator: (text) {
-                                  if (text!.isEmpty) {
-                                    return "Digite seu Email";
-                                  }
-                                  // Verificar se o email já termina com "@gmail.com"
-                                  if (!text.endsWith("@gmail.com")) {
-                                    // Adicionar "@gmail.com" ao final do email
-                                    text += "@gmail.com";
-                                  }
-                                  store.setEmail(text);
-                                  return null;
-                                },
-                              ),
+                                  if (!store.getIsError()) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title:
+                                              const Text('Registrar Cliente'),
+                                          content: const Text(
+                                              'Tem certeza que deseja registrar este cliente?'),
+                                          actions: <Widget>[
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                buttonDialogDefault(
+                                                  text: 'SIM',
+                                                  onClick: () async {
+                                                    await store
+                                                        .signUpWithEmailPassword(
+                                                            context);
 
-                              //Address field
-                              TextFieldString(
-                                icon: Icon(MdiIcons.mapMarkerOutline),
-                                hintText: "Cep",
-                                text: _contractController.text,
-                                shouldValidate: true,
-                                validator: (text) {
-                                  if (text!.isEmpty) {
-                                    return "Digite seu Cep";
-                                  }
-                                  store.setCep(text);
-                                  return null;
-                                },
-                              ),
-
-                              //Phone field
-                              TextFieldString(
-                                icon: Icon(MdiIcons.phoneOutline),
-                                hintText: "Telefone",
-                                text: _phoneController.text,
-                                shouldValidate: true,
-                                validator: (text) {
-                                  if (text!.isEmpty) {
-                                    return "Digite seu Telefone";
-                                  }
-                                  // Verifica se contém apenas números
-                                  if (!RegExp(r'^[0-9]+$').hasMatch(text)) {
-                                    return "Digite apenas números";
-                                  }
-                                  if (text.length != 11) {
-                                    return "Digite um Telefone válido";
-                                  }
-                                  store.setPhone(text);
-                                  return null;
-                                },
-                              ),
-
-                              //Contract field
-                              TextFieldString(
-                                icon: Icon(
-                                  MdiIcons.fileDocumentEditOutline,
-                                  color: store.textError.contains('Contrato')
-                                      ? Colors.red
-                                      : null,
-                                ),
-                                hintText: "Contrato",
-                                text: _contractController.text,
-                                shouldValidate: true,
-                                validator: (text) {
-                                  if (text!.isEmpty) {
-                                    return "Digite seu Contrato";
-                                  }
-                                  if (!RegExp(r'^[0-9]+$').hasMatch(text)) {
-                                    return "Digite apenas números";
-                                  }
-                                  if (text.length < 6) {
-                                    return "O contrato deve ter pelo menos 6 dígitos";
-                                  }
-                                  store.setNumContract(text);
-                                  store.setPassword(
-                                      text.substring(text.length - 6));
-                                  return null;
-                                },
-                              ),
-
-                              //Space
-                              const SizedBox(height: 15),
-
-                              //Button
-                              buttonDefault(
-                                context,
-                                () async {
-                                  if (formKey.currentState!.validate()) {
-                                    await store.duplicateEntryCheck();
-
-                                    if (!store.getIsError()) {
-                                      await store.searchCep();
-
-                                      if (!store.getIsError()) {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: const Text(
-                                                  'Registrar Cliente'),
-                                              content: const Text(
-                                                  'Tem certeza que deseja registrar este cliente?'),
-                                              actions: <Widget>[
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    buttonDialogDefault(
-                                                      text: 'SIM',
-                                                      onClick: () async {
-                                                        await store
-                                                            .signUpWithEmailPassword(
-                                                                context);
-
-                                                        if (!store
-                                                            .getIsError()) {
-                                                          Navigator
-                                                              .pushAndRemoveUntil(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  const RegisterClient(),
-                                                            ),
-                                                            (route) => false,
-                                                          );
-                                                        } else {
-                                                          Navigator.pop(
-                                                              context);
-                                                        }
-                                                      },
-                                                    ),
-                                                    buttonDialogDefault(
-                                                      text: 'NÃO',
-                                                      onClick: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                    ),
-                                                  ],
+                                                    if (!store.getIsError()) {
+                                                      Navigator
+                                                          .pushAndRemoveUntil(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const RegisterClient(),
+                                                        ),
+                                                        (route) => false,
+                                                      );
+                                                    } else {
+                                                      Navigator.pop(context);
+                                                    }
+                                                  },
+                                                ),
+                                                buttonDialogDefault(
+                                                  text: 'NÃO',
+                                                  onClick: () {
+                                                    Navigator.pop(context);
+                                                  },
                                                 ),
                                               ],
-                                            );
-                                          },
+                                            ),
+                                          ],
                                         );
-                                      }
-                                    }
+                                      },
+                                    );
                                   }
-                                },
-                              ),
-
-                              //Space
-                              const SizedBox(height: 15),
-
-                              //Register erros
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.8,
-                                child: Text(
-                                  store.textError,
-                                  style: const TextStyle(
-                                    color: Colors.red,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          ),
+                                }
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     ),

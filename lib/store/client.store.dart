@@ -62,6 +62,21 @@ abstract class _ClientStore with Store {
   @observable
   String _numContract = '';
 
+  @observable
+  String _street = '';
+
+  @observable
+  String _district = '';
+
+  @observable
+  String _city = '';
+
+  @observable
+  String _state = '';
+
+  @observable
+  bool trueCEP = false;
+
   //Get funções
   //Errors
   getIsError() {
@@ -78,6 +93,36 @@ abstract class _ClientStore with Store {
     return _uidUser;
   }
 
+  @action
+  getCEP() {
+    return _cep;
+  }
+
+  @action
+  getStreet() {
+    return _street;
+  }
+
+  @action
+  getDistrict() {
+    return _district;
+  }
+
+  @action
+  getCity() {
+    return _city;
+  }
+
+  @action
+  getState() {
+    return _state;
+  }
+
+  @action
+  bool getTrueCEP() {
+    return trueCEP;
+  }
+
   //Set funçoes
   //Info Users
   @action
@@ -91,7 +136,7 @@ abstract class _ClientStore with Store {
   }
 
   @action
-  void setCep(String cep) {
+  void setCEP(String cep) {
     _cep = cep;
   }
 
@@ -113,6 +158,31 @@ abstract class _ClientStore with Store {
   @action
   void setNumContract(String numContract) {
     _numContract = numContract;
+  }
+
+  @action
+  void setStreet(String street) {
+    _street = street;
+  }
+
+  @action
+  void setDistrict(String district) {
+    _district = district;
+  }
+
+  @action
+  void setCity(String city) {
+    _city = city;
+  }
+
+  @action
+  void setState(String state) {
+    _state = state;
+  }
+
+  @action
+  void setTrueCEP(bool value) {
+    trueCEP = value;
   }
 
   //Password field
@@ -230,13 +300,13 @@ abstract class _ClientStore with Store {
     }
   }
 
-  Future<void> searchCep() async {
+  Future<void> searchCep(String cep) async {
     print('CEP');
     try {
       textError = '';
       isError = false;
       var rsp =
-          await http.get(Uri.parse("https://viacep.com.br/ws/$_cep/json/"));
+          await http.get(Uri.parse("https://viacep.com.br/ws/$cep/json/"));
 
       if (rsp.body.contains('"erro": true')) {
         textError = 'CEP inválido';
@@ -264,5 +334,18 @@ abstract class _ClientStore with Store {
     } catch (e) {
       print('Erro ao fazer registro do CEP: $e');
     }
+  }
+
+  restoreData() {
+    setName('');
+    setCPF('');
+    setEmail('');
+    setPhone('');
+    setCEP('');
+    setStreet('');
+    setDistrict('');
+    setCity('');
+    setState('');
+    setTrueCEP(false);
   }
 }

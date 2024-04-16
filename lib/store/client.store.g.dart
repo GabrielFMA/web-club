@@ -211,6 +211,84 @@ mixin _$ClientStore on _ClientStore, Store {
     });
   }
 
+  late final _$_streetAtom =
+      Atom(name: '_ClientStore._street', context: context);
+
+  @override
+  String get _street {
+    _$_streetAtom.reportRead();
+    return super._street;
+  }
+
+  @override
+  set _street(String value) {
+    _$_streetAtom.reportWrite(value, super._street, () {
+      super._street = value;
+    });
+  }
+
+  late final _$_districtAtom =
+      Atom(name: '_ClientStore._district', context: context);
+
+  @override
+  String get _district {
+    _$_districtAtom.reportRead();
+    return super._district;
+  }
+
+  @override
+  set _district(String value) {
+    _$_districtAtom.reportWrite(value, super._district, () {
+      super._district = value;
+    });
+  }
+
+  late final _$_cityAtom = Atom(name: '_ClientStore._city', context: context);
+
+  @override
+  String get _city {
+    _$_cityAtom.reportRead();
+    return super._city;
+  }
+
+  @override
+  set _city(String value) {
+    _$_cityAtom.reportWrite(value, super._city, () {
+      super._city = value;
+    });
+  }
+
+  late final _$_stateAtom = Atom(name: '_ClientStore._state', context: context);
+
+  @override
+  String get _state {
+    _$_stateAtom.reportRead();
+    return super._state;
+  }
+
+  @override
+  set _state(String value) {
+    _$_stateAtom.reportWrite(value, super._state, () {
+      super._state = value;
+    });
+  }
+
+  late final _$trueCEPAtom =
+      Atom(name: '_ClientStore.trueCEP', context: context);
+
+  @override
+  bool get trueCEP {
+    _$trueCEPAtom.reportRead();
+    return super.trueCEP;
+  }
+
+  @override
+  set trueCEP(bool value) {
+    _$trueCEPAtom.reportWrite(value, super.trueCEP, () {
+      super.trueCEP = value;
+    });
+  }
+
   late final _$registrationUserAsyncAction =
       AsyncAction('_ClientStore.registrationUser', context: context);
 
@@ -237,14 +315,6 @@ mixin _$ClientStore on _ClientStore, Store {
         .run(() => super.duplicateEntryCheck());
   }
 
-  late final _$searchCepAsyncAction =
-      AsyncAction('_ClientStore.searchCep', context: context);
-
-  @override
-  Future<dynamic> searchCep() {
-    return _$searchCepAsyncAction.run(() => super.searchCep());
-  }
-
   late final _$_ClientStoreActionController =
       ActionController(name: '_ClientStore', context: context);
 
@@ -254,6 +324,72 @@ mixin _$ClientStore on _ClientStore, Store {
         name: '_ClientStore.userUID');
     try {
       return super.userUID();
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic getCEP() {
+    final _$actionInfo =
+        _$_ClientStoreActionController.startAction(name: '_ClientStore.getCEP');
+    try {
+      return super.getCEP();
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic getStreet() {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.getStreet');
+    try {
+      return super.getStreet();
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic getDistrict() {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.getDistrict');
+    try {
+      return super.getDistrict();
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic getCity() {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.getCity');
+    try {
+      return super.getCity();
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic getState() {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.getState');
+    try {
+      return super.getState();
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  bool getTrueCEP() {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.getTrueCEP');
+    try {
+      return super.getTrueCEP();
     } finally {
       _$_ClientStoreActionController.endAction(_$actionInfo);
     }
@@ -282,11 +418,11 @@ mixin _$ClientStore on _ClientStore, Store {
   }
 
   @override
-  void setCep(String cep) {
+  void setCEP(String cep) {
     final _$actionInfo =
-        _$_ClientStoreActionController.startAction(name: '_ClientStore.setCep');
+        _$_ClientStoreActionController.startAction(name: '_ClientStore.setCEP');
     try {
-      return super.setCep(cep);
+      return super.setCEP(cep);
     } finally {
       _$_ClientStoreActionController.endAction(_$actionInfo);
     }
@@ -337,6 +473,61 @@ mixin _$ClientStore on _ClientStore, Store {
   }
 
   @override
+  void setStreet(String street) {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.setStreet');
+    try {
+      return super.setStreet(street);
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setDistrict(String district) {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.setDistrict');
+    try {
+      return super.setDistrict(district);
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setCity(String city) {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.setCity');
+    try {
+      return super.setCity(city);
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setState(String state) {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.setState');
+    try {
+      return super.setState(state);
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setTrueCEP(bool value) {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.setTrueCEP');
+    try {
+      return super.setTrueCEP(value);
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void visible() {
     final _$actionInfo = _$_ClientStoreActionController.startAction(
         name: '_ClientStore.visible');
@@ -352,7 +543,8 @@ mixin _$ClientStore on _ClientStore, Store {
     return '''
 isVisible: ${isVisible},
 isError: ${isError},
-textError: ${textError}
+textError: ${textError},
+trueCEP: ${trueCEP}
     ''';
   }
 }

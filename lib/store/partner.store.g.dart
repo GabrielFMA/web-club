@@ -212,6 +212,22 @@ mixin _$PartnerStore on _PartnerStore, Store {
     });
   }
 
+  late final _$trueCEPAtom =
+      Atom(name: '_PartnerStore.trueCEP', context: context);
+
+  @override
+  bool get trueCEP {
+    _$trueCEPAtom.reportRead();
+    return super.trueCEP;
+  }
+
+  @override
+  set trueCEP(bool value) {
+    _$trueCEPAtom.reportWrite(value, super.trueCEP, () {
+      super.trueCEP = value;
+    });
+  }
+
   late final _$_listExamAtom =
       Atom(name: '_PartnerStore._listExam', context: context);
 
@@ -256,6 +272,23 @@ mixin _$PartnerStore on _PartnerStore, Store {
   @override
   Future<List<Map<String, dynamic>>> fetchClinics() {
     return _$fetchClinicsAsyncAction.run(() => super.fetchClinics());
+  }
+
+  late final _$duplicateEntryCheckAsyncAction =
+      AsyncAction('_PartnerStore.duplicateEntryCheck', context: context);
+
+  @override
+  Future<dynamic> duplicateEntryCheck() {
+    return _$duplicateEntryCheckAsyncAction
+        .run(() => super.duplicateEntryCheck());
+  }
+
+  late final _$searchCepAsyncAction =
+      AsyncAction('_PartnerStore.searchCep', context: context);
+
+  @override
+  Future<void> searchCep(String cep) {
+    return _$searchCepAsyncAction.run(() => super.searchCep(cep));
   }
 
   late final _$_PartnerStoreActionController =
@@ -394,6 +427,17 @@ mixin _$PartnerStore on _PartnerStore, Store {
   }
 
   @override
+  bool getTrueCEP() {
+    final _$actionInfo = _$_PartnerStoreActionController.startAction(
+        name: '_PartnerStore.getTrueCEP');
+    try {
+      return super.getTrueCEP();
+    } finally {
+      _$_PartnerStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setIdClinic(String idClinic) {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
         name: '_PartnerStore.setIdClinic');
@@ -526,10 +570,22 @@ mixin _$PartnerStore on _PartnerStore, Store {
   }
 
   @override
+  void setTrueCEP(bool value) {
+    final _$actionInfo = _$_PartnerStoreActionController.startAction(
+        name: '_PartnerStore.setTrueCEP');
+    try {
+      return super.setTrueCEP(value);
+    } finally {
+      _$_PartnerStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 isError: ${isError},
-textError: ${textError}
+textError: ${textError},
+trueCEP: ${trueCEP}
     ''';
   }
 }

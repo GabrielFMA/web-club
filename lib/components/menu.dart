@@ -7,6 +7,7 @@ import 'package:web_simclub/screen/register/register_client.dart';
 import 'package:web_simclub/screen/register/register_partner.dart';
 import 'package:web_simclub/screen/register/register_employee.dart';
 import 'package:web_simclub/store/auth.store.dart';
+import 'package:web_simclub/store/partner.store.dart';
 
 class MenuWidget extends StatelessWidget {
   const MenuWidget({super.key});
@@ -14,6 +15,7 @@ class MenuWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<AuthStore>(context);
+    final partner = Provider.of<PartnerStore>(context);
 
     return Container(
       width: 300,
@@ -73,12 +75,14 @@ class MenuWidget extends StatelessWidget {
                   text: 'Registro Cliente',
                   icon: MdiIcons.accountPlusOutline,
                   color: Colors.white,
-                  onClick: () => {
+                  onClick: () {
+                    store.restoreData();
+                    partner.restoreData();
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const RegisterClient(),
                       ),
-                    ),
+                    );
                   },
                 ),
               if (store.level < 2)
@@ -86,12 +90,14 @@ class MenuWidget extends StatelessWidget {
                   text: 'Registro Funcionário',
                   icon: MdiIcons.badgeAccountHorizontalOutline,
                   color: Colors.white,
-                  onClick: () => {
+                  onClick: () {
+                    store.restoreData();
+                    partner.restoreData();
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const RegisterEmployee(),
                       ),
-                    ),
+                    );
                   },
                 ),
               if (store.level < 2)
@@ -100,6 +106,8 @@ class MenuWidget extends StatelessWidget {
                   icon: MdiIcons.handshakeOutline,
                   color: Colors.white,
                   onClick: () {
+                    store.restoreData();
+                    partner.restoreData();
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const RegisterPartner(),

@@ -195,7 +195,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                             ],
                                           ),
                                         ),
-                                        const SizedBox(height: 10),
+                                        const SizedBox(height: 5),
                                       ],
                                     ),
                                   ),
@@ -376,11 +376,17 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                 ),
                               ],
                             ),
+                            const SizedBox(height: 20),
+
                             buttonDefault(
                               context,
                               () async {
-                                if (formKey1.currentState!.validate() ||
-                                    formKey2.currentState!.validate()) {
+                                final isForm1Valid =
+                                    formKey1.currentState!.validate();
+                                final isForm2Valid =
+                                    formKey2.currentState!.validate();
+
+                                if (isForm1Valid && isForm2Valid) {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) =>
