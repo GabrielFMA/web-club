@@ -48,9 +48,6 @@ abstract class _ClientStore with Store {
   String _email = '';
 
   @observable
-  String _cep = '';
-
-  @observable
   String _cpf = '';
 
   @observable
@@ -63,7 +60,16 @@ abstract class _ClientStore with Store {
   String _numContract = '';
 
   @observable
+  String _cep = '';
+
+  @observable
   String _street = '';
+
+  @observable
+  String _number = '';
+
+  @observable
+  String? _complement = '';
 
   @observable
   String _district = '';
@@ -104,6 +110,16 @@ abstract class _ClientStore with Store {
   }
 
   @action
+  getNumber() {
+    return _number;
+  }
+
+  @action
+  getComplement() {
+    return _complement;
+  }
+
+  @action
   getDistrict() {
     return _district;
   }
@@ -138,6 +154,16 @@ abstract class _ClientStore with Store {
   @action
   void setCEP(String cep) {
     _cep = cep;
+  }
+
+  @action
+  void setNumber(String number) {
+    _number = number;
+  }
+
+  @action
+  void setComplement(String? complement) {
+    _complement = complement;
   }
 
   @action
@@ -225,15 +251,27 @@ abstract class _ClientStore with Store {
   Future<void> registrationUser() async {
     print("ID do usuario $_uidUser");
     try {
+      
+      Map<String, dynamic> addressMap = {
+        "CEP": _cep,
+        "Rua": _street,
+        "Numero": _number,
+        "Complemento": _complement,
+        "Bairro": _district,
+        "Cidade": _city,
+        "Estado": _state
+      };
+
       Map<String, dynamic> usuariosInfoMap = {
         "ID": _uidUser,
         "Nome": _name,
         "CPF": _cpf,
         "Email": _email,
-        "Endereço": _cep,
         "Telefone": _phone,
         "Contrato": _numContract,
+        "Endereço": addressMap
       };
+
       await addDetailsUsers(usuariosInfoMap, _uidUser);
     } catch (e) {
       print('Erro ao fazer registro: $e');
@@ -252,10 +290,6 @@ abstract class _ClientStore with Store {
       List<String> duplicates = [];
 
       Map<String, Future<QuerySnapshot>> queries = {
-        'Nome': FirebaseFirestore.instance
-            .collection("Usuarios")
-            .where("Nome", isEqualTo: _name.toLowerCase())
-            .get(),
         'Email': FirebaseFirestore.instance
             .collection("Usuarios")
             .where("Email", isEqualTo: _email.toLowerCase())
@@ -300,11 +334,13 @@ abstract class _ClientStore with Store {
     }
   }
 
+  @action
   Future<void> searchCep(String cep) async {
     print('CEP');
     try {
       textError = '';
       isError = false;
+      restoreData();
       var rsp =
           await http.get(Uri.parse("https://viacep.com.br/ws/$cep/json/"));
 
@@ -315,17 +351,13 @@ abstract class _ClientStore with Store {
       } else {
         Map<String, dynamic> responseData = json.decode(rsp.body);
 
-        String cep = responseData['cep'];
-        String rua = responseData['logradouro'];
-        String bairro = responseData['bairro'];
-        String cidade = responseData['localidade'];
-        String estado = responseData['uf'];
+        _cep = responseData['cep'];
+        _street = responseData['logradouro'];
+        _district = responseData['bairro'];
+        _city = responseData['localidade'];
+        _state = responseData['uf'];
 
-        print('CEP: $cep');
-        print('Logradouro: $rua');
-        print('Bairro: $bairro');
-        print('Cidade: $cidade');
-        print('Estado: $estado');
+        trueCEP = true;
       }
     } on http.ClientException catch (_) {
       textError = 'CEP inválido';
@@ -343,6 +375,8 @@ abstract class _ClientStore with Store {
     setPhone('');
     setCEP('');
     setStreet('');
+    setNumber('');
+    setComplement('');
     setDistrict('');
     setCity('');
     setState('');

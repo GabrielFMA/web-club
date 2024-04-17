@@ -73,8 +73,8 @@ class _RegisterClientState extends State<RegisterClient> {
                                       children: [
                                         TextFieldString(
                                           icon: Icon(MdiIcons
-                                              .accountSupervisorCircleOutline),
-                                          hintText: "Digite o nome do parceiro",
+                                              .accountOutline),
+                                          hintText: "Digite o nome do cliente",
                                           text: _nomeController.text,
                                           shouldValidate: true,
                                           validator: (text) {
@@ -87,20 +87,20 @@ class _RegisterClientState extends State<RegisterClient> {
                                         ),
                                         TextFieldString(
                                           icon: Icon(
-                                              MdiIcons.officeBuildingOutline),
-                                          hintText: "CNPJ",
+                                              MdiIcons.cardAccountDetailsOutline),
+                                          hintText: "CPF",
                                           text: _cpfController.text,
                                           shouldValidate: true,
                                           validator: (text) {
                                             if (text!.isEmpty) {
-                                              return "Digite o CNPJ";
+                                              return "Digite o CPF";
                                             }
                                             if (!RegExp(r'^[0-9]+$')
                                                 .hasMatch(text)) {
                                               return "Digite apenas números";
                                             }
-                                            if (text.length != 14) {
-                                              return 'Digite um CNPJ válido';
+                                            if (text.length != 11) {
+                                              return 'Digite um CPF válido';
                                             }
                                             store.setCPF(text);
                                             return null;
@@ -243,6 +243,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                                   if (text!.isEmpty) {
                                                     return "Digite o número";
                                                   }
+                                                  store.setNumber(text);
                                                   return null;
                                                 },
                                               ),
@@ -256,6 +257,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                                 text: _contractController.text,
                                                 shouldValidate: true,
                                                 validator: (text) {
+                                                  store.setComplement(text);
                                                   return null;
                                                 },
                                               ),
@@ -385,6 +387,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                                             context);
 
                                                     if (!store.getIsError()) {
+                                                      store.restoreData();
                                                       Navigator
                                                           .pushAndRemoveUntil(
                                                         context,
