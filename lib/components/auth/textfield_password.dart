@@ -16,6 +16,7 @@ class TextFieldPassword extends StatelessWidget {
       required this.shouldValidate,
       required this.validator});
 
+  // Password Controller
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<AuthStore>(context);
@@ -44,7 +45,7 @@ class TextFieldPassword extends StatelessWidget {
                 store.visible();
               },
               icon: Icon(
-                store.isVisible ? Icons.visibility : Icons.visibility_off,
+                store.isVisible ? MdiIcons.eye : MdiIcons.eyeOff,
               ),
             ),
           ),
@@ -59,9 +60,14 @@ class TextFieldConfirmPassword extends StatelessWidget {
   final bool shouldValidate;
   final String? Function(String?)? validator;
 
-  const TextFieldConfirmPassword({super.key, required this.confirmPassword,  required this.shouldValidate,
+  const TextFieldConfirmPassword(
+      {super.key,
+      required this.confirmPassword,
+      required this.shouldValidate,
       required this.validator});
 
+
+  // Confirm Password Controller
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<AuthStore>(context);
@@ -90,7 +96,8 @@ class TextFieldConfirmPassword extends StatelessWidget {
                 store.visible();
               },
               icon: Icon(
-                  store.isVisible ? Icons.visibility : Icons.visibility_off),
+                store.isVisible ? MdiIcons.eye : MdiIcons.eyeOff,
+              ),
             ),
           ),
         ),

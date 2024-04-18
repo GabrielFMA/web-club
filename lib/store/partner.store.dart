@@ -1,10 +1,9 @@
 // ignore_for_file: avoid_print
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,7 +20,7 @@ abstract class _PartnerStore with Store {
   bool isError = false;
 
   @observable
-  String textError = '';
+  String _textError = '';
 
   //Clinic
   @observable
@@ -49,6 +48,12 @@ abstract class _PartnerStore with Store {
   String _street = '';
 
   @observable
+  String _number = '';
+
+  @observable
+  String? _complement = '';
+
+  @observable
   String _district = '';
 
   @observable
@@ -63,171 +68,136 @@ abstract class _PartnerStore with Store {
   @observable
   late List<String> _listExam;
 
-  //Get functions
-  //Errors
-  getIsError() {
-    return isError;
-  }
+  // Get functions
 
-  getTextError() {
-    return textError;
-  }
+  // Errors
+  bool getIsError() => isError;
 
-  //Info Users
+  String getTextError() => _textError;
+
+  // Info Clinic
   @action
-  getidClinic() {
-    return _idClinic;
-  }
+  String getidClinic() => _idClinic;
 
   @action
-  getName() {
-    return _name;
-  }
+  String getName() => _name;
 
   @action
-  getEmail() {
-    return _email;
-  }
+  String getEmail() => _email;
 
   @action
-  getCnpj() {
-    return _cnpj;
-  }
+  String getCnpj() => _cnpj;
 
   @action
-  getPhone() {
-    return _phone;
-  }
+  String getPhone() => _phone;
 
   @action
-  getExam() {
-    return _exam;
-  }
+  int? getExam() => _exam;
 
   @action
-  getListExam() {
-    return _listExam;
-  }
+  List<String> getListExam() => _listExam;
 
   @action
-  getCEP() {
-    return _cep;
-  }
+  String getCEP() => _cep;
 
   @action
-  getStreet() {
-    return _street;
-  }
+  String getStreet() => _street;
 
   @action
-  getDistrict() {
-    return _district;
-  }
+  String getNumber() => _number;
 
   @action
-  getCity() {
-    return _city;
-  }
+  String? getComplement() => _complement;
 
   @action
-  getState() {
-    return _state;
-  }
+  String getDistrict() => _district;
 
   @action
-  bool getTrueCEP() {
-    return trueCEP;
-  }
-
-  //Set functions
-  //Info Users
-  @action
-  void setIdClinic(String idClinic) {
-    _idClinic = idClinic;
-  }
+  String getCity() => _city;
 
   @action
-  void setName(String name) {
-    _name = name;
-  }
+  String getState() => _state;
 
   @action
-  void setCnpj(String cnpj) {
-    _cnpj = cnpj;
-  }
+  bool getTrueCEP() => trueCEP;
+
+  // Set functions
+
+  // Info Clinic
+  @action
+  void setIdClinic(String idClinic) => _idClinic = idClinic;
 
   @action
-  void setEmail(String email) {
-    _email = email;
-  }
+  void setName(String name) => _name = name;
 
   @action
-  void setPhone(String phone) {
-    _phone = phone;
-  }
+  void setCnpj(String cnpj) => _cnpj = cnpj;
 
   @action
-  void setCEP(String cep) {
-    _cep = cep;
-  }
+  void setEmail(String email) => _email = email;
 
   @action
-  void setStreet(String street) {
-    _street = street;
-  }
+  void setPhone(String phone) => _phone = phone;
 
   @action
-  void setDistrict(String district) {
-    _district = district;
-  }
+  void setCEP(String cep) => _cep = cep;
 
   @action
-  void setCity(String city) {
-    _city = city;
-  }
+  void setNumber(String number) => _number = number;
 
   @action
-  void setState(String state) {
-    _state = state;
-  }
+  void setComplement(String? complement) => _complement = complement;
 
   @action
-  void setExam(int? exam) {
-    _exam = exam;
-  }
+  void setStreet(String street) => _street = street;
 
   @action
-  void setListExam(List<String> listExam) {
-    _listExam = listExam;
-  }
+  void setDistrict(String district) => _district = district;
 
   @action
-  void setTrueCEP(bool value) {
-    trueCEP = value;
-  }
+  void setCity(String city) => _city = city;
+
+  @action
+  void setState(String state) => _state = state;
+
+  @action
+  void setExam(int? exam) => _exam = exam;
+
+  @action
+  void setListExam(List<String> listExam) => _listExam = listExam;
+
+  @action
+  void setTrueCEP(bool value) => trueCEP = value;
 
   @action
   Future<void> registrationClinic() async {
     try {
       _idClinic = generateRandomId();
-      Map<String, dynamic> clinicInfoMap = {
+
+      Map<String, dynamic> addressMap = {
+        "CEP": _cep,
+        "Rua": _street,
+        "Numero": _number,
+        "Complemento": _complement,
+        "Bairro": _district,
+        "Cidade": _city,
+        "Estado": _state
+      };
+
+      Map<String, dynamic> paternInfoMap = {
         "ID": _idClinic,
         "Nome": _name,
         "CNPJ": _cnpj,
         "Email": _email,
         "Telefone": _phone,
-        "CEP": _cep,
-        "Rua": _street,
-        "Bairro": _district,
-        "Cidade": _city,
-        "Estado": _state
+        "Endereço": addressMap
       };
 
       Map<String, dynamic> examMap = _listExam
           .asMap()
           .map((index, exam) => MapEntry(index.toString(), exam));
 
-      await addDetailsClinic(clinicInfoMap, _idClinic);
+      await addDetailsClinic(paternInfoMap, _idClinic);
       await addSubcollectionData(_idClinic, examMap);
     } catch (e) {
       print('Erro ao fazer registro: $e');
@@ -238,7 +208,7 @@ abstract class _PartnerStore with Store {
 
   @action
   Future addDetailsClinic(Map<String, dynamic> clinicMap, String id) async {
-    return await db.collection("Parceiros").doc(id).set(clinicMap);
+    await db.collection("Parceiros").doc(id).set(clinicMap);
   }
 
   // Função para gerar um ID aleatório
@@ -260,7 +230,6 @@ abstract class _PartnerStore with Store {
         "Exames": data,
       };
 
-      // Adicionar os dados à subcoleção dentro da coleção "Clinicas"
       await db
           .collection("Parceiros")
           .doc(clinicId)
@@ -269,35 +238,6 @@ abstract class _PartnerStore with Store {
           .set(dataMap);
     } catch (e) {
       print('Erro ao adicionar dados à subcoleção: $e');
-    }
-  }
-
-  @action
-  Future<List<Map<String, dynamic>>> fetchClinics() async {
-    try {
-      QuerySnapshot querySnapshot = await db.collection("Parceiros").get();
-      List<Map<String, dynamic>> clinicDataList = [];
-
-      querySnapshot.docs.forEach((doc) {
-        Map<String, dynamic> clinicData = {
-          "ID": doc['ID'],
-          "CNPJ": doc["CNPJ"],
-          "Telefone": doc["Telefone"],
-          "Email": doc["Email"],
-          "CEP": doc["CEP"],
-          "Rua": doc["Rua"],
-          "Bairro": doc["Bairro"],
-          "Cidade": doc["Cidade"],
-          "Estado": doc["Estado"],
-        };
-        clinicDataList.add(clinicData);
-        print(clinicDataList);
-      });
-
-      return clinicDataList;
-    } catch (e) {
-      print('Erro ao buscar clínicas: $e');
-      return [];
     }
   }
 
@@ -329,20 +269,21 @@ abstract class _PartnerStore with Store {
       });
 
       if (duplicates.isNotEmpty) {
-        textError = duplicates.join(', ');
+        _textError = duplicates.join(', ');
         if (duplicates.length > 1) {
-          int lastCommaIndex = textError.lastIndexOf(',');
-          textError = textError.replaceRange(
+          int lastCommaIndex = _textError.lastIndexOf(',');
+          _textError = _textError.replaceRange(
             lastCommaIndex,
             lastCommaIndex + 1,
             ' e',
           );
         }
-        textError += duplicates.length > 1
+        _textError += duplicates.length > 1
             ? ' já foram cadastrados'
             : ' já foi cadastrado';
         isError = true;
       } else {
+        _textError = '';
         isError = false;
       }
     } catch (e) {
@@ -355,14 +296,14 @@ abstract class _PartnerStore with Store {
   Future<void> searchCep(String cep) async {
     print('CEP');
     try {
-      textError = '';
+      _textError = '';
       isError = false;
       restoreData();
       var rsp =
           await http.get(Uri.parse("https://viacep.com.br/ws/$cep/json/"));
 
       if (rsp.body.contains('"erro": true')) {
-        textError = 'CEP inválido';
+        _textError = 'CEP inválido';
         isError = true;
         return;
       } else {
@@ -382,7 +323,7 @@ abstract class _PartnerStore with Store {
         print('Estado: $_state');
       }
     } on http.ClientException catch (_) {
-      textError = 'CEP inválido';
+      _textError = 'CEP inválido';
       isError = true;
       return;
     } catch (e) {

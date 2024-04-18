@@ -7,6 +7,7 @@ import 'package:web_simclub/screen/register/register_client.dart';
 import 'package:web_simclub/screen/register/register_partner.dart';
 import 'package:web_simclub/screen/register/register_employee.dart';
 import 'package:web_simclub/store/auth.store.dart';
+import 'package:web_simclub/store/client.store.dart';
 import 'package:web_simclub/store/partner.store.dart';
 
 class MenuWidget extends StatelessWidget {
@@ -15,6 +16,7 @@ class MenuWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<AuthStore>(context);
+    final client = Provider.of<ClientStore>(context);
     final partner = Provider.of<PartnerStore>(context);
 
     return Container(
@@ -26,11 +28,13 @@ class MenuWidget extends StatelessWidget {
           builder: (_) => Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Exit Button
               buildMenuItem(
                 text: 'Sair',
                 icon: MdiIcons.exitToApp,
                 color: Colors.white,
                 onClick: () => {
+                  // Confirmation screen
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -57,8 +61,7 @@ class MenuWidget extends StatelessWidget {
                               buttonDefault(
                                 text: 'NÃO',
                                 onClick: () {
-                                  Navigator.pop(
-                                      context); // Fechar o AlertDialog
+                                  Navigator.pop(context);
                                 },
                               ),
                             ],
@@ -69,14 +72,18 @@ class MenuWidget extends StatelessWidget {
                   ),
                 },
               ),
+
+              // Dividing line
               const Divider(color: Colors.white),
+
+              // Register Client
               if (store.level < 3)
                 buildMenuItem(
                   text: 'Registro Cliente',
                   icon: MdiIcons.accountPlusOutline,
-                  color: Colors.white,
                   onClick: () {
                     store.restoreData();
+                    client.restoreData();
                     partner.restoreData();
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -85,13 +92,15 @@ class MenuWidget extends StatelessWidget {
                     );
                   },
                 ),
+
+              // Register Employee
               if (store.level < 2)
                 buildMenuItem(
                   text: 'Registro Funcionário',
                   icon: MdiIcons.badgeAccountHorizontalOutline,
-                  color: Colors.white,
                   onClick: () {
                     store.restoreData();
+                    client.restoreData();
                     partner.restoreData();
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -100,13 +109,15 @@ class MenuWidget extends StatelessWidget {
                     );
                   },
                 ),
+
+              // Register Partner
               if (store.level < 2)
                 buildMenuItem(
                   text: 'Registro Parceiro',
                   icon: MdiIcons.handshakeOutline,
-                  color: Colors.white,
                   onClick: () {
                     store.restoreData();
+                    client.restoreData();
                     partner.restoreData();
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -115,6 +126,9 @@ class MenuWidget extends StatelessWidget {
                     );
                   },
                 ),
+
+              // Dividing line
+              const Divider(color: Colors.white),
             ],
           ),
         ),
@@ -122,18 +136,22 @@ class MenuWidget extends StatelessWidget {
     );
   }
 
-  Widget buildMenuItem(
-      {required String text,
-      required IconData icon,
-      required Color color,
-      VoidCallback? onClick}) {
+  // Menu Controller
+  Widget buildMenuItem({
+    required String text,
+    required IconData icon,
+    Color? color,
+    VoidCallback? onClick,
+  }) {
     return ListTile(
-      leading: Icon(icon, color: color),
-      title: Text(text, style: TextStyle(color: color)),
+      leading: Icon(icon, color: Colors.white),
+      title: Text(text,
+          style: const TextStyle(color: Colors.white)),
       onTap: onClick,
     );
   }
 
+  // Button controller
   Widget buttonDefault({required String text, VoidCallback? onClick}) {
     return Container(
       height: 40,

@@ -96,11 +96,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       //Space
                       const SizedBox(height: 15),
 
-                      //Login erros
+                      //Login error
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: Text(
-                          store.textError,
+                          store.getTextError(),
                           style: const TextStyle(
                             color: Colors.red,
                           ),
@@ -118,6 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  //Button controller
   Widget buttonDefault(BuildContext context, VoidCallback? onClick) {
     return Container(
       height: 50,

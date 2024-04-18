@@ -13,24 +13,23 @@ part 'employee.store.g.dart';
 class EmployeeStore = _EmployeeStore with _$EmployeeStore;
 
 abstract class _EmployeeStore with Store {
-  
   static const _url =
       'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBlb1hQGuNgpJs0dkTKhAQ-l5YqS3XVM88';
 
   FirebaseFirestore db = FirebaseFirestore.instance;
 
-  //Verification
+  // Verification
   @observable
   bool isVisible = false;
 
-  //Errors
+  // Errors
   @observable
   bool isError = false;
 
   @observable
-  String textError = ' ';
+  String _textError = '';
 
-  //Info Users
+  // Info Users
   @observable
   User? _currentUser;
 
@@ -52,67 +51,53 @@ abstract class _EmployeeStore with Store {
   @observable
   String _phone = '';
 
-  @observable 
-  String _cargo = '';
+  @observable
+  String _position = '';
 
   @observable
   int _level = 3;
 
-  //Get funções
-  //Errors
-  getIsError() {
-    return isError;
-  }
+  // Get functions
 
-  getTextError() {
-    return textError;
-  }
+  // Errors
+  bool getIsError() => isError;
 
-  //Info Users
+  String getTextError() => _textError;
+
+  // Info Users
   @action
-  userUID() {
-    return _uidUser;
-  }
-
-  //Set funçoes
-  //Info Users
-  @action
-  void setName(String name) {
-    _name = name;
-  }
+  String userUID() => _uidUser;
 
   @action
-  void setEmail(String email) {
-    _email = email;
-  }
+  int getLevel() => _level;
+
+  // Set functions
+
+  // Info Users
+  @action
+  void setName(String name) => _name = name;
 
   @action
-  void setPassword(String password) {
-    _password = password;
-  }
+  void setEmail(String email) => _email = email;
 
   @action
-  void setPhone(String phone) {
-    _phone = phone;
-  }
+  void setPassword(String password) => _password = password;
 
   @action
-  void setCargo(String cargo){
-    _cargo = cargo;
-  }
-  
-  @action
-  void setLevel(int level){
-    _level = level;
-  }
+  void setPhone(String phone) => _phone = phone;
 
-  //Password field
   @action
-  void visible() {
-    isVisible = !isVisible;
-  }
+  void setPosition(String position) => _position = position;
 
-  //Auth Firebase Funções
+  @action
+  void setLevel(int level) => _level = level;
+
+  // Password field
+  @action
+  void visible() => isVisible = !isVisible;
+
+  // Auth Firebase Functions
+
   Future<void> signUpWithEmailPassword(BuildContext context) async {
     try {
       print(_name);
@@ -135,41 +120,91 @@ abstract class _EmployeeStore with Store {
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
-        print('Email já está em uso.');
+        print('Email already in use.');
       } else if (e.code == 'weak-password') {
-        print('A senha fornecida é muito fraca.');
+        print('The provided password is too weak.');
       } else {
-        print('Erro de autenticação: ${e.message}');
+        print('Authentication error: ${e.message}');
       }
     } catch (e) {
-      print('Erro ao fazer registro: $e');
-      print('Tipo de exceção: ${e.runtimeType}');
+      print('Error registering: $e');
+      print('Exception type: ${e.runtimeType}');
     }
   }
 
-  //Firestore db
+  // Firestore db
+
   @action
   Future<void> registrationUser() async {
-    print("ID do usuario $_uidUser");
+    print("User ID: $_uidUser");
     try {
-      Map<String, dynamic> usuariosInfoMap = {
+      Map<String, dynamic> userInfoMap = {
         "ID": _uidUser,
-        "Nome": _name,
+        "Name": _name,
         "Email": _email,
-        "Telefone": _phone,
-        "Cargo": _cargo,
+        "Phone": _phone,
+        "Position": _position,
         "Level": _level,
       };
-      await addDetailsUsers(usuariosInfoMap, _uidUser);
+      await addDetailsUsers(userInfoMap, _uidUser);
     } catch (e) {
-      print(e);
+      print('Error registering: $e');
+      print('Exception type: ${e.runtimeType}');
     }
   }
 
   @action
-  Future addDetailsUsers(
-      Map<String, dynamic> usuariosMap, String id) async {
-    return await db.collection("Funcionarios").doc(id).set(usuariosMap);
+  Future addDetailsUsers(Map<String, dynamic> userInfoMap, String id) async {
+    await db.collection("Funcionarios").doc(id).set(userInfoMap);
   }
-  
+
+  @action
+Future duplicateEntryCheck() async {
+  try {
+    List<String> duplicates = [];
+
+    Map<String, Future<QuerySnapshot>> queries = {
+      'Nome': FirebaseFirestore.instance
+          .collection("Funcionarios")
+          .where("Nome", isEqualTo: _email.toLowerCase())
+          .get(),
+      'Email': FirebaseFirestore.instance
+          .collection("Funcionarios")
+          .where("Email", isEqualTo: _email.toLowerCase())
+          .get(),
+    };
+
+    await Future.forEach(queries.entries, (entry) async {
+      QuerySnapshot snapshot = await entry.value;
+      if (snapshot.docs.isNotEmpty) {
+        duplicates.add(entry.key);
+      }
+    });
+
+    if (duplicates.isNotEmpty) {
+      _textError = duplicates.join(' e ');
+      _textError += duplicates.length > 1
+          ? ' já foram cadastrados'
+          : ' já foi cadastrado';
+      isError = true;
+    } else {
+      _textError = '';
+      isError = false;
+    }
+  } catch (e) {
+    print('Erro ao verificar duplicidades: $e');
+    rethrow;
+  }
+}
+
+
+  restoreData() {
+    setName('');
+    setEmail('');
+    setLevel(3);
+    setPhone('');
+    setPassword('');
+    setPosition('');
+    _textError = '';
+  }
 }

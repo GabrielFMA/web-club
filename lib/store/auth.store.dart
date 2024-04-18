@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, use_build_context_synchronously, library_private_types_in_public_api, unused_field, prefer_final_fields
+// ignore_for_file: avoid_print, use_build_context_synchronously, library_private_types_in_public_api
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,28 +12,23 @@ class AuthStore = _AuthStore with _$AuthStore;
 
 abstract class _AuthStore with Store {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  FirebaseFirestore db = FirebaseFirestore.instance;
+  final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  //Verification
+  //Observable
   @observable
   bool isVisible = false;
 
   @observable
   int level = 3;
 
-  //Errors
   @observable
-  bool isError = false;
+  bool _isError = false;
 
   @observable
-  String textError = '';
+  String _textError = '';
 
-  //Info Users
   @observable
   User? _currentUser;
-
-  @observable
-  String _token = '';
 
   @observable
   String _uidUser = '';
@@ -53,201 +48,169 @@ abstract class _AuthStore with Store {
   @observable
   String _cargo = '';
 
-  //Get functions
-  //Verification
+  //Getters
   @action
-  int getLevel() {
-    return level;
-  }
+  int getLevel() => level;
 
-  //Errors
-  getIsError() {
-    return isError;
-  }
+  bool getIsError() => _isError;
 
-  getTextError() {
-    return textError;
-  }
-
-  //Info Users
-  @action
-  userUID() {
-    return _uidUser;
-  }
+  String getTextError() => _textError;
 
   @action
-  getName() {
-    return _name;
-  }
+  userUID() => _uidUser;
+
+  getName() => _name;
+
+  getEmail() => _email;
+
+  getPassword() => _password;
+
+  getPhone() => _phone;
+
+  getCargo() => _cargo;
+
+  //Setters
+  @action
+  void setName(String name) => _name = name;
 
   @action
-  getEmail() {
-    return _email;
-  }
+  void setEmail(String email) => _email = email;
 
   @action
-  getPassword() {
-    return _password;
-  }
+  void setPassword(String password) => _password = password;
 
   @action
-  getPhone() {
-    return _phone;
-  }
+  void setPhone(String phone) => _phone = phone;
 
   @action
-  getCargo() {
-    return _cargo;
-  }
-
-  //Set functions
-  //Verification
-  void setLevel(int level) {
-    this.level = level;
-  }
-
-  //Info Users
-  @action
-  void setName(String name) {
-    _name = name;
-  }
+  void setCargo(String cargo) => _cargo = cargo;
 
   @action
-  void setEmail(String email) {
-    _email = email;
-  }
-
-  @action
-  void setPassword(String password) {
-    _password = password;
-  }
-
-  @action
-  void setPhone(String phone) {
-    _phone = phone;
-  }
-
-  @action
-  void setCargo(String cargo) {
-    _cargo = cargo;
-  }
+  void setLevel(int level) => this.level = level;
 
   //Password field
   @action
-  void visible() {
-    isVisible = !isVisible;
-  }
+  void visible() => isVisible = !isVisible;
 
-  //Auth Firebase Functions
+  //Funções de autenticação
   @action
   Future<void> signInWithEmailPassword(BuildContext context) async {
     try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final credential = await _auth.signInWithEmailAndPassword(
         email: _email,
         password: _password,
       );
 
-      print('Usuário logado com sucesso: ${credential.user!.uid}');
       _uidUser = credential.user!.uid;
 
-      recoveryData(_uidUser);
+      await recoveryData(_uidUser);
       _password = ' ';
 
-      Navigator.pushAndRemoveUntil(
+      if (!_isError) {
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
-          (route) => false);
-
-      textError = ' ';
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'invalid-email') {
-        textError = 'Email não encontrado!';
-        isError = true;
-        print('Email não encontrado');
-      } else if (e.code == 'invalid-credential') {
-        textError = 'Email/senha incorretos!';
-        isError = true;
-        print('Email/senha incorretos');
-      } else if (e.code == 'too-many-requests') {
-        textError =
-            'Acesso a esta conta foi temporariamente desativado devido a muitas tentativas de login.';
-        isError = true;
-        print('Muitas tentativas de login');
-      } else if (e.code == 'user-disabled') {
-        textError =
-            'Essa conta está desativada, por favor entre em contato com o suporte.';
-        isError = true;
+          (route) => false,
+        );
+        _textError = ' ';
       }
+    } on FirebaseAuthException catch (e) {
+      // Tratamento de diferentes erros de autenticação
+      handleError(e.code);
     } catch (e) {
-      textError = 'Sem permissão para acessar o sistema';
+      _textError = 'Sem permissão para acessar o sistema';
       print('Erro ao fazer login: $e');
       print('Tipo de exceção: ${e.runtimeType}');
     }
   }
 
-  //Logout function
   @action
   Future<void> signOut() async {
     try {
       await _auth.signOut();
       _currentUser = null;
       level = 3;
-      print('admin depois do sigout $level');
     } catch (e) {
       print(e);
     }
   }
 
+  // Função de recuperação de dados do usuário
   @action
   Future<void> recoveryData(String currentUser) async {
     _uidUser = currentUser;
     try {
+      _textError = '';
       final userCollection = db.collection("Usuarios");
       final userDoc = await userCollection.doc(_uidUser).get();
       if (userDoc.exists) {
-        textError = 'Você não tem permissão';
+        _textError = 'Você não tem permissão';
+        _isError = true;
         restoreData();
         signOut();
       } else {
-        final docRef = db.collection("Funcionarios").doc(_uidUser);
-        docRef.get().then(
-          (DocumentSnapshot doc) {
-            final data = doc.data() as Map<String, dynamic>;
+        final employeeCollection = db.collection("Funcionarios");
+        final employeeDoc = await employeeCollection.doc(_uidUser).get();
 
-            setName(data['Nome']);
-            setEmail(data['Email']);
-            setPhone(data['Telefone']);
-            setCargo(data['Cargo']);
-            setLevel(data['Level']);
+        if (employeeDoc.exists) {
+          final data = employeeDoc.data() as Map<String, dynamic>;
 
-            print('admin antes do if $level');
+          setName(data['Nome']);
+          setEmail(data['Email']);
+          setPhone(data['Telefone']);
+          setCargo(data['Cargo']);
+          setLevel(data['Level']);
 
-            switch (_cargo) {
-              case 'Administrador':
-                level = 0;
-                break;
-              case 'Gerente':
-                level = 1;
-                break;
-              case 'Funcionario':
-                level = 2;
-                break;
-            }
-
-            print('admin depois do if $level');
-          },
-          onError: (e) => print("Error getting document: $e"),
-        );
+          switch (_cargo) {
+            case 'Administrador':
+              level = 0;
+              break;
+            case 'Gerente':
+              level = 1;
+              break;
+            case 'Funcionario':
+              level = 2;
+              break;
+          }
+        } else {
+          _textError = 'Usuário não encontrado';
+          _isError = true;
+          return;
+        }
       }
     } catch (e) {
       print(e);
     }
   }
 
+  // Função para limpar dados do usuário em caso de erro de permissão
   restoreData() {
     setName('');
     setEmail('');
     setPhone('');
     setCargo('');
+  }
+
+  // Função para lidar com diferentes erros de autenticação
+  void handleError(String errorCode) {
+    switch (errorCode) {
+      case 'invalid-email':
+        _textError = 'Email não encontrado!';
+        break;
+      case 'invalid-credential':
+        _textError = 'Email/senha incorretos!';
+        break;
+      case 'too-many-requests':
+        _textError =
+            'Acesso a esta conta foi temporariamente desativado devido a muitas tentativas de login.';
+        break;
+      case 'user-disabled':
+        _textError =
+            'Essa conta está desativada, por favor entre em contato com o suporte.';
+        break;
+      default:
+        _textError = 'Ocorreu um erro durante a autenticação.';
+    }
+    _isError = true;
   }
 }

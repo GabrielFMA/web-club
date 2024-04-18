@@ -40,34 +40,35 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$isErrorAtom = Atom(name: '_AuthStore.isError', context: context);
+  late final _$_isErrorAtom =
+      Atom(name: '_AuthStore._isError', context: context);
 
   @override
-  bool get isError {
-    _$isErrorAtom.reportRead();
-    return super.isError;
+  bool get _isError {
+    _$_isErrorAtom.reportRead();
+    return super._isError;
   }
 
   @override
-  set isError(bool value) {
-    _$isErrorAtom.reportWrite(value, super.isError, () {
-      super.isError = value;
+  set _isError(bool value) {
+    _$_isErrorAtom.reportWrite(value, super._isError, () {
+      super._isError = value;
     });
   }
 
-  late final _$textErrorAtom =
-      Atom(name: '_AuthStore.textError', context: context);
+  late final _$_textErrorAtom =
+      Atom(name: '_AuthStore._textError', context: context);
 
   @override
-  String get textError {
-    _$textErrorAtom.reportRead();
-    return super.textError;
+  String get _textError {
+    _$_textErrorAtom.reportRead();
+    return super._textError;
   }
 
   @override
-  set textError(String value) {
-    _$textErrorAtom.reportWrite(value, super.textError, () {
-      super.textError = value;
+  set _textError(String value) {
+    _$_textErrorAtom.reportWrite(value, super._textError, () {
+      super._textError = value;
     });
   }
 
@@ -84,21 +85,6 @@ mixin _$AuthStore on _AuthStore, Store {
   set _currentUser(User? value) {
     _$_currentUserAtom.reportWrite(value, super._currentUser, () {
       super._currentUser = value;
-    });
-  }
-
-  late final _$_tokenAtom = Atom(name: '_AuthStore._token', context: context);
-
-  @override
-  String get _token {
-    _$_tokenAtom.reportRead();
-    return super._token;
-  }
-
-  @override
-  set _token(String value) {
-    _$_tokenAtom.reportWrite(value, super._token, () {
-      super._token = value;
     });
   }
 
@@ -245,61 +231,6 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   @override
-  dynamic getName() {
-    final _$actionInfo =
-        _$_AuthStoreActionController.startAction(name: '_AuthStore.getName');
-    try {
-      return super.getName();
-    } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic getEmail() {
-    final _$actionInfo =
-        _$_AuthStoreActionController.startAction(name: '_AuthStore.getEmail');
-    try {
-      return super.getEmail();
-    } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic getPassword() {
-    final _$actionInfo = _$_AuthStoreActionController.startAction(
-        name: '_AuthStore.getPassword');
-    try {
-      return super.getPassword();
-    } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic getPhone() {
-    final _$actionInfo =
-        _$_AuthStoreActionController.startAction(name: '_AuthStore.getPhone');
-    try {
-      return super.getPhone();
-    } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic getCargo() {
-    final _$actionInfo =
-        _$_AuthStoreActionController.startAction(name: '_AuthStore.getCargo');
-    try {
-      return super.getCargo();
-    } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void setName(String name) {
     final _$actionInfo =
         _$_AuthStoreActionController.startAction(name: '_AuthStore.setName');
@@ -355,6 +286,17 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   @override
+  void setLevel(int level) {
+    final _$actionInfo =
+        _$_AuthStoreActionController.startAction(name: '_AuthStore.setLevel');
+    try {
+      return super.setLevel(level);
+    } finally {
+      _$_AuthStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void visible() {
     final _$actionInfo =
         _$_AuthStoreActionController.startAction(name: '_AuthStore.visible');
@@ -369,9 +311,7 @@ mixin _$AuthStore on _AuthStore, Store {
   String toString() {
     return '''
 isVisible: ${isVisible},
-level: ${level},
-isError: ${isError},
-textError: ${textError}
+level: ${level}
     ''';
   }
 }

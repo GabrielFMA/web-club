@@ -88,14 +88,11 @@ class _RegisterExamState extends State<RegisterExam> {
                                 context,
                                 () async {
                                   if (formKey.currentState!.validate()) {
-                                    // Coletar os valores escritos em cada campo
                                     examValues = _textControllers
                                         .map((controller) => controller.text)
                                         .toList();
                                     store.setListExam(examValues);
                                     await store.registrationClinic();
-
-                                    store.fetchClinics();
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>
@@ -103,9 +100,23 @@ class _RegisterExamState extends State<RegisterExam> {
                                       ),
                                     );
                                     print(examValues);
-                                    // Use examValues conforme necessário (por exemplo, envie para a função de submissão)
                                   }
                                 },
+                              ),
+
+                              //Space
+                              const SizedBox(height: 15),
+
+                              //exams erros
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                child: Text(
+                                  store.getTextError(),
+                                  style: const TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ],
                           ),

@@ -1,9 +1,7 @@
-// ignore_for_file: library_private_types_in_public_api, avoid_print, use_build_context_synchronously, unnecessary_null_comparison, dead_code
+// ignore_for_file: avoid_print
 
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
@@ -20,24 +18,18 @@ abstract class _ClientStore with Store {
 
   late http.Response rsp;
 
-  //Verification
+  // Verification
   @observable
   bool isVisible = false;
 
-  //Errors
+  // Errors
   @observable
   bool isError = false;
 
   @observable
-  String textError = ' ';
+  String _textError = '';
 
-  //Info Users
-  @observable
-  User? _currentUser;
-
-  @observable
-  String _token = '';
-
+  // Info Users
   @observable
   String _uidUser = '';
 
@@ -83,147 +75,95 @@ abstract class _ClientStore with Store {
   @observable
   bool trueCEP = false;
 
-  //Get funções
-  //Errors
-  getIsError() {
-    return isError;
-  }
+  // Get functions
 
-  getTextError() {
-    return textError;
-  }
+  // Errors
+  bool getIsError() => isError;
 
-  //Info Users
+  String getTextError() => _textError;
+
+  // Info Users
   @action
-  userUID() {
-    return _uidUser;
-  }
+  String userUID() => _uidUser;
 
   @action
-  getCEP() {
-    return _cep;
-  }
+  String getCEP() => _cep;
 
   @action
-  getStreet() {
-    return _street;
-  }
+  String getStreet() => _street;
 
   @action
-  getNumber() {
-    return _number;
-  }
+  String getNumber() => _number;
 
   @action
-  getComplement() {
-    return _complement;
-  }
+  String? getComplement() => _complement;
 
   @action
-  getDistrict() {
-    return _district;
-  }
+  String getDistrict() => _district;
 
   @action
-  getCity() {
-    return _city;
-  }
+  String getCity() => _city;
 
   @action
-  getState() {
-    return _state;
-  }
+  String getState() => _state;
 
   @action
-  bool getTrueCEP() {
-    return trueCEP;
-  }
+  bool getTrueCEP() => trueCEP;
 
-  //Set funçoes
-  //Info Users
+  // Set functions
+
+  // Info Users
   @action
-  void setName(String name) {
-    _name = name;
-  }
+  void setName(String name) => _name = name;
 
   @action
-  void setEmail(String email) {
-    _email = email;
-  }
+  void setEmail(String email) => _email = email;
 
   @action
-  void setCEP(String cep) {
-    _cep = cep;
-  }
+  void setCEP(String cep) => _cep = cep;
 
   @action
-  void setNumber(String number) {
-    _number = number;
-  }
+  void setNumber(String number) => _number = number;
 
   @action
-  void setComplement(String? complement) {
-    _complement = complement;
-  }
+  void setComplement(String? complement) => _complement = complement;
 
   @action
-  void setCPF(String cpf) {
-    _cpf = cpf;
-  }
+  void setCPF(String cpf) => _cpf = cpf;
 
   @action
-  void setPassword(String password) {
-    _password = password;
-  }
+  void setPassword(String password) => _password = password;
 
   @action
-  void setPhone(String phone) {
-    _phone = phone;
-  }
+  void setPhone(String phone) => _phone = phone;
 
   @action
-  void setNumContract(String numContract) {
-    _numContract = numContract;
-  }
+  void setNumContract(String numContract) => _numContract = numContract;
 
   @action
-  void setStreet(String street) {
-    _street = street;
-  }
+  void setStreet(String street) => _street = street;
 
   @action
-  void setDistrict(String district) {
-    _district = district;
-  }
+  void setDistrict(String district) => _district = district;
 
   @action
-  void setCity(String city) {
-    _city = city;
-  }
+  void setCity(String city) => _city = city;
 
   @action
-  void setState(String state) {
-    _state = state;
-  }
+  void setState(String state) => _state = state;
 
   @action
-  void setTrueCEP(bool value) {
-    trueCEP = value;
-  }
+  void setTrueCEP(bool value) => trueCEP = value;
 
-  //Password field
+  // Password field
   @action
-  void visible() {
-    isVisible = !isVisible;
-  }
+  void visible() => isVisible = !isVisible;
 
-  //Auth Firebase Funções
+  // Auth Firebase Functions
+
   Future<void> signUpWithEmailPassword(BuildContext context) async {
     try {
-      print('');
-      print('Registro: Nome: $_name, Email: $_email, Senha: $_password');
-      print('');
-
+      print('Registration: Name: $_name, Email: $_email, Password: $_password');
       final response = await http.post(
         Uri.parse(_url),
         body: jsonEncode({
@@ -235,53 +175,51 @@ abstract class _ClientStore with Store {
 
       final responseData = jsonDecode(response.body);
       if (responseData.containsKey('idToken')) {
-        _token = responseData['idToken'];
         _uidUser = responseData['localId'];
 
         await registrationUser();
       }
     } catch (e) {
-      print('Erro ao fazer registro: $e');
-      print('Tipo de exceção: ${e.runtimeType}');
+      print('Error registering: $e');
+      print('Exception type: ${e.runtimeType}');
     }
   }
 
-  //Firestore db
+  // Firestore db
   @action
   Future<void> registrationUser() async {
-    print("ID do usuario $_uidUser");
+    print("User ID: $_uidUser");
     try {
-      
       Map<String, dynamic> addressMap = {
         "CEP": _cep,
-        "Rua": _street,
-        "Numero": _number,
-        "Complemento": _complement,
-        "Bairro": _district,
-        "Cidade": _city,
-        "Estado": _state
+        "Street": _street,
+        "Number": _number,
+        "Complement": _complement,
+        "District": _district,
+        "City": _city,
+        "State": _state
       };
 
-      Map<String, dynamic> usuariosInfoMap = {
+      Map<String, dynamic> userInfoMap = {
         "ID": _uidUser,
-        "Nome": _name,
+        "Name": _name,
         "CPF": _cpf,
         "Email": _email,
-        "Telefone": _phone,
-        "Contrato": _numContract,
-        "Endereço": addressMap
+        "Phone": _phone,
+        "Contract": _numContract,
+        "Address": addressMap
       };
 
-      await addDetailsUsers(usuariosInfoMap, _uidUser);
+      await addDetailsUsers(userInfoMap, _uidUser);
     } catch (e) {
-      print('Erro ao fazer registro: $e');
-      print('Tipo de exceção: ${e.runtimeType}');
+      print('Error registering: $e');
+      print('Exception type: ${e.runtimeType}');
     }
   }
 
   @action
-  Future addDetailsUsers(Map<String, dynamic> usuariosMap, String id) async {
-    return await db.collection("Usuarios").doc(id).set(usuariosMap);
+  Future addDetailsUsers(Map<String, dynamic> userInfoMap, String id) async {
+    await db.collection("Users").doc(id).set(userInfoMap);
   }
 
   @action
@@ -312,20 +250,21 @@ abstract class _ClientStore with Store {
       });
 
       if (duplicates.isNotEmpty) {
-        textError = duplicates.join(', ');
+        _textError = duplicates.join(', ');
         if (duplicates.length > 1) {
-          int lastCommaIndex = textError.lastIndexOf(',');
-          textError = textError.replaceRange(
+          int lastCommaIndex = _textError.lastIndexOf(',');
+          _textError = _textError.replaceRange(
             lastCommaIndex,
             lastCommaIndex + 1,
             ' e',
           );
         }
-        textError += duplicates.length > 1
+        _textError += duplicates.length > 1
             ? ' já foram cadastrados'
             : ' já foi cadastrado';
         isError = true;
       } else {
+        _textError = '';
         isError = false;
       }
     } catch (e) {
@@ -338,14 +277,14 @@ abstract class _ClientStore with Store {
   Future<void> searchCep(String cep) async {
     print('CEP');
     try {
-      textError = '';
+      _textError = '';
       isError = false;
       restoreData();
       var rsp =
           await http.get(Uri.parse("https://viacep.com.br/ws/$cep/json/"));
 
       if (rsp.body.contains('"erro": true')) {
-        textError = 'CEP inválido';
+        _textError = 'Invalid CEP';
         isError = true;
         return;
       } else {
@@ -360,11 +299,11 @@ abstract class _ClientStore with Store {
         trueCEP = true;
       }
     } on http.ClientException catch (_) {
-      textError = 'CEP inválido';
+      _textError = 'Invalid CEP';
       isError = true;
       return;
     } catch (e) {
-      print('Erro ao fazer registro do CEP: $e');
+      print('Error registering CEP: $e');
     }
   }
 
@@ -381,5 +320,6 @@ abstract class _ClientStore with Store {
     setCity('');
     setState('');
     setTrueCEP(false);
+    _textError = '';
   }
 }

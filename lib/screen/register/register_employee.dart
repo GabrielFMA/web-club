@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, use_key_in_widget_constructors
+// ignore_for_file: use_build_context_synchronously, use_key_in_widget_constructors, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -24,7 +24,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
   final _confirmPasswordController = TextEditingController();
   String _password = ' ';
 
-  String valueCargo = 'Clique aqui para selecionar um cargo';
+  String valuePosition = 'Clique aqui para selecionar um cargo';
 
   List<String> listCargo = [
     'Clique aqui para selecionar um cargo',
@@ -74,29 +74,30 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                 ),
                               ),
 
-                              //Cargo
+                              //Position container
                               Container(
                                 padding:
-                                    const EdgeInsets.only(left: 10, right: 10),
+                                    const EdgeInsets.symmetric(horizontal: 10),
                                 decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.green, width: 2),
-                                    borderRadius: BorderRadius.circular(8)),
+                                  border:
+                                      Border.all(color: Colors.green, width: 2),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
                                 child: DropdownButton<String>(
                                   underline: const SizedBox(),
                                   isExpanded: true,
-                                  value: valueCargo,
+                                  value: valuePosition,
                                   style: const TextStyle(
                                     color: Colors.green,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
-                                  onChanged: (String? newValue) {
+                                  onChanged: (String? Value) {
                                     setState(() {
-                                      valueCargo = newValue!;
-                                      store.setCargo(valueCargo);
+                                      valuePosition = Value!;
+                                      store.setPosition(valuePosition);
 
-                                      switch (valueCargo) {
+                                      switch (valuePosition) {
                                         case 'Administrador':
                                           store.setLevel(0);
                                           break;
@@ -105,6 +106,9 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                           break;
                                         case 'Funcionario':
                                           store.setLevel(2);
+                                          break;
+                                        default:
+                                          store.setLevel(3);
                                           break;
                                       }
                                     });
@@ -117,11 +121,10 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                   }).toList(),
                                 ),
                               ),
-
                               //Space
                               const SizedBox(height: 5),
 
-                              //Nome field
+                              //Name field
                               TextFieldString(
                                 icon: Icon(MdiIcons.accountTieOutline),
                                 hintText: "Digite seu Nome",
@@ -149,12 +152,17 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                   if (text!.isEmpty) {
                                     return "Digite seu Email";
                                   }
+                                  if (!RegExp(
+                                          r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                      .hasMatch(text)) {
+                                    return "Email inválido";
+                                  }
                                   store.setEmail(text);
                                   return null;
                                 },
                               ),
 
-                              //Telefone field
+                              //Phone field
                               TextFieldString(
                                 icon: Icon(MdiIcons.phoneOutline),
                                 hintText: "Telefone",
@@ -176,7 +184,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                 },
                               ),
 
-                              //Senha field
+                              //Password field
                               TextFieldPassword(
                                 password: _passwordController.text,
                                 shouldValidate: true,
@@ -192,7 +200,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                 },
                               ),
 
-                              //Confirmar Senha field
+                              //Confirmar password field
                               TextFieldConfirmPassword(
                                 confirmPassword:
                                     _confirmPasswordController.text,
@@ -211,59 +219,78 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                               //Space
                               const SizedBox(height: 15),
 
+                              //Register button
                               buttonDefault(
                                 context,
                                 () async {
                                   if (formKey.currentState!.validate() &&
-                                      valueCargo !=
-                                          'Clique aqui para selecionar um cargo') {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text(
-                                              'Registrar Funcionário'),
-                                          content: const Text(
-                                              'Tem certeza que deseja registrar este funcionário?'),
-                                          actions: <Widget>[
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                buttonDialog(
-                                                  text: 'SIM',
-                                                  onClick: () async {
-                                                    await store
-                                                        .signUpWithEmailPassword(
-                                                            context);
+                                      store.getLevel() > 2) {
+                                    await store.duplicateEntryCheck();
+                                    if (!store.getIsError()) {
+                                      //Confirmation screen
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text(
+                                                'Registrar Funcionário'),
+                                            content: const Text(
+                                                'Tem certeza que deseja registrar este funcionário?'),
+                                            actions: <Widget>[
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  buttonDialog(
+                                                    text: 'SIM',
+                                                    onClick: () async {
+                                                      await store
+                                                          .signUpWithEmailPassword(
+                                                              context);
 
-                                                    Navigator
-                                                        .pushAndRemoveUntil(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            const RegisterEmployee(),
-                                                      ),
-                                                      (route) => false,
-                                                    );
-                                                  },
-                                                ),
-                                                buttonDialog(
-                                                  text: 'NÃO',
-                                                  onClick: () {
-                                                    Navigator.pop(
-                                                        context); // Fechar o AlertDialog
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
+                                                      store.restoreData();
+                                                      Navigator
+                                                          .pushAndRemoveUntil(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const RegisterEmployee(),
+                                                        ),
+                                                        (route) => false,
+                                                      );
+                                                    },
+                                                  ),
+                                                  buttonDialog(
+                                                    text: 'NÃO',
+                                                    onClick: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
                                   }
                                 },
+                              ),
+
+                              //Space
+                              const SizedBox(height: 15),
+
+                              //Employee error
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                child: Text(
+                                  store.getTextError(),
+                                  style: const TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ],
                           ),
@@ -280,6 +307,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
     );
   }
 
+  //Button screen
   Widget buttonDialog({required String text, VoidCallback? onClick}) {
     return Container(
       height: 40,
@@ -298,6 +326,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
     );
   }
 
+  //Button controller
   Widget buttonDefault(BuildContext context, VoidCallback? onClick) {
     return Container(
       height: 50,

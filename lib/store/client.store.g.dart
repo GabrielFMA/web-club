@@ -41,50 +41,19 @@ mixin _$ClientStore on _ClientStore, Store {
     });
   }
 
-  late final _$textErrorAtom =
-      Atom(name: '_ClientStore.textError', context: context);
+  late final _$_textErrorAtom =
+      Atom(name: '_ClientStore._textError', context: context);
 
   @override
-  String get textError {
-    _$textErrorAtom.reportRead();
-    return super.textError;
+  String get _textError {
+    _$_textErrorAtom.reportRead();
+    return super._textError;
   }
 
   @override
-  set textError(String value) {
-    _$textErrorAtom.reportWrite(value, super.textError, () {
-      super.textError = value;
-    });
-  }
-
-  late final _$_currentUserAtom =
-      Atom(name: '_ClientStore._currentUser', context: context);
-
-  @override
-  User? get _currentUser {
-    _$_currentUserAtom.reportRead();
-    return super._currentUser;
-  }
-
-  @override
-  set _currentUser(User? value) {
-    _$_currentUserAtom.reportWrite(value, super._currentUser, () {
-      super._currentUser = value;
-    });
-  }
-
-  late final _$_tokenAtom = Atom(name: '_ClientStore._token', context: context);
-
-  @override
-  String get _token {
-    _$_tokenAtom.reportRead();
-    return super._token;
-  }
-
-  @override
-  set _token(String value) {
-    _$_tokenAtom.reportWrite(value, super._token, () {
-      super._token = value;
+  set _textError(String value) {
+    _$_textErrorAtom.reportWrite(value, super._textError, () {
+      super._textError = value;
     });
   }
 
@@ -131,21 +100,6 @@ mixin _$ClientStore on _ClientStore, Store {
   set _email(String value) {
     _$_emailAtom.reportWrite(value, super._email, () {
       super._email = value;
-    });
-  }
-
-  late final _$_cepAtom = Atom(name: '_ClientStore._cep', context: context);
-
-  @override
-  String get _cep {
-    _$_cepAtom.reportRead();
-    return super._cep;
-  }
-
-  @override
-  set _cep(String value) {
-    _$_cepAtom.reportWrite(value, super._cep, () {
-      super._cep = value;
     });
   }
 
@@ -211,6 +165,21 @@ mixin _$ClientStore on _ClientStore, Store {
     });
   }
 
+  late final _$_cepAtom = Atom(name: '_ClientStore._cep', context: context);
+
+  @override
+  String get _cep {
+    _$_cepAtom.reportRead();
+    return super._cep;
+  }
+
+  @override
+  set _cep(String value) {
+    _$_cepAtom.reportWrite(value, super._cep, () {
+      super._cep = value;
+    });
+  }
+
   late final _$_streetAtom =
       Atom(name: '_ClientStore._street', context: context);
 
@@ -224,6 +193,38 @@ mixin _$ClientStore on _ClientStore, Store {
   set _street(String value) {
     _$_streetAtom.reportWrite(value, super._street, () {
       super._street = value;
+    });
+  }
+
+  late final _$_numberAtom =
+      Atom(name: '_ClientStore._number', context: context);
+
+  @override
+  String get _number {
+    _$_numberAtom.reportRead();
+    return super._number;
+  }
+
+  @override
+  set _number(String value) {
+    _$_numberAtom.reportWrite(value, super._number, () {
+      super._number = value;
+    });
+  }
+
+  late final _$_complementAtom =
+      Atom(name: '_ClientStore._complement', context: context);
+
+  @override
+  String? get _complement {
+    _$_complementAtom.reportRead();
+    return super._complement;
+  }
+
+  @override
+  set _complement(String? value) {
+    _$_complementAtom.reportWrite(value, super._complement, () {
+      super._complement = value;
     });
   }
 
@@ -301,9 +302,9 @@ mixin _$ClientStore on _ClientStore, Store {
       AsyncAction('_ClientStore.addDetailsUsers', context: context);
 
   @override
-  Future<dynamic> addDetailsUsers(Map<String, dynamic> usuariosMap, String id) {
+  Future<dynamic> addDetailsUsers(Map<String, dynamic> userInfoMap, String id) {
     return _$addDetailsUsersAsyncAction
-        .run(() => super.addDetailsUsers(usuariosMap, id));
+        .run(() => super.addDetailsUsers(userInfoMap, id));
   }
 
   late final _$duplicateEntryCheckAsyncAction =
@@ -315,11 +316,19 @@ mixin _$ClientStore on _ClientStore, Store {
         .run(() => super.duplicateEntryCheck());
   }
 
+  late final _$searchCepAsyncAction =
+      AsyncAction('_ClientStore.searchCep', context: context);
+
+  @override
+  Future<void> searchCep(String cep) {
+    return _$searchCepAsyncAction.run(() => super.searchCep(cep));
+  }
+
   late final _$_ClientStoreActionController =
       ActionController(name: '_ClientStore', context: context);
 
   @override
-  dynamic userUID() {
+  String userUID() {
     final _$actionInfo = _$_ClientStoreActionController.startAction(
         name: '_ClientStore.userUID');
     try {
@@ -330,7 +339,7 @@ mixin _$ClientStore on _ClientStore, Store {
   }
 
   @override
-  dynamic getCEP() {
+  String getCEP() {
     final _$actionInfo =
         _$_ClientStoreActionController.startAction(name: '_ClientStore.getCEP');
     try {
@@ -341,7 +350,7 @@ mixin _$ClientStore on _ClientStore, Store {
   }
 
   @override
-  dynamic getStreet() {
+  String getStreet() {
     final _$actionInfo = _$_ClientStoreActionController.startAction(
         name: '_ClientStore.getStreet');
     try {
@@ -352,7 +361,29 @@ mixin _$ClientStore on _ClientStore, Store {
   }
 
   @override
-  dynamic getDistrict() {
+  String getNumber() {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.getNumber');
+    try {
+      return super.getNumber();
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String? getComplement() {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.getComplement');
+    try {
+      return super.getComplement();
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String getDistrict() {
     final _$actionInfo = _$_ClientStoreActionController.startAction(
         name: '_ClientStore.getDistrict');
     try {
@@ -363,7 +394,7 @@ mixin _$ClientStore on _ClientStore, Store {
   }
 
   @override
-  dynamic getCity() {
+  String getCity() {
     final _$actionInfo = _$_ClientStoreActionController.startAction(
         name: '_ClientStore.getCity');
     try {
@@ -374,7 +405,7 @@ mixin _$ClientStore on _ClientStore, Store {
   }
 
   @override
-  dynamic getState() {
+  String getState() {
     final _$actionInfo = _$_ClientStoreActionController.startAction(
         name: '_ClientStore.getState');
     try {
@@ -423,6 +454,28 @@ mixin _$ClientStore on _ClientStore, Store {
         _$_ClientStoreActionController.startAction(name: '_ClientStore.setCEP');
     try {
       return super.setCEP(cep);
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setNumber(String number) {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.setNumber');
+    try {
+      return super.setNumber(number);
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setComplement(String? complement) {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.setComplement');
+    try {
+      return super.setComplement(complement);
     } finally {
       _$_ClientStoreActionController.endAction(_$actionInfo);
     }
@@ -543,7 +596,6 @@ mixin _$ClientStore on _ClientStore, Store {
     return '''
 isVisible: ${isVisible},
 isError: ${isError},
-textError: ${textError},
 trueCEP: ${trueCEP}
     ''';
   }

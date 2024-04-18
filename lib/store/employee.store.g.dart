@@ -41,19 +41,19 @@ mixin _$EmployeeStore on _EmployeeStore, Store {
     });
   }
 
-  late final _$textErrorAtom =
-      Atom(name: '_EmployeeStore.textError', context: context);
+  late final _$_textErrorAtom =
+      Atom(name: '_EmployeeStore._textError', context: context);
 
   @override
-  String get textError {
-    _$textErrorAtom.reportRead();
-    return super.textError;
+  String get _textError {
+    _$_textErrorAtom.reportRead();
+    return super._textError;
   }
 
   @override
-  set textError(String value) {
-    _$textErrorAtom.reportWrite(value, super.textError, () {
-      super.textError = value;
+  set _textError(String value) {
+    _$_textErrorAtom.reportWrite(value, super._textError, () {
+      super._textError = value;
     });
   }
 
@@ -168,19 +168,19 @@ mixin _$EmployeeStore on _EmployeeStore, Store {
     });
   }
 
-  late final _$_cargoAtom =
-      Atom(name: '_EmployeeStore._cargo', context: context);
+  late final _$_positionAtom =
+      Atom(name: '_EmployeeStore._position', context: context);
 
   @override
-  String get _cargo {
-    _$_cargoAtom.reportRead();
-    return super._cargo;
+  String get _position {
+    _$_positionAtom.reportRead();
+    return super._position;
   }
 
   @override
-  set _cargo(String value) {
-    _$_cargoAtom.reportWrite(value, super._cargo, () {
-      super._cargo = value;
+  set _position(String value) {
+    _$_positionAtom.reportWrite(value, super._position, () {
+      super._position = value;
     });
   }
 
@@ -212,20 +212,40 @@ mixin _$EmployeeStore on _EmployeeStore, Store {
       AsyncAction('_EmployeeStore.addDetailsUsers', context: context);
 
   @override
-  Future<dynamic> addDetailsUsers(Map<String, dynamic> usuariosMap, String id) {
+  Future<dynamic> addDetailsUsers(Map<String, dynamic> userInfoMap, String id) {
     return _$addDetailsUsersAsyncAction
-        .run(() => super.addDetailsUsers(usuariosMap, id));
+        .run(() => super.addDetailsUsers(userInfoMap, id));
+  }
+
+  late final _$duplicateEntryCheckAsyncAction =
+      AsyncAction('_EmployeeStore.duplicateEntryCheck', context: context);
+
+  @override
+  Future<dynamic> duplicateEntryCheck() {
+    return _$duplicateEntryCheckAsyncAction
+        .run(() => super.duplicateEntryCheck());
   }
 
   late final _$_EmployeeStoreActionController =
       ActionController(name: '_EmployeeStore', context: context);
 
   @override
-  dynamic userUID() {
+  String userUID() {
     final _$actionInfo = _$_EmployeeStoreActionController.startAction(
         name: '_EmployeeStore.userUID');
     try {
       return super.userUID();
+    } finally {
+      _$_EmployeeStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  int getLevel() {
+    final _$actionInfo = _$_EmployeeStoreActionController.startAction(
+        name: '_EmployeeStore.getLevel');
+    try {
+      return super.getLevel();
     } finally {
       _$_EmployeeStoreActionController.endAction(_$actionInfo);
     }
@@ -276,11 +296,11 @@ mixin _$EmployeeStore on _EmployeeStore, Store {
   }
 
   @override
-  void setCargo(String cargo) {
+  void setPosition(String position) {
     final _$actionInfo = _$_EmployeeStoreActionController.startAction(
-        name: '_EmployeeStore.setCargo');
+        name: '_EmployeeStore.setPosition');
     try {
-      return super.setCargo(cargo);
+      return super.setPosition(position);
     } finally {
       _$_EmployeeStoreActionController.endAction(_$actionInfo);
     }
@@ -312,8 +332,7 @@ mixin _$EmployeeStore on _EmployeeStore, Store {
   String toString() {
     return '''
 isVisible: ${isVisible},
-isError: ${isError},
-textError: ${textError}
+isError: ${isError}
     ''';
   }
 }

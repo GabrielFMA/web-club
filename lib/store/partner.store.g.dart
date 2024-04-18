@@ -25,19 +25,19 @@ mixin _$PartnerStore on _PartnerStore, Store {
     });
   }
 
-  late final _$textErrorAtom =
-      Atom(name: '_PartnerStore.textError', context: context);
+  late final _$_textErrorAtom =
+      Atom(name: '_PartnerStore._textError', context: context);
 
   @override
-  String get textError {
-    _$textErrorAtom.reportRead();
-    return super.textError;
+  String get _textError {
+    _$_textErrorAtom.reportRead();
+    return super._textError;
   }
 
   @override
-  set textError(String value) {
-    _$textErrorAtom.reportWrite(value, super.textError, () {
-      super.textError = value;
+  set _textError(String value) {
+    _$_textErrorAtom.reportWrite(value, super._textError, () {
+      super._textError = value;
     });
   }
 
@@ -165,6 +165,38 @@ mixin _$PartnerStore on _PartnerStore, Store {
     });
   }
 
+  late final _$_numberAtom =
+      Atom(name: '_PartnerStore._number', context: context);
+
+  @override
+  String get _number {
+    _$_numberAtom.reportRead();
+    return super._number;
+  }
+
+  @override
+  set _number(String value) {
+    _$_numberAtom.reportWrite(value, super._number, () {
+      super._number = value;
+    });
+  }
+
+  late final _$_complementAtom =
+      Atom(name: '_PartnerStore._complement', context: context);
+
+  @override
+  String? get _complement {
+    _$_complementAtom.reportRead();
+    return super._complement;
+  }
+
+  @override
+  set _complement(String? value) {
+    _$_complementAtom.reportWrite(value, super._complement, () {
+      super._complement = value;
+    });
+  }
+
   late final _$_districtAtom =
       Atom(name: '_PartnerStore._district', context: context);
 
@@ -266,14 +298,6 @@ mixin _$PartnerStore on _PartnerStore, Store {
         .run(() => super.addDetailsClinic(clinicMap, id));
   }
 
-  late final _$fetchClinicsAsyncAction =
-      AsyncAction('_PartnerStore.fetchClinics', context: context);
-
-  @override
-  Future<List<Map<String, dynamic>>> fetchClinics() {
-    return _$fetchClinicsAsyncAction.run(() => super.fetchClinics());
-  }
-
   late final _$duplicateEntryCheckAsyncAction =
       AsyncAction('_PartnerStore.duplicateEntryCheck', context: context);
 
@@ -295,7 +319,7 @@ mixin _$PartnerStore on _PartnerStore, Store {
       ActionController(name: '_PartnerStore', context: context);
 
   @override
-  dynamic getidClinic() {
+  String getidClinic() {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
         name: '_PartnerStore.getidClinic');
     try {
@@ -306,7 +330,7 @@ mixin _$PartnerStore on _PartnerStore, Store {
   }
 
   @override
-  dynamic getName() {
+  String getName() {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
         name: '_PartnerStore.getName');
     try {
@@ -317,7 +341,7 @@ mixin _$PartnerStore on _PartnerStore, Store {
   }
 
   @override
-  dynamic getEmail() {
+  String getEmail() {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
         name: '_PartnerStore.getEmail');
     try {
@@ -328,7 +352,7 @@ mixin _$PartnerStore on _PartnerStore, Store {
   }
 
   @override
-  dynamic getCnpj() {
+  String getCnpj() {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
         name: '_PartnerStore.getCnpj');
     try {
@@ -339,7 +363,7 @@ mixin _$PartnerStore on _PartnerStore, Store {
   }
 
   @override
-  dynamic getPhone() {
+  String getPhone() {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
         name: '_PartnerStore.getPhone');
     try {
@@ -350,7 +374,7 @@ mixin _$PartnerStore on _PartnerStore, Store {
   }
 
   @override
-  dynamic getExam() {
+  int? getExam() {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
         name: '_PartnerStore.getExam');
     try {
@@ -361,7 +385,7 @@ mixin _$PartnerStore on _PartnerStore, Store {
   }
 
   @override
-  dynamic getListExam() {
+  List<String> getListExam() {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
         name: '_PartnerStore.getListExam');
     try {
@@ -372,7 +396,7 @@ mixin _$PartnerStore on _PartnerStore, Store {
   }
 
   @override
-  dynamic getCEP() {
+  String getCEP() {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
         name: '_PartnerStore.getCEP');
     try {
@@ -383,7 +407,7 @@ mixin _$PartnerStore on _PartnerStore, Store {
   }
 
   @override
-  dynamic getStreet() {
+  String getStreet() {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
         name: '_PartnerStore.getStreet');
     try {
@@ -394,7 +418,29 @@ mixin _$PartnerStore on _PartnerStore, Store {
   }
 
   @override
-  dynamic getDistrict() {
+  String getNumber() {
+    final _$actionInfo = _$_PartnerStoreActionController.startAction(
+        name: '_PartnerStore.getNumber');
+    try {
+      return super.getNumber();
+    } finally {
+      _$_PartnerStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String? getComplement() {
+    final _$actionInfo = _$_PartnerStoreActionController.startAction(
+        name: '_PartnerStore.getComplement');
+    try {
+      return super.getComplement();
+    } finally {
+      _$_PartnerStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String getDistrict() {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
         name: '_PartnerStore.getDistrict');
     try {
@@ -405,7 +451,7 @@ mixin _$PartnerStore on _PartnerStore, Store {
   }
 
   @override
-  dynamic getCity() {
+  String getCity() {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
         name: '_PartnerStore.getCity');
     try {
@@ -416,7 +462,7 @@ mixin _$PartnerStore on _PartnerStore, Store {
   }
 
   @override
-  dynamic getState() {
+  String getState() {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
         name: '_PartnerStore.getState');
     try {
@@ -504,6 +550,28 @@ mixin _$PartnerStore on _PartnerStore, Store {
   }
 
   @override
+  void setNumber(String number) {
+    final _$actionInfo = _$_PartnerStoreActionController.startAction(
+        name: '_PartnerStore.setNumber');
+    try {
+      return super.setNumber(number);
+    } finally {
+      _$_PartnerStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setComplement(String? complement) {
+    final _$actionInfo = _$_PartnerStoreActionController.startAction(
+        name: '_PartnerStore.setComplement');
+    try {
+      return super.setComplement(complement);
+    } finally {
+      _$_PartnerStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setStreet(String street) {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
         name: '_PartnerStore.setStreet');
@@ -584,7 +652,6 @@ mixin _$PartnerStore on _PartnerStore, Store {
   String toString() {
     return '''
 isError: ${isError},
-textError: ${textError},
 trueCEP: ${trueCEP}
     ''';
   }

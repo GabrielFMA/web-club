@@ -29,9 +29,6 @@ class _RegisterClientState extends State<RegisterClient> {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<ClientStore>(context);
-
-    store.textError = '';
-
     return Scaffold(
       backgroundColor: Colors.green[200],
       body: Row(
@@ -71,9 +68,9 @@ class _RegisterClientState extends State<RegisterClient> {
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
+                                        //Name field
                                         TextFieldString(
-                                          icon: Icon(MdiIcons
-                                              .accountOutline),
+                                          icon: Icon(MdiIcons.accountOutline),
                                           hintText: "Digite o nome do cliente",
                                           text: _nomeController.text,
                                           shouldValidate: true,
@@ -85,9 +82,17 @@ class _RegisterClientState extends State<RegisterClient> {
                                             return null;
                                           },
                                         ),
+
+                                        //CPF field
                                         TextFieldString(
                                           icon: Icon(
-                                              MdiIcons.cardAccountDetailsOutline),
+                                            MdiIcons.cardAccountDetailsOutline,
+                                            color: store
+                                                    .getTextError()
+                                                    .contains('Contrato')
+                                                ? Colors.red
+                                                : null,
+                                          ),
                                           hintText: "CPF",
                                           text: _cpfController.text,
                                           shouldValidate: true,
@@ -106,8 +111,17 @@ class _RegisterClientState extends State<RegisterClient> {
                                             return null;
                                           },
                                         ),
+
+                                        //Email field
                                         TextFieldString(
-                                          icon: Icon(MdiIcons.emailOutline),
+                                          icon: Icon(
+                                            MdiIcons.emailOutline,
+                                            color: store
+                                                    .getTextError()
+                                                    .contains('Contrato')
+                                                ? Colors.red
+                                                : null,
+                                          ),
                                           hintText: "Digite seu email",
                                           text: _emailController.text,
                                           shouldValidate: true,
@@ -115,10 +129,17 @@ class _RegisterClientState extends State<RegisterClient> {
                                             if (text!.isEmpty) {
                                               return "Digite seu Email";
                                             }
+                                            if (!RegExp(
+                                                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                                .hasMatch(text)) {
+                                              return "Email inválido";
+                                            }
                                             store.setEmail(text);
                                             return null;
                                           },
                                         ),
+
+                                        //Phone field
                                         TextFieldString(
                                           icon: Icon(MdiIcons.phoneOutline),
                                           hintText: "Telefone",
@@ -144,7 +165,8 @@ class _RegisterClientState extends State<RegisterClient> {
                                         TextFieldString(
                                           icon: Icon(
                                             MdiIcons.fileDocumentEditOutline,
-                                            color: store.textError
+                                            color: store
+                                                    .getTextError()
                                                     .contains('Contrato')
                                                 ? Colors.red
                                                 : null,
@@ -173,13 +195,17 @@ class _RegisterClientState extends State<RegisterClient> {
                                     ),
                                   ),
                                 ),
+
+                                //Space
                                 const SizedBox(width: 20),
+
                                 Expanded(
                                   child: Form(
                                     key: formKey2,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
+                                        //CEP field
                                         TextFieldString(
                                           icon: Icon(MdiIcons.mapMarkerOutline),
                                           hintText: "CEP",
@@ -208,6 +234,8 @@ class _RegisterClientState extends State<RegisterClient> {
                                             return null;
                                           },
                                         ),
+
+                                        //Street field
                                         TextFieldString(
                                           icon: Icon(
                                             store.trueCEP
@@ -224,7 +252,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                           text: _contractController.text,
                                           shouldValidate: true,
                                           validator: (_) {
-                                            if (store.getStreet()!.isEmpty) {
+                                            if (store.getStreet().isEmpty) {
                                               return "Digite sua Rua";
                                             }
                                             return null;
@@ -233,6 +261,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                         Row(
                                           children: [
                                             Expanded(
+                                              //Number field
                                               child: TextFieldString(
                                                 icon: Icon(
                                                     MdiIcons.pencilOutline),
@@ -248,8 +277,12 @@ class _RegisterClientState extends State<RegisterClient> {
                                                 },
                                               ),
                                             ),
+
+                                            //Space
                                             const SizedBox(width: 10),
+
                                             Expanded(
+                                              //Complement field
                                               child: TextFieldString(
                                                 icon: Icon(
                                                     MdiIcons.pencilOutline),
@@ -264,6 +297,8 @@ class _RegisterClientState extends State<RegisterClient> {
                                             ),
                                           ],
                                         ),
+
+                                        //District field
                                         TextFieldString(
                                           icon: Icon(
                                             store.trueCEP
@@ -280,7 +315,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                           text: _contractController.text,
                                           shouldValidate: true,
                                           validator: (_) {
-                                            if (store.getDistrict()!.isEmpty) {
+                                            if (store.getDistrict().isEmpty) {
                                               return "Digite seu Bairro";
                                             }
                                             return null;
@@ -289,6 +324,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                         Row(
                                           children: [
                                             Expanded(
+                                              //City field
                                               child: TextFieldString(
                                                 icon: Icon(
                                                   store.trueCEP
@@ -306,17 +342,19 @@ class _RegisterClientState extends State<RegisterClient> {
                                                 text: _contractController.text,
                                                 shouldValidate: true,
                                                 validator: (_) {
-                                                  if (store
-                                                      .getCity()!
-                                                      .isEmpty) {
+                                                  if (store.getCity().isEmpty) {
                                                     return "Digite sua Cidade";
                                                   }
                                                   return null;
                                                 },
                                               ),
                                             ),
+
+                                            //Space
                                             const SizedBox(width: 10),
+
                                             Expanded(
+                                              //State field
                                               child: TextFieldString(
                                                 icon: Icon(
                                                   store.trueCEP
@@ -335,7 +373,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                                 shouldValidate: true,
                                                 validator: (_) {
                                                   if (store
-                                                      .getState()!
+                                                      .getState()
                                                       .isEmpty) {
                                                     return "Digite seu Estado";
                                                   }
@@ -351,8 +389,11 @@ class _RegisterClientState extends State<RegisterClient> {
                                 ),
                               ],
                             ),
+
+                            //Space
                             const SizedBox(height: 20),
-                            
+
+                            //Register button
                             buttonDefault(
                               context,
                               () async {
@@ -365,6 +406,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                   await store.duplicateEntryCheck();
 
                                   if (!store.getIsError()) {
+                                    //Confirmation screen
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -379,7 +421,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                buttonDialogDefault(
+                                                buttonDialog(
                                                   text: 'SIM',
                                                   onClick: () async {
                                                     await store
@@ -402,7 +444,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                                     }
                                                   },
                                                 ),
-                                                buttonDialogDefault(
+                                                buttonDialog(
                                                   text: 'NÃO',
                                                   onClick: () {
                                                     Navigator.pop(context);
@@ -418,6 +460,21 @@ class _RegisterClientState extends State<RegisterClient> {
                                 }
                               },
                             ),
+
+                            //Space
+                            const SizedBox(height: 15),
+
+                            //Register error
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              child: Text(
+                                store.getTextError(),
+                                style: const TextStyle(
+                                  color: Colors.red,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -432,7 +489,8 @@ class _RegisterClientState extends State<RegisterClient> {
     );
   }
 
-  Widget buttonDialogDefault({required String text, VoidCallback? onClick}) {
+  //Button screen
+  Widget buttonDialog({required String text, VoidCallback? onClick}) {
     return Container(
       height: 40,
       width: 105,
@@ -450,6 +508,7 @@ class _RegisterClientState extends State<RegisterClient> {
     );
   }
 
+  //Button controller
   Widget buttonDefault(BuildContext context, VoidCallback? onClick) {
     return Container(
       height: 50,

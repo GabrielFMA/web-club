@@ -72,6 +72,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
+                                        //Name field
                                         TextFieldString(
                                           icon: Icon(MdiIcons
                                               .accountSupervisorCircleOutline),
@@ -86,6 +87,8 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                             return null;
                                           },
                                         ),
+
+                                        //CPF field
                                         TextFieldString(
                                           icon: Icon(
                                               MdiIcons.officeBuildingOutline),
@@ -107,6 +110,8 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                             return null;
                                           },
                                         ),
+
+                                        //Email field
                                         TextFieldString(
                                           icon: Icon(MdiIcons.emailOutline),
                                           hintText: "Digite seu email",
@@ -116,10 +121,17 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                             if (text!.isEmpty) {
                                               return "Digite seu Email";
                                             }
+                                            if (!RegExp(
+                                                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                                .hasMatch(text)) {
+                                              return "Email inválido";
+                                            }
                                             store.setEmail(text);
                                             return null;
                                           },
                                         ),
+
+                                        //Phone field
                                         TextFieldString(
                                           icon: Icon(MdiIcons.phoneOutline),
                                           hintText: "Telefone",
@@ -140,7 +152,11 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                             return null;
                                           },
                                         ),
+
+                                        //Space
                                         const SizedBox(height: 5),
+
+                                        //Exams container
                                         Container(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 8),
@@ -200,13 +216,17 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                     ),
                                   ),
                                 ),
+
+                                //Space
                                 const SizedBox(width: 20),
+
                                 Expanded(
                                   child: Form(
                                     key: formKey2,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
+                                        //CEP field
                                         TextFieldString(
                                           icon: Icon(MdiIcons.mapMarkerOutline),
                                           hintText: "CEP",
@@ -235,6 +255,8 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                             return null;
                                           },
                                         ),
+
+                                        //Street field
                                         TextFieldString(
                                           icon: Icon(
                                             store.trueCEP
@@ -251,7 +273,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                           text: _contractController.text,
                                           shouldValidate: true,
                                           validator: (_) {
-                                            if (store.getStreet()!.isEmpty) {
+                                            if (store.getStreet().isEmpty) {
                                               return "Digite sua Rua";
                                             }
                                             return null;
@@ -260,6 +282,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                         Row(
                                           children: [
                                             Expanded(
+                                              //Number field
                                               child: TextFieldString(
                                                 icon: Icon(
                                                     MdiIcons.pencilOutline),
@@ -270,12 +293,14 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                                   if (text!.isEmpty) {
                                                     return "Digite o número";
                                                   }
+                                                  store.setNumber(text);
                                                   return null;
                                                 },
                                               ),
                                             ),
                                             const SizedBox(width: 10),
                                             Expanded(
+                                              //Complement field
                                               child: TextFieldString(
                                                 icon: Icon(
                                                     MdiIcons.pencilOutline),
@@ -283,12 +308,15 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                                 text: _contractController.text,
                                                 shouldValidate: true,
                                                 validator: (text) {
+                                                  store.setComplement(text);
                                                   return null;
                                                 },
                                               ),
                                             ),
                                           ],
                                         ),
+
+                                        //District field
                                         TextFieldString(
                                           icon: Icon(
                                             store.trueCEP
@@ -305,7 +333,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                           text: _contractController.text,
                                           shouldValidate: true,
                                           validator: (_) {
-                                            if (store.getDistrict()!.isEmpty) {
+                                            if (store.getDistrict().isEmpty) {
                                               return "Digite seu Bairro";
                                             }
                                             return null;
@@ -314,6 +342,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                         Row(
                                           children: [
                                             Expanded(
+                                              //City field
                                               child: TextFieldString(
                                                 icon: Icon(
                                                   store.trueCEP
@@ -331,9 +360,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                                 text: _contractController.text,
                                                 shouldValidate: true,
                                                 validator: (_) {
-                                                  if (store
-                                                      .getCity()!
-                                                      .isEmpty) {
+                                                  if (store.getCity().isEmpty) {
                                                     return "Digite sua Cidade";
                                                   }
                                                   return null;
@@ -342,6 +369,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                             ),
                                             const SizedBox(width: 10),
                                             Expanded(
+                                              //State field
                                               child: TextFieldString(
                                                 icon: Icon(
                                                   store.trueCEP
@@ -360,7 +388,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                                 shouldValidate: true,
                                                 validator: (_) {
                                                   if (store
-                                                      .getState()!
+                                                      .getState()
                                                       .isEmpty) {
                                                     return "Digite seu Estado";
                                                   }
@@ -377,7 +405,6 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                               ],
                             ),
                             const SizedBox(height: 20),
-
                             buttonDefault(
                               context,
                               () async {
@@ -395,6 +422,21 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                   );
                                 }
                               },
+                            ),
+
+                            //Space
+                            const SizedBox(height: 15),
+
+                            //Partner erros
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              child: Text(
+                                store.getTextError(),
+                                style: const TextStyle(
+                                  color: Colors.red,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ],
                         ),
