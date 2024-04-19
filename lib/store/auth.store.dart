@@ -19,7 +19,7 @@ abstract class _AuthStore with Store {
   bool isVisible = false;
 
   @observable
-  int level = 3;
+  int _level = 3;
 
   @observable
   bool _isError = false;
@@ -50,7 +50,7 @@ abstract class _AuthStore with Store {
 
   //Getters
   @action
-  int getLevel() => level;
+  int getLevel() => _level;
 
   bool getIsError() => _isError;
 
@@ -86,7 +86,7 @@ abstract class _AuthStore with Store {
   void setCargo(String cargo) => _cargo = cargo;
 
   @action
-  void setLevel(int level) => this.level = level;
+  void setLevel(int level) => _level = level;
 
   //Password field
   @action
@@ -129,7 +129,7 @@ abstract class _AuthStore with Store {
     try {
       await _auth.signOut();
       _currentUser = null;
-      level = 3;
+      _level = 3;
     } catch (e) {
       print(e);
     }
@@ -163,13 +163,13 @@ abstract class _AuthStore with Store {
 
           switch (_cargo) {
             case 'Administrador':
-              level = 0;
+              _level = 0;
               break;
             case 'Gerente':
-              level = 1;
+              _level = 1;
               break;
             case 'Funcionario':
-              level = 2;
+              _level = 2;
               break;
           }
         } else {

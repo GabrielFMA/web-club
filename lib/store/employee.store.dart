@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, unused_field, avoid_print, use_build_context_synchronously
+// ignore_for_file: library_private_types_in_public_api, unused_field, avoid_print, use_build_context_synchronously, equal_keys_in_map
 
 import 'dart:convert';
 
@@ -24,7 +24,7 @@ abstract class _EmployeeStore with Store {
 
   // Errors
   @observable
-  bool isError = false;
+  bool _isError = false;
 
   @observable
   String _textError = '';
@@ -60,7 +60,7 @@ abstract class _EmployeeStore with Store {
   // Get functions
 
   // Errors
-  bool getIsError() => isError;
+  bool getIsError() => _isError;
 
   String getTextError() => _textError;
 
@@ -172,6 +172,14 @@ Future duplicateEntryCheck() async {
           .collection("Funcionarios")
           .where("Email", isEqualTo: _email.toLowerCase())
           .get(),
+      'Email2': FirebaseFirestore.instance
+          .collection("Parceiros")
+          .where("Email", isEqualTo: _email.toLowerCase())
+          .get(),
+      'Email': FirebaseFirestore.instance
+          .collection("Clientes")
+          .where("Email", isEqualTo: _email.toLowerCase())
+          .get(),
     };
 
     await Future.forEach(queries.entries, (entry) async {
@@ -186,10 +194,10 @@ Future duplicateEntryCheck() async {
       _textError += duplicates.length > 1
           ? ' já foram cadastrados'
           : ' já foi cadastrado';
-      isError = true;
+      _isError = true;
     } else {
       _textError = '';
-      isError = false;
+      _isError = false;
     }
   } catch (e) {
     print('Erro ao verificar duplicidades: $e');

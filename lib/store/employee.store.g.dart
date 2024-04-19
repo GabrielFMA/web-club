@@ -25,19 +25,19 @@ mixin _$EmployeeStore on _EmployeeStore, Store {
     });
   }
 
-  late final _$isErrorAtom =
-      Atom(name: '_EmployeeStore.isError', context: context);
+  late final _$_isErrorAtom =
+      Atom(name: '_EmployeeStore._isError', context: context);
 
   @override
-  bool get isError {
-    _$isErrorAtom.reportRead();
-    return super.isError;
+  bool get _isError {
+    _$_isErrorAtom.reportRead();
+    return super._isError;
   }
 
   @override
-  set isError(bool value) {
-    _$isErrorAtom.reportWrite(value, super.isError, () {
-      super.isError = value;
+  set _isError(bool value) {
+    _$_isErrorAtom.reportWrite(value, super._isError, () {
+      super._isError = value;
     });
   }
 
@@ -331,8 +331,7 @@ mixin _$EmployeeStore on _EmployeeStore, Store {
   @override
   String toString() {
     return '''
-isVisible: ${isVisible},
-isError: ${isError}
+isVisible: ${isVisible}
     ''';
   }
 }

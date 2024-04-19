@@ -25,18 +25,18 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
-  late final _$levelAtom = Atom(name: '_AuthStore.level', context: context);
+  late final _$_levelAtom = Atom(name: '_AuthStore._level', context: context);
 
   @override
-  int get level {
-    _$levelAtom.reportRead();
-    return super.level;
+  int get _level {
+    _$_levelAtom.reportRead();
+    return super._level;
   }
 
   @override
-  set level(int value) {
-    _$levelAtom.reportWrite(value, super.level, () {
-      super.level = value;
+  set _level(int value) {
+    _$_levelAtom.reportWrite(value, super._level, () {
+      super._level = value;
     });
   }
 
@@ -310,8 +310,7 @@ mixin _$AuthStore on _AuthStore, Store {
   @override
   String toString() {
     return '''
-isVisible: ${isVisible},
-level: ${level}
+isVisible: ${isVisible}
     ''';
   }
 }

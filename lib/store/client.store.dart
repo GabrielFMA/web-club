@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, equal_keys_in_map
 
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,7 +24,7 @@ abstract class _ClientStore with Store {
 
   // Errors
   @observable
-  bool isError = false;
+  bool _isError = false;
 
   @observable
   String _textError = '';
@@ -78,7 +78,7 @@ abstract class _ClientStore with Store {
   // Get functions
 
   // Errors
-  bool getIsError() => isError;
+  bool getIsError() => _isError;
 
   String getTextError() => _textError;
 
@@ -232,6 +232,14 @@ abstract class _ClientStore with Store {
             .collection("Usuarios")
             .where("Email", isEqualTo: _email.toLowerCase())
             .get(),
+        'Email': FirebaseFirestore.instance
+            .collection("Parceiros")
+            .where("Email", isEqualTo: _email.toLowerCase())
+            .get(),
+        'Email2': FirebaseFirestore.instance
+            .collection("Funcionarios")
+            .where("Email", isEqualTo: _email.toLowerCase())
+            .get(),
         'CPF': FirebaseFirestore.instance
             .collection("Usuarios")
             .where("CPF", isEqualTo: _cpf.toLowerCase())
@@ -262,10 +270,10 @@ abstract class _ClientStore with Store {
         _textError += duplicates.length > 1
             ? ' já foram cadastrados'
             : ' já foi cadastrado';
-        isError = true;
+        _isError = true;
       } else {
         _textError = '';
-        isError = false;
+        _isError = false;
       }
     } catch (e) {
       print('Erro ao verificar duplicidades: $e');
@@ -278,14 +286,14 @@ abstract class _ClientStore with Store {
     print('CEP');
     try {
       _textError = '';
-      isError = false;
+      _isError = false;
       restoreData();
       var rsp =
           await http.get(Uri.parse("https://viacep.com.br/ws/$cep/json/"));
 
       if (rsp.body.contains('"erro": true')) {
         _textError = 'Invalid CEP';
-        isError = true;
+        _isError = true;
         return;
       } else {
         Map<String, dynamic> responseData = json.decode(rsp.body);
@@ -300,7 +308,7 @@ abstract class _ClientStore with Store {
       }
     } on http.ClientException catch (_) {
       _textError = 'Invalid CEP';
-      isError = true;
+      _isError = true;
       return;
     } catch (e) {
       print('Error registering CEP: $e');

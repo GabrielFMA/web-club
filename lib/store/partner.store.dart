@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, equal_keys_in_map
 
 import 'dart:convert';
 import 'dart:math';
@@ -174,6 +174,10 @@ abstract class _PartnerStore with Store {
     try {
       _idClinic = generateRandomId();
 
+      Map<String, dynamic> examMap = _listExam
+          .asMap()
+          .map((index, exam) => MapEntry(index.toString(), exam));
+
       Map<String, dynamic> addressMap = {
         "CEP": _cep,
         "Rua": _street,
@@ -190,15 +194,11 @@ abstract class _PartnerStore with Store {
         "CNPJ": _cnpj,
         "Email": _email,
         "Telefone": _phone,
-        "Endereço": addressMap
+        "Endereço": addressMap,
+        "Consultas": examMap
       };
 
-      Map<String, dynamic> examMap = _listExam
-          .asMap()
-          .map((index, exam) => MapEntry(index.toString(), exam));
-
       await addDetailsClinic(paternInfoMap, _idClinic);
-      await addSubcollectionData(_idClinic, examMap);
     } catch (e) {
       print('Erro ao fazer registro: $e');
       print('Tipo de exceção: ${e.runtimeType}');
@@ -223,24 +223,6 @@ abstract class _PartnerStore with Store {
     return randomId;
   }
 
-  Future<void> addSubcollectionData(String clinicId, dynamic data) async {
-    try {
-      String documentId = generateRandomId();
-      Map<String, dynamic> dataMap = {
-        "Exames": data,
-      };
-
-      await db
-          .collection("Parceiros")
-          .doc(clinicId)
-          .collection("Exames")
-          .doc(documentId)
-          .set(dataMap);
-    } catch (e) {
-      print('Erro ao adicionar dados à subcoleção: $e');
-    }
-  }
-
   @action
   Future duplicateEntryCheck() async {
     try {
@@ -253,6 +235,14 @@ abstract class _PartnerStore with Store {
             .get(),
         'Email': FirebaseFirestore.instance
             .collection("Parceiros")
+            .where("Email", isEqualTo: _email.toLowerCase())
+            .get(),
+        'Email2': FirebaseFirestore.instance
+            .collection("Funcionarios")
+            .where("Email", isEqualTo: _email.toLowerCase())
+            .get(),
+        'Email3': FirebaseFirestore.instance
+            .collection("Usuarios")
             .where("Email", isEqualTo: _email.toLowerCase())
             .get(),
         'CNPJ': FirebaseFirestore.instance

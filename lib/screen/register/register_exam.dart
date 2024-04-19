@@ -56,7 +56,7 @@ class _RegisterExamState extends State<RegisterExam> {
                             children: [
                               const ListTile(
                                 title: Text(
-                                  "Registrar Exames",
+                                  "Registrar Consulta",
                                   style: TextStyle(
                                     fontSize: 45,
                                     fontWeight: FontWeight.bold,
@@ -76,7 +76,7 @@ class _RegisterExamState extends State<RegisterExam> {
                                   }
                                   return TextFieldExam(
                                     context,
-                                    'Exame ${index + 1}',
+                                    'Consulta ${index + 1}',
                                     _textControllers[index],
                                   );
                                 },
@@ -164,7 +164,7 @@ class _RegisterExamState extends State<RegisterExam> {
         controller: controller, // Atribuir o controlador de texto ao campo
         validator: (text) {
           if (text!.isEmpty) {
-            return "Digite um exame";
+            return "Digite uma consulta";
           }
           return null;
         },

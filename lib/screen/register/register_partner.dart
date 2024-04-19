@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -177,7 +179,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                                   isExpanded: true,
                                                   value: valueExam,
                                                   hint: const Text(
-                                                    "Selecione a quantidade de exames",
+                                                    "Selecione a quantidade de consultas",
                                                     style: TextStyle(
                                                       color: Colors.black54,
                                                       fontSize: 16,
@@ -196,9 +198,9 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                                       value: valueItem,
                                                       child: Text(
                                                         valueItem > 1
-                                                            ? '$valueItem Exames'
+                                                            ? '$valueItem Consultas'
                                                             : (valueItem == 1
-                                                                ? '$valueItem Exame'
+                                                                ? '$valueItem Consulta'
                                                                 : ''),
                                                         style: const TextStyle(
                                                           color: Colors.black,
@@ -413,7 +415,9 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                 final isForm2Valid =
                                     formKey2.currentState!.validate();
 
-                                if (isForm1Valid && isForm2Valid) {
+                                await store.duplicateEntryCheck();
+                                
+                                if (isForm1Valid && isForm2Valid && !store.getIsError()) {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) =>

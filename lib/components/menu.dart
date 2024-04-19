@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -8,6 +10,7 @@ import 'package:web_simclub/screen/register/register_partner.dart';
 import 'package:web_simclub/screen/register/register_employee.dart';
 import 'package:web_simclub/store/auth.store.dart';
 import 'package:web_simclub/store/client.store.dart';
+import 'package:web_simclub/store/employee.store.dart';
 import 'package:web_simclub/store/partner.store.dart';
 
 class MenuWidget extends StatelessWidget {
@@ -18,6 +21,7 @@ class MenuWidget extends StatelessWidget {
     final store = Provider.of<AuthStore>(context);
     final client = Provider.of<ClientStore>(context);
     final partner = Provider.of<PartnerStore>(context);
+    final employee = Provider.of<EmployeeStore>(context);
 
     return Container(
       width: 300,
@@ -30,7 +34,7 @@ class MenuWidget extends StatelessWidget {
             children: [
               // Exit Button
               buildMenuItem(
-                text: 'Sair',
+                text: store.getName(),
                 icon: MdiIcons.exitToApp,
                 color: Colors.white,
                 onClick: () => {
@@ -77,14 +81,14 @@ class MenuWidget extends StatelessWidget {
               const Divider(color: Colors.white),
 
               // Register Client
-              if (store.level < 3)
+              if (store.getLevel() < 3)
                 buildMenuItem(
                   text: 'Registro Cliente',
                   icon: MdiIcons.accountPlusOutline,
                   onClick: () {
-                    store.restoreData();
                     client.restoreData();
                     partner.restoreData();
+                    employee.restoreData();
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const RegisterClient(),
@@ -94,14 +98,14 @@ class MenuWidget extends StatelessWidget {
                 ),
 
               // Register Employee
-              if (store.level < 2)
+              if (store.getLevel() < 2)
                 buildMenuItem(
                   text: 'Registro Funcionário',
                   icon: MdiIcons.badgeAccountHorizontalOutline,
                   onClick: () {
-                    store.restoreData();
                     client.restoreData();
                     partner.restoreData();
+                    employee.restoreData();
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const RegisterEmployee(),
@@ -111,14 +115,14 @@ class MenuWidget extends StatelessWidget {
                 ),
 
               // Register Partner
-              if (store.level < 2)
+              if (store.getLevel() < 2)
                 buildMenuItem(
                   text: 'Registro Parceiro',
                   icon: MdiIcons.handshakeOutline,
                   onClick: () {
-                    store.restoreData();
                     client.restoreData();
                     partner.restoreData();
+                    employee.restoreData();
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const RegisterPartner(),

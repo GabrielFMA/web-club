@@ -401,62 +401,60 @@ class _RegisterClientState extends State<RegisterClient> {
                                     formKey1.currentState!.validate();
                                 final isForm2Valid =
                                     formKey2.currentState!.validate();
+                                    
+                                await store.duplicateEntryCheck();
 
-                                if (isForm1Valid && isForm2Valid) {
-                                  await store.duplicateEntryCheck();
+                                if (isForm1Valid &&
+                                    isForm2Valid &&
+                                    !store.getIsError()) {
+                                  //Confirmation screen
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Registrar Cliente'),
+                                        content: const Text(
+                                            'Tem certeza que deseja registrar este cliente?'),
+                                        actions: <Widget>[
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              buttonDialog(
+                                                text: 'SIM',
+                                                onClick: () async {
+                                                  await store
+                                                      .signUpWithEmailPassword(
+                                                          context);
 
-                                  if (!store.getIsError()) {
-                                    //Confirmation screen
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title:
-                                              const Text('Registrar Cliente'),
-                                          content: const Text(
-                                              'Tem certeza que deseja registrar este cliente?'),
-                                          actions: <Widget>[
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                buttonDialog(
-                                                  text: 'SIM',
-                                                  onClick: () async {
-                                                    await store
-                                                        .signUpWithEmailPassword(
-                                                            context);
-
-                                                    if (!store.getIsError()) {
-                                                      store.restoreData();
-                                                      Navigator
-                                                          .pushAndRemoveUntil(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              const RegisterClient(),
-                                                        ),
-                                                        (route) => false,
-                                                      );
-                                                    } else {
-                                                      Navigator.pop(context);
-                                                    }
-                                                  },
-                                                ),
-                                                buttonDialog(
-                                                  text: 'NÃO',
-                                                  onClick: () {
+                                                  if (!store.getIsError()) {
+                                                    store.restoreData();
+                                                    Navigator
+                                                        .pushAndRemoveUntil(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const RegisterClient(),
+                                                      ),
+                                                      (route) => false,
+                                                    );
+                                                  } else {
                                                     Navigator.pop(context);
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  }
+                                                  }
+                                                },
+                                              ),
+                                              buttonDialog(
+                                                text: 'NÃO',
+                                                onClick: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
                                 }
                               },
                             ),

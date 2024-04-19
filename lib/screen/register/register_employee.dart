@@ -223,57 +223,60 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                               buttonDefault(
                                 context,
                                 () async {
-                                  if (formKey.currentState!.validate() &&
-                                      store.getLevel() > 2) {
-                                    await store.duplicateEntryCheck();
-                                    if (!store.getIsError()) {
-                                      //Confirmation screen
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text(
-                                                'Registrar Funcionário'),
-                                            content: const Text(
-                                                'Tem certeza que deseja registrar este funcionário?'),
-                                            actions: <Widget>[
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  buttonDialog(
-                                                    text: 'SIM',
-                                                    onClick: () async {
-                                                      await store
-                                                          .signUpWithEmailPassword(
-                                                              context);
+                                  final isFormValid =
+                                      formKey.currentState!.validate();
+                                      
+                                  await store.duplicateEntryCheck();
 
-                                                      store.restoreData();
-                                                      Navigator
-                                                          .pushAndRemoveUntil(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              const RegisterEmployee(),
-                                                        ),
-                                                        (route) => false,
-                                                      );
-                                                    },
-                                                  ),
-                                                  buttonDialog(
-                                                    text: 'NÃO',
-                                                    onClick: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    }
+                                  if (isFormValid &&
+                                      store.getLevel() > 2 &&
+                                      !store.getIsError()) {
+                                    //Confirmation screen
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text(
+                                              'Registrar Funcionário'),
+                                          content: const Text(
+                                              'Tem certeza que deseja registrar este funcionário?'),
+                                          actions: <Widget>[
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                buttonDialog(
+                                                  text: 'SIM',
+                                                  onClick: () async {
+                                                    await store
+                                                        .signUpWithEmailPassword(
+                                                            context);
+
+                                                    store.restoreData();
+                                                    Navigator
+                                                        .pushAndRemoveUntil(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const RegisterEmployee(),
+                                                      ),
+                                                      (route) => false,
+                                                    );
+                                                  },
+                                                ),
+                                                buttonDialog(
+                                                  text: 'NÃO',
+                                                  onClick: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   }
                                 },
                               ),
