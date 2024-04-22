@@ -295,6 +295,10 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                                   if (text!.isEmpty) {
                                                     return "Digite o número";
                                                   }
+                                                  if (!RegExp(r'^[0-9]+$')
+                                                      .hasMatch(text)) {
+                                                    return "Digite apenas números";
+                                                  }
                                                   store.setNumber(text);
                                                   return null;
                                                 },
@@ -406,7 +410,9 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 20),
+
+                            const SizedBox(height: 12),
+
                             buttonDefault(
                               context,
                               () async {
@@ -416,8 +422,10 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                     formKey2.currentState!.validate();
 
                                 await store.duplicateEntryCheck();
-                                
-                                if (isForm1Valid && isForm2Valid && !store.getIsError()) {
+
+                                if (isForm1Valid &&
+                                    isForm2Valid &&
+                                    !store.getIsError()) {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) =>

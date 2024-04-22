@@ -128,8 +128,7 @@ abstract class _AuthStore with Store {
   Future<void> signOut() async {
     try {
       await _auth.signOut();
-      _currentUser = null;
-      _level = 3;
+      restoreData();
     } catch (e) {
       print(e);
     }
@@ -144,9 +143,8 @@ abstract class _AuthStore with Store {
       final userCollection = db.collection("Usuarios");
       final userDoc = await userCollection.doc(_uidUser).get();
       if (userDoc.exists) {
-        _textError = 'Você não tem permissão';
+        _textError = 'Conta sem autorização para entrar';
         _isError = true;
-        restoreData();
         signOut();
       } else {
         final employeeCollection = db.collection("Funcionarios");
@@ -154,6 +152,7 @@ abstract class _AuthStore with Store {
 
         if (employeeDoc.exists) {
           final data = employeeDoc.data() as Map<String, dynamic>;
+          print('entrou');
 
           setName(data['Nome']);
           setEmail(data['Email']);
@@ -172,11 +171,12 @@ abstract class _AuthStore with Store {
               _level = 2;
               break;
           }
+          _isError = false;
         } else {
           _textError = 'Usuário não encontrado';
           _isError = true;
-          return;
         }
+        return;
       }
     } catch (e) {
       print(e);
@@ -189,6 +189,8 @@ abstract class _AuthStore with Store {
     setEmail('');
     setPhone('');
     setCargo('');
+    setLevel(3);
+    _currentUser = null;
   }
 
   // Função para lidar com diferentes erros de autenticação

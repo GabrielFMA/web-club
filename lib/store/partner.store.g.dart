@@ -9,19 +9,19 @@ part of 'partner.store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$PartnerStore on _PartnerStore, Store {
-  late final _$isErrorAtom =
-      Atom(name: '_PartnerStore.isError', context: context);
+  late final _$_isErrorAtom =
+      Atom(name: '_PartnerStore._isError', context: context);
 
   @override
-  bool get isError {
-    _$isErrorAtom.reportRead();
-    return super.isError;
+  bool get _isError {
+    _$_isErrorAtom.reportRead();
+    return super._isError;
   }
 
   @override
-  set isError(bool value) {
-    _$isErrorAtom.reportWrite(value, super.isError, () {
-      super.isError = value;
+  set _isError(bool value) {
+    _$_isErrorAtom.reportWrite(value, super._isError, () {
+      super._isError = value;
     });
   }
 
@@ -41,19 +41,19 @@ mixin _$PartnerStore on _PartnerStore, Store {
     });
   }
 
-  late final _$_idClinicAtom =
-      Atom(name: '_PartnerStore._idClinic', context: context);
+  late final _$_idPartnerAtom =
+      Atom(name: '_PartnerStore._idPartner', context: context);
 
   @override
-  String get _idClinic {
-    _$_idClinicAtom.reportRead();
-    return super._idClinic;
+  String get _idPartner {
+    _$_idPartnerAtom.reportRead();
+    return super._idPartner;
   }
 
   @override
-  set _idClinic(String value) {
-    _$_idClinicAtom.reportWrite(value, super._idClinic, () {
-      super._idClinic = value;
+  set _idPartner(String value) {
+    _$_idPartnerAtom.reportWrite(value, super._idPartner, () {
+      super._idPartner = value;
     });
   }
 
@@ -280,22 +280,23 @@ mixin _$PartnerStore on _PartnerStore, Store {
     });
   }
 
-  late final _$registrationClinicAsyncAction =
-      AsyncAction('_PartnerStore.registrationClinic', context: context);
+  late final _$registrationPartnerAsyncAction =
+      AsyncAction('_PartnerStore.registrationPartner', context: context);
 
   @override
-  Future<void> registrationClinic() {
-    return _$registrationClinicAsyncAction
-        .run(() => super.registrationClinic());
+  Future<void> registrationPartner() {
+    return _$registrationPartnerAsyncAction
+        .run(() => super.registrationPartner());
   }
 
-  late final _$addDetailsClinicAsyncAction =
-      AsyncAction('_PartnerStore.addDetailsClinic', context: context);
+  late final _$addDetailsPartnerAsyncAction =
+      AsyncAction('_PartnerStore.addDetailsPartner', context: context);
 
   @override
-  Future<dynamic> addDetailsClinic(Map<String, dynamic> clinicMap, String id) {
-    return _$addDetailsClinicAsyncAction
-        .run(() => super.addDetailsClinic(clinicMap, id));
+  Future<dynamic> addDetailsPartner(
+      Map<String, dynamic> PartnerMap, String id) {
+    return _$addDetailsPartnerAsyncAction
+        .run(() => super.addDetailsPartner(PartnerMap, id));
   }
 
   late final _$duplicateEntryCheckAsyncAction =
@@ -319,11 +320,11 @@ mixin _$PartnerStore on _PartnerStore, Store {
       ActionController(name: '_PartnerStore', context: context);
 
   @override
-  String getidClinic() {
+  String getidPartner() {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
-        name: '_PartnerStore.getidClinic');
+        name: '_PartnerStore.getidPartner');
     try {
-      return super.getidClinic();
+      return super.getidPartner();
     } finally {
       _$_PartnerStoreActionController.endAction(_$actionInfo);
     }
@@ -484,11 +485,11 @@ mixin _$PartnerStore on _PartnerStore, Store {
   }
 
   @override
-  void setIdClinic(String idClinic) {
+  void setIdPartner(String idPartner) {
     final _$actionInfo = _$_PartnerStoreActionController.startAction(
-        name: '_PartnerStore.setIdClinic');
+        name: '_PartnerStore.setIdPartner');
     try {
-      return super.setIdClinic(idClinic);
+      return super.setIdPartner(idPartner);
     } finally {
       _$_PartnerStoreActionController.endAction(_$actionInfo);
     }
@@ -651,7 +652,6 @@ mixin _$PartnerStore on _PartnerStore, Store {
   @override
   String toString() {
     return '''
-isError: ${isError},
 trueCEP: ${trueCEP}
     ''';
   }

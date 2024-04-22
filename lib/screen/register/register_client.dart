@@ -272,6 +272,10 @@ class _RegisterClientState extends State<RegisterClient> {
                                                   if (text!.isEmpty) {
                                                     return "Digite o número";
                                                   }
+                                                  if (!RegExp(r'^[0-9]+$')
+                                                      .hasMatch(text)) {
+                                                    return "Digite apenas números";
+                                                  }
                                                   store.setNumber(text);
                                                   return null;
                                                 },
@@ -401,7 +405,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                     formKey1.currentState!.validate();
                                 final isForm2Valid =
                                     formKey2.currentState!.validate();
-                                    
+
                                 await store.duplicateEntryCheck();
 
                                 if (isForm1Valid &&

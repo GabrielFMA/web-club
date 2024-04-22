@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, non_constant_identifier_names
+// ignore_for_file: avoid_print, non_constant_identifier_names, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -92,7 +92,7 @@ class _RegisterExamState extends State<RegisterExam> {
                                         .map((controller) => controller.text)
                                         .toList();
                                     store.setListExam(examValues);
-                                    await store.registrationClinic();
+                                    await store.registrationPartner();
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>

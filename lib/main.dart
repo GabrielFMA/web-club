@@ -11,6 +11,7 @@ import 'package:web_simclub/store/auth.store.dart';
 import 'package:web_simclub/store/client.store.dart';
 import 'package:web_simclub/store/partner.store.dart';
 import 'package:web_simclub/store/employee.store.dart';
+import 'package:web_simclub/store/plan.store.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
         Provider<AuthStore>(create: (_) => AuthStore()),
         Provider<ClientStore>(create: (_) => ClientStore()),
         Provider<EmployeeStore>(create: (_) => EmployeeStore()),
-        Provider<PartnerStore>(create: (_) => PartnerStore())
+        Provider<PartnerStore>(create: (_) => PartnerStore()),
+        Provider<PlanStore>(create: (_) => PlanStore())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

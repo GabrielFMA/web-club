@@ -73,6 +73,21 @@ mixin _$ClientStore on _ClientStore, Store {
     });
   }
 
+  late final _$_planAtom = Atom(name: '_ClientStore._plan', context: context);
+
+  @override
+  String get _plan {
+    _$_planAtom.reportRead();
+    return super._plan;
+  }
+
+  @override
+  set _plan(String value) {
+    _$_planAtom.reportWrite(value, super._plan, () {
+      super._plan = value;
+    });
+  }
+
   late final _$_nameAtom = Atom(name: '_ClientStore._name', context: context);
 
   @override
@@ -290,6 +305,31 @@ mixin _$ClientStore on _ClientStore, Store {
     });
   }
 
+  late final _$_planNumberAtom =
+      Atom(name: '_ClientStore._planNumber', context: context);
+
+  @override
+  int get _planNumber {
+    _$_planNumberAtom.reportRead();
+    return super._planNumber;
+  }
+
+  @override
+  set _planNumber(int value) {
+    _$_planNumberAtom.reportWrite(value, super._planNumber, () {
+      super._planNumber = value;
+    });
+  }
+
+  late final _$signUpWithEmailPasswordAsyncAction =
+      AsyncAction('_ClientStore.signUpWithEmailPassword', context: context);
+
+  @override
+  Future<void> signUpWithEmailPassword(BuildContext context) {
+    return _$signUpWithEmailPasswordAsyncAction
+        .run(() => super.signUpWithEmailPassword(context));
+  }
+
   late final _$registrationUserAsyncAction =
       AsyncAction('_ClientStore.registrationUser', context: context);
 
@@ -333,6 +373,17 @@ mixin _$ClientStore on _ClientStore, Store {
         name: '_ClientStore.userUID');
     try {
       return super.userUID();
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String getPlan() {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.getPlan');
+    try {
+      return super.getPlan();
     } finally {
       _$_ClientStoreActionController.endAction(_$actionInfo);
     }
@@ -421,6 +472,28 @@ mixin _$ClientStore on _ClientStore, Store {
         name: '_ClientStore.getTrueCEP');
     try {
       return super.getTrueCEP();
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  int getPlanNumber() {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.getPlanNumber');
+    try {
+      return super.getPlanNumber();
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPlan(String plan) {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.setPlan');
+    try {
+      return super.setPlan(plan);
     } finally {
       _$_ClientStoreActionController.endAction(_$actionInfo);
     }
@@ -575,6 +648,17 @@ mixin _$ClientStore on _ClientStore, Store {
         name: '_ClientStore.setTrueCEP');
     try {
       return super.setTrueCEP(value);
+    } finally {
+      _$_ClientStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPlanNumber(int planNumber) {
+    final _$actionInfo = _$_ClientStoreActionController.startAction(
+        name: '_ClientStore.setPlanNumber');
+    try {
+      return super.setPlanNumber(planNumber);
     } finally {
       _$_ClientStoreActionController.endAction(_$actionInfo);
     }

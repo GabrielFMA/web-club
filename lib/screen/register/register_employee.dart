@@ -172,7 +172,6 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                   if (text!.isEmpty) {
                                     return "Digite seu Telefone";
                                   }
-                                  // Verifica se contém apenas números
                                   if (!RegExp(r'^[0-9]+$').hasMatch(text)) {
                                     return "Digite apenas números";
                                   }

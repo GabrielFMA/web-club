@@ -140,10 +140,10 @@ abstract class _EmployeeStore with Store {
     try {
       Map<String, dynamic> userInfoMap = {
         "ID": _uidUser,
-        "Name": _name,
+        "Nome": _name,
         "Email": _email,
-        "Phone": _phone,
-        "Position": _position,
+        "Telefone": _phone,
+        "Cargo": _position,
         "Level": _level,
       };
       await addDetailsUsers(userInfoMap, _uidUser);
@@ -170,14 +170,6 @@ Future duplicateEntryCheck() async {
           .get(),
       'Email': FirebaseFirestore.instance
           .collection("Funcionarios")
-          .where("Email", isEqualTo: _email.toLowerCase())
-          .get(),
-      'Email2': FirebaseFirestore.instance
-          .collection("Parceiros")
-          .where("Email", isEqualTo: _email.toLowerCase())
-          .get(),
-      'Email': FirebaseFirestore.instance
-          .collection("Clientes")
           .where("Email", isEqualTo: _email.toLowerCase())
           .get(),
     };

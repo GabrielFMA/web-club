@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, equal_keys_in_map
+// ignore_for_file: avoid_print, equal_keys_in_map, library_private_types_in_public_api
 
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,6 +32,9 @@ abstract class _ClientStore with Store {
   // Info Users
   @observable
   String _uidUser = '';
+
+  @observable
+  String _plan = 'Sem plano';
 
   @observable
   String _name = '';
@@ -75,6 +78,9 @@ abstract class _ClientStore with Store {
   @observable
   bool trueCEP = false;
 
+  @observable
+  int _planNumber = 0;
+
   // Get functions
 
   // Errors
@@ -85,6 +91,9 @@ abstract class _ClientStore with Store {
   // Info Users
   @action
   String userUID() => _uidUser;
+
+  @action
+  String getPlan() => _plan;
 
   @action
   String getCEP() => _cep;
@@ -110,9 +119,15 @@ abstract class _ClientStore with Store {
   @action
   bool getTrueCEP() => trueCEP;
 
+  @action
+  int getPlanNumber() => _planNumber;
+
   // Set functions
 
   // Info Users
+  @action
+  void setPlan(String plan) => _plan = plan;
+
   @action
   void setName(String name) => _name = name;
 
@@ -155,12 +170,15 @@ abstract class _ClientStore with Store {
   @action
   void setTrueCEP(bool value) => trueCEP = value;
 
+  @action
+  void setPlanNumber(int planNumber) => _planNumber = planNumber;
+
   // Password field
   @action
   void visible() => isVisible = !isVisible;
 
   // Auth Firebase Functions
-
+  @action
   Future<void> signUpWithEmailPassword(BuildContext context) async {
     try {
       print('Registration: Name: $_name, Email: $_email, Password: $_password');
@@ -192,22 +210,24 @@ abstract class _ClientStore with Store {
     try {
       Map<String, dynamic> addressMap = {
         "CEP": _cep,
-        "Street": _street,
-        "Number": _number,
-        "Complement": _complement,
-        "District": _district,
-        "City": _city,
-        "State": _state
+        "Rua": _street,
+        "Numero": _number,
+        "Complemento": _complement,
+        "Distrito": _district,
+        "Cidade": _city,
+        "Estado": _state
       };
 
       Map<String, dynamic> userInfoMap = {
         "ID": _uidUser,
-        "Name": _name,
+        "Nome": _name,
         "CPF": _cpf,
         "Email": _email,
-        "Phone": _phone,
-        "Contract": _numContract,
-        "Address": addressMap
+        "Telefone": _phone,
+        "Contrato": _numContract,
+        "Plano": _plan,
+        "Nivel do Plano": _planNumber,
+        "Endereço": addressMap
       };
 
       await addDetailsUsers(userInfoMap, _uidUser);
@@ -219,7 +239,7 @@ abstract class _ClientStore with Store {
 
   @action
   Future addDetailsUsers(Map<String, dynamic> userInfoMap, String id) async {
-    await db.collection("Users").doc(id).set(userInfoMap);
+    await db.collection("Usuarios").doc(id).set(userInfoMap);
   }
 
   @action
@@ -230,14 +250,6 @@ abstract class _ClientStore with Store {
       Map<String, Future<QuerySnapshot>> queries = {
         'Email': FirebaseFirestore.instance
             .collection("Usuarios")
-            .where("Email", isEqualTo: _email.toLowerCase())
-            .get(),
-        'Email': FirebaseFirestore.instance
-            .collection("Parceiros")
-            .where("Email", isEqualTo: _email.toLowerCase())
-            .get(),
-        'Email2': FirebaseFirestore.instance
-            .collection("Funcionarios")
             .where("Email", isEqualTo: _email.toLowerCase())
             .get(),
         'CPF': FirebaseFirestore.instance

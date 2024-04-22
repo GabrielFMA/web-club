@@ -17,14 +17,14 @@ abstract class _PartnerStore with Store {
 
   //Errors
   @observable
-  bool isError = false;
+  bool _isError = false;
 
   @observable
   String _textError = '';
 
-  //Clinic
+  //Partner
   @observable
-  String _idClinic = '';
+  String _idPartner = '';
 
   @observable
   String _name = '';
@@ -71,13 +71,13 @@ abstract class _PartnerStore with Store {
   // Get functions
 
   // Errors
-  bool getIsError() => isError;
+  bool getIsError() => _isError;
 
   String getTextError() => _textError;
 
-  // Info Clinic
+  // Info Partner
   @action
-  String getidClinic() => _idClinic;
+  String getidPartner() => _idPartner;
 
   @action
   String getName() => _name;
@@ -123,9 +123,9 @@ abstract class _PartnerStore with Store {
 
   // Set functions
 
-  // Info Clinic
+  // Info Partner
   @action
-  void setIdClinic(String idClinic) => _idClinic = idClinic;
+  void setIdPartner(String idPartner) => _idPartner = idPartner;
 
   @action
   void setName(String name) => _name = name;
@@ -170,9 +170,9 @@ abstract class _PartnerStore with Store {
   void setTrueCEP(bool value) => trueCEP = value;
 
   @action
-  Future<void> registrationClinic() async {
+  Future<void> registrationPartner() async {
     try {
-      _idClinic = generateRandomId();
+      _idPartner = generateRandomId();
 
       Map<String, dynamic> examMap = _listExam
           .asMap()
@@ -189,7 +189,7 @@ abstract class _PartnerStore with Store {
       };
 
       Map<String, dynamic> paternInfoMap = {
-        "ID": _idClinic,
+        "ID": _idPartner,
         "Nome": _name,
         "CNPJ": _cnpj,
         "Email": _email,
@@ -198,7 +198,7 @@ abstract class _PartnerStore with Store {
         "Consultas": examMap
       };
 
-      await addDetailsClinic(paternInfoMap, _idClinic);
+      await addDetailsPartner(paternInfoMap, _idPartner);
     } catch (e) {
       print('Erro ao fazer registro: $e');
       print('Tipo de exceção: ${e.runtimeType}');
@@ -207,8 +207,8 @@ abstract class _PartnerStore with Store {
   }
 
   @action
-  Future addDetailsClinic(Map<String, dynamic> clinicMap, String id) async {
-    await db.collection("Parceiros").doc(id).set(clinicMap);
+  Future addDetailsPartner(Map<String, dynamic> PartnerMap, String id) async {
+    await db.collection("Parceiros").doc(id).set(PartnerMap);
   }
 
   // Função para gerar um ID aleatório
@@ -237,14 +237,6 @@ abstract class _PartnerStore with Store {
             .collection("Parceiros")
             .where("Email", isEqualTo: _email.toLowerCase())
             .get(),
-        'Email2': FirebaseFirestore.instance
-            .collection("Funcionarios")
-            .where("Email", isEqualTo: _email.toLowerCase())
-            .get(),
-        'Email3': FirebaseFirestore.instance
-            .collection("Usuarios")
-            .where("Email", isEqualTo: _email.toLowerCase())
-            .get(),
         'CNPJ': FirebaseFirestore.instance
             .collection("Parceiros")
             .where("CNPJ", isEqualTo: _cnpj.toLowerCase())
@@ -271,10 +263,10 @@ abstract class _PartnerStore with Store {
         _textError += duplicates.length > 1
             ? ' já foram cadastrados'
             : ' já foi cadastrado';
-        isError = true;
+        _isError = true;
       } else {
         _textError = '';
-        isError = false;
+        _isError = false;
       }
     } catch (e) {
       print('Erro ao verificar duplicidades: $e');
@@ -287,14 +279,14 @@ abstract class _PartnerStore with Store {
     print('CEP');
     try {
       _textError = '';
-      isError = false;
+      _isError = false;
       restoreData();
       var rsp =
           await http.get(Uri.parse("https://viacep.com.br/ws/$cep/json/"));
 
       if (rsp.body.contains('"erro": true')) {
         _textError = 'CEP inválido';
-        isError = true;
+        _isError = true;
         return;
       } else {
         Map<String, dynamic> responseData = json.decode(rsp.body);
@@ -314,7 +306,7 @@ abstract class _PartnerStore with Store {
       }
     } on http.ClientException catch (_) {
       _textError = 'CEP inválido';
-      isError = true;
+      _isError = true;
       return;
     } catch (e) {
       print('Erro ao fazer registro do CEP: $e');
@@ -322,7 +314,7 @@ abstract class _PartnerStore with Store {
   }
 
   restoreData() {
-    setIdClinic('');
+    setIdPartner('');
     setName('');
     setCnpj('');
     setEmail('');
