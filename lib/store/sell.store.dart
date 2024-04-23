@@ -6,11 +6,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
 
-part 'plan.store.g.dart';
+part 'sell.store.g.dart';
 
-class PlanStore = _PlanStore with _$PlanStore;
+class SellStore = _SellStore with _$SellStore;
 
-abstract class _PlanStore with Store {
+abstract class _SellStore with Store {
   FirebaseFirestore db = FirebaseFirestore.instance;
   late http.Response rsp;
 
@@ -21,9 +21,9 @@ abstract class _PlanStore with Store {
   @observable
   String _textError = '';
 
-  //Plan
+  //Sell
   @observable
-  String _idPlan = '';
+  String _idSell = '';
 
   @observable
   String _name = '';
@@ -34,9 +34,6 @@ abstract class _PlanStore with Store {
   @observable
   String _description = '';
 
-  @observable
-  int _planNumber = 0;
-
   // Get functions
 
   // Errors
@@ -44,9 +41,9 @@ abstract class _PlanStore with Store {
 
   String getTextError() => _textError;
 
-  // Info Plan
+  // Info Sell
   @action
-  String getidPlan() => _idPlan;
+  String getidSell() => _idSell;
 
   @action
   String getName() => _name;
@@ -57,15 +54,11 @@ abstract class _PlanStore with Store {
   @action
   String getDescription() => _description;
 
-  @action
-  int getPlanNumber() => _planNumber;
-
-
   // Set functions
 
-  // Info Plan
+  // Info Sell
   @action
-  void setIdPlan(String idPlan) => _idPlan = idPlan;
+  void setIdSell(String idSell) => _idSell = idSell;
 
   @action
   void setName(String name) => _name = name;
@@ -77,22 +70,18 @@ abstract class _PlanStore with Store {
   void setDescription(String description) => _description = description;
 
   @action
-  void setPlanNumber(int planNumber) => _planNumber = planNumber;
-
-  @action
-  Future<void> registrationPlan() async {
+  Future<void> registrationSell() async {
     try {
-      _idPlan = generateRandomId();
+      _idSell = generateRandomId();
 
       Map<String, dynamic> paternInfoMap = {
-        "ID": _idPlan,
+        "ID": _idSell,
         "Nome": _name,
         "Preço": _price,
-        "Nivel do plano": _planNumber,
         "Descrição": _description,
       };
 
-      await addDetailsPlan(paternInfoMap, _idPlan);
+      await addDetailsSell(paternInfoMap, _idSell);
     } catch (e) {
       print('Erro ao fazer registro: $e');
       print('Tipo de exceção: ${e.runtimeType}');
@@ -101,8 +90,8 @@ abstract class _PlanStore with Store {
   }
 
   @action
-  Future addDetailsPlan(Map<String, dynamic> planMap, String id) async {
-    await db.collection("Planos").doc(id).set(planMap);
+  Future addDetailsSell(Map<String, dynamic> sellMap, String id) async {
+    await db.collection("Vendas").doc(id).set(sellMap);
   }
 
   // Função para gerar um ID aleatório
@@ -121,12 +110,12 @@ abstract class _PlanStore with Store {
   Future<void> duplicateEntryCheck() async {
     try {
       final name = await FirebaseFirestore.instance
-          .collection("Planos")
+          .collection("Vendas")
           .where("Nome", isEqualTo: _name.toLowerCase())
           .get();
 
       if (name.docs.isNotEmpty) {
-        _textError = 'Esse Plano já foi cadastrado';
+        _textError = 'Esse Venda já foi cadastrada';
         _isError = true;
       } else {
         _textError = '';
@@ -139,7 +128,7 @@ abstract class _PlanStore with Store {
   }
 
   restoreData() {
-    setIdPlan('');
+    setIdSell('');
     setName('');
     setPrice('');
     setDescription('');

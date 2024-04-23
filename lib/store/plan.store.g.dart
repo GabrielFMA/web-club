@@ -102,6 +102,22 @@ mixin _$PlanStore on _PlanStore, Store {
     });
   }
 
+  late final _$_planNumberAtom =
+      Atom(name: '_PlanStore._planNumber', context: context);
+
+  @override
+  int get _planNumber {
+    _$_planNumberAtom.reportRead();
+    return super._planNumber;
+  }
+
+  @override
+  set _planNumber(int value) {
+    _$_planNumberAtom.reportWrite(value, super._planNumber, () {
+      super._planNumber = value;
+    });
+  }
+
   late final _$registrationPlanAsyncAction =
       AsyncAction('_PlanStore.registrationPlan', context: context);
 
@@ -114,9 +130,9 @@ mixin _$PlanStore on _PlanStore, Store {
       AsyncAction('_PlanStore.addDetailsPlan', context: context);
 
   @override
-  Future<dynamic> addDetailsPlan(Map<String, dynamic> clinicMap, String id) {
+  Future<dynamic> addDetailsPlan(Map<String, dynamic> planMap, String id) {
     return _$addDetailsPlanAsyncAction
-        .run(() => super.addDetailsPlan(clinicMap, id));
+        .run(() => super.addDetailsPlan(planMap, id));
   }
 
   late final _$duplicateEntryCheckAsyncAction =
@@ -176,6 +192,17 @@ mixin _$PlanStore on _PlanStore, Store {
   }
 
   @override
+  int getPlanNumber() {
+    final _$actionInfo = _$_PlanStoreActionController.startAction(
+        name: '_PlanStore.getPlanNumber');
+    try {
+      return super.getPlanNumber();
+    } finally {
+      _$_PlanStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setIdPlan(String idPlan) {
     final _$actionInfo =
         _$_PlanStoreActionController.startAction(name: '_PlanStore.setIdPlan');
@@ -214,6 +241,17 @@ mixin _$PlanStore on _PlanStore, Store {
         name: '_PlanStore.setDescription');
     try {
       return super.setDescription(description);
+    } finally {
+      _$_PlanStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPlanNumber(int planNumber) {
+    final _$actionInfo = _$_PlanStoreActionController.startAction(
+        name: '_PlanStore.setPlanNumber');
+    try {
+      return super.setPlanNumber(planNumber);
     } finally {
       _$_PlanStoreActionController.endAction(_$actionInfo);
     }

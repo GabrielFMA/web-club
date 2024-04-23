@@ -73,6 +73,12 @@ abstract class _EmployeeStore with Store {
 
   // Set functions
 
+  // Errors
+  bool setIsError(isError) => _isError = isError;
+
+  String setTextError(textError) => _textError = textError;
+
+
   // Info Users
   @action
   void setName(String name) => _name = name;

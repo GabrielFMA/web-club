@@ -5,7 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:web_simclub/components/menu.dart';
-import 'package:web_simclub/screen/register/register_exam.dart';
+import 'package:web_simclub/screen/partner/register_exam.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
 import 'package:web_simclub/store/partner.store.dart';
 
@@ -170,32 +170,44 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                           ),
                                           child: Row(
                                             children: [
-                                              Icon(MdiIcons
-                                                  .textBoxMultipleOutline),
+                                              Icon(
+                                                MdiIcons.textBoxMultipleOutline,
+                                                color: Colors.black,
+                                              ),
                                               const SizedBox(width: 15),
                                               Expanded(
-                                                child: DropdownButton<int>(
-                                                  underline: const SizedBox(),
-                                                  isExpanded: true,
-                                                  value: valueExam,
-                                                  hint: const Text(
-                                                    "Selecione a quantidade de consultas",
-                                                    style: TextStyle(
+                                                child: DropdownButtonFormField<
+                                                    String>(
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    border: InputBorder.none,
+                                                    hintText:
+                                                        "Selecione a quantidade de consultas",
+                                                    hintStyle: TextStyle(
                                                       color: Colors.black54,
                                                       fontSize: 16,
                                                     ),
                                                   ),
-                                                  onChanged: (int? newValue) {
+                                                  validator: (value) {
+                                                    if (value == null ||
+                                                        value.isEmpty) {
+                                                      return "Selecione a quantidade de consultas";
+                                                    }
+                                                    return null;
+                                                  },
+                                                  onChanged: (value) {
                                                     setState(() {
-                                                      valueExam = newValue;
+                                                      valueExam =
+                                                          int.tryParse(value!);
                                                       store.setExam(valueExam);
                                                     });
                                                   },
-                                                  items: listExam
-                                                      .map((int valueItem) {
+                                                  items:
+                                                      listExam.map((valueItem) {
                                                     return DropdownMenuItem<
-                                                        int>(
-                                                      value: valueItem,
+                                                        String>(
+                                                      value:
+                                                          valueItem.toString(),
                                                       child: Text(
                                                         valueItem > 1
                                                             ? '$valueItem Consultas'

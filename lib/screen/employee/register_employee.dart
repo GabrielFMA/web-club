@@ -24,13 +24,12 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
   final _confirmPasswordController = TextEditingController();
   String _password = ' ';
 
-  String valuePosition = 'Clique aqui para selecionar um cargo';
+  String? valuePosition;
 
   List<String> listCargo = [
-    'Clique aqui para selecionar um cargo',
-    'Administrador',
-    'Gerente',
     'Funcionario',
+    'Gerente',
+    'Administrador',
   ];
 
   final formKey = GlobalKey<FormState>();
@@ -74,53 +73,6 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                 ),
                               ),
 
-                              //Position container
-                              Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: Colors.green, width: 2),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: DropdownButton<String>(
-                                  underline: const SizedBox(),
-                                  isExpanded: true,
-                                  value: valuePosition,
-                                  style: const TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  onChanged: (String? Value) {
-                                    setState(() {
-                                      valuePosition = Value!;
-                                      store.setPosition(valuePosition);
-
-                                      switch (valuePosition) {
-                                        case 'Administrador':
-                                          store.setLevel(0);
-                                          break;
-                                        case 'Gerente':
-                                          store.setLevel(1);
-                                          break;
-                                        case 'Funcionario':
-                                          store.setLevel(2);
-                                          break;
-                                        default:
-                                          store.setLevel(3);
-                                          break;
-                                      }
-                                    });
-                                  },
-                                  items: listCargo.map((String valueItem) {
-                                    return DropdownMenuItem<String>(
-                                      value: valueItem,
-                                      child: Text(valueItem),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
                               //Space
                               const SizedBox(height: 5),
 
@@ -161,6 +113,73 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                   return null;
                                 },
                               ),
+
+                              //Space
+                              const SizedBox(height: 5),
+
+                              // Widget do DropdownButton
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: Colors.green[500]?.withOpacity(.3),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(MdiIcons.textBoxMultipleOutline),
+                                    const SizedBox(width: 15),
+                                    Expanded(
+                                      child: DropdownButtonFormField<String>(
+                                        decoration: const InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: "Selecione o cargo",
+                                          hintStyle: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Selecione um cargo';
+                                          }
+                                          return null;
+                                        },
+                                        onChanged: (value) {
+                                          setState(() {
+                                            valuePosition = value!;
+                                            switch (valuePosition) {
+                                              case 'Administrador':
+                                                store.setLevel(0);
+                                                break;
+                                              case 'Gerente':
+                                                store.setLevel(1);
+                                                break;
+                                              case 'Funcionario':
+                                                store.setLevel(2);
+                                                break;
+                                              default:
+                                                store.setLevel(3);
+                                                break;
+                                            }
+                                          });
+                                        },
+                                        items: listCargo.map((cargo) {
+                                          return DropdownMenuItem<String>(
+                                            value: cargo,
+                                            child: Text(
+                                              cargo,
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              //Space
+                              const SizedBox(height: 5),
 
                               //Phone field
                               TextFieldString(
@@ -224,11 +243,11 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                 () async {
                                   final isFormValid =
                                       formKey.currentState!.validate();
-                                      
-                                  await store.duplicateEntryCheck();
 
+                                  await store.duplicateEntryCheck();
+                                  
                                   if (isFormValid &&
-                                      store.getLevel() > 2 &&
+                                      store.getLevel() < 3 &&
                                       !store.getIsError()) {
                                     //Confirmation screen
                                     showDialog(

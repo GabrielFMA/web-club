@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, non_constant_identifier_names, use_build_context_synchronously
+// ignore_for_file: avoid_print, non_constant_identifier_names, use_build_context_synchronously, unused_local_variable
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -19,6 +19,10 @@ class _RegisterPlanState extends State<RegisterPlan> {
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
+
+  String? selectedPlan;
+
+  List<String> listPlan = ['Básico', 'Intermediário', 'Premium'];
 
   final formKey = GlobalKey<FormState>();
 
@@ -79,6 +83,76 @@ class _RegisterPlanState extends State<RegisterPlan> {
                                 },
                               ),
 
+                              //Space
+                              const SizedBox(height: 5),
+
+                              // Widget do DropdownButton
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: Colors.green[500]?.withOpacity(.3),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(MdiIcons.textBoxMultipleOutline),
+                                    const SizedBox(width: 15),
+                                    Expanded(
+                                      child: DropdownButtonFormField<String>(
+                                        decoration: const InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText:
+                                              "Selecione o nível do Plano",
+                                          hintStyle: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Selecione um nível de plano';
+                                          }
+                                          return null;
+                                        },
+                                        isExpanded: true,
+                                        value: selectedPlan,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            selectedPlan = value!;
+                                            switch (selectedPlan) {
+                                              case 'Premium':
+                                                store.setPlanNumber(3);
+                                                break;
+                                              case 'Intermediário':
+                                                store.setPlanNumber(2);
+                                                break;
+                                              case 'Básico':
+                                                store.setPlanNumber(1);
+                                                break;
+                                              default:
+                                                store.setPlanNumber(0);
+                                                break;
+                                            }
+                                          });
+                                        },
+                                        items: listPlan.map((plan) {
+                                          return DropdownMenuItem<String>(
+                                            value: plan,
+                                            child: Text(
+                                              plan,
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              //Space
+                              const SizedBox(height: 5),
+
                               //Price field
                               TextFieldString(
                                 icon: Icon(MdiIcons.currencyUsd),
@@ -89,10 +163,11 @@ class _RegisterPlanState extends State<RegisterPlan> {
                                   if (text!.isEmpty) {
                                     return "Digite o Preço";
                                   }
-                                  if (!RegExp(r'^[0-9]+$').hasMatch(text)) {
-                                    return "Digite apenas números";
+                                  if (!RegExp(r'^\d+([,.]\d{1,2})?$')
+                                      .hasMatch(text)) {
+                                    return "Digite um número válido";
                                   }
-                                  store.setPrice(text);
+                                  store.setPrice(text.replaceAll(',', '.'));
                                   return null;
                                 },
                               ),
@@ -118,9 +193,12 @@ class _RegisterPlanState extends State<RegisterPlan> {
                               buttonDefault(
                                 context,
                                 () async {
-                                  final isFormKey = formKey.currentState!.validate();
+                                  final isFormKey =
+                                      formKey.currentState!.validate();
                                   store.duplicateEntryCheck();
-                                  if (isFormKey && !store.getIsError()) {
+                                  if (isFormKey &&
+                                      store.getPlanNumber() != 0 &&
+                                      !store.getIsError()) {
                                     //Confirmation screen
                                     showDialog(
                                       context: context,
@@ -227,32 +305,6 @@ class _RegisterPlanState extends State<RegisterPlan> {
         child: const Text(
           "REGISTRAR",
           style: TextStyle(color: Colors.white),
-        ),
-      ),
-    );
-  }
-
-  Widget TextFieldExam(
-      BuildContext context, String hintText, TextEditingController controller) {
-    return Container(
-      margin: const EdgeInsets.only(top: 5, bottom: 5),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.green[500]?.withOpacity(.3),
-      ),
-      child: TextFormField(
-        controller: controller, // Atribuir o controlador de texto ao campo
-        validator: (text) {
-          if (text!.isEmpty) {
-            return "Digite uma consulta";
-          }
-          return null;
-        },
-        decoration: InputDecoration(
-          icon: Icon(MdiIcons.fileDocumentPlusOutline),
-          border: InputBorder.none,
-          hintText: hintText,
         ),
       ),
     );
