@@ -6,7 +6,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:provider/provider.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
 import 'package:web_simclub/components/menu.dart';
-import 'package:web_simclub/store/partner.store.dart';
 import 'package:web_simclub/store/plan.store.dart';
 
 class RegisterPlan extends StatefulWidget {

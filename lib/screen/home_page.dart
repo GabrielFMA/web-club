@@ -32,16 +32,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _isLoading ? _buildLoading() : _buildBody(),
+      body: _isLoading ? const Center(child: CircularProgressIndicator()) : const MenuWidget(),
       backgroundColor: Colors.green[200],
     );
-  }
-
-  Widget _buildLoading() {
-    return const Center(child: CircularProgressIndicator());
-  }
-
-  Widget _buildBody() {
-    return const MenuWidget();
   }
 }

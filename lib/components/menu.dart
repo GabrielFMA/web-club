@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_const
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -12,15 +14,26 @@ import 'package:web_simclub/store/client.store.dart';
 import 'package:web_simclub/store/employee.store.dart';
 import 'package:web_simclub/store/partner.store.dart';
 
-class MenuWidget extends StatefulWidget {
+class MenuWidget extends StatelessWidget {
   const MenuWidget({Key? key}) : super(key: key);
 
   @override
-  _MenuWidgetState createState() => _MenuWidgetState();
+  Widget build(BuildContext context) {
+    return MenuContent();
+  }
 }
 
-class _MenuWidgetState extends State<MenuWidget> {
-  bool _isExpanded = false;
+class MenuContent extends StatefulWidget {
+  @override
+  _MenuContentState createState() => _MenuContentState();
+}
+
+class _MenuContentState extends State<MenuContent> {
+  bool _isClientExpanded = false;
+  bool _isEmployeeExpanded = false;
+  bool _isPartnerExpanded = false;
+  bool _isPlansExpanded = false;
+  bool _isSellsExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +43,7 @@ class _MenuWidgetState extends State<MenuWidget> {
     final employee = Provider.of<EmployeeStore>(context);
 
     return Container(
-      width: 300,
+      width: 320,
       color: Colors.green,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -41,50 +54,24 @@ class _MenuWidgetState extends State<MenuWidget> {
               // Exit Button
               buildMenuItem(
                 text: store.getName(),
-                icon: MdiIcons.exitToApp,
-                color: Colors.white,
-                onClick: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text('Sair da conta'),
-                      content: const Text('Tem certeza que quer sair?'),
-                      actions: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            buttonDefault(
-                              text: 'SIM',
-                              onClick: () {
-                                store.signOut();
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const LoginScreen(),
-                                  ),
-                                  (route) => false,
-                                );
-                              },
-                            ),
-                            buttonDefault(
-                              text: 'NÃO',
-                              onClick: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                icon: MdiIcons.accountBoxOutline,
+                onClick: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const RegisterClient(),
+                    ),
+                  );
+                },
               ),
 
               // Dividing line
               const Divider(color: Colors.white),
 
-              if (store.getLevel() < 3)
-                ExpansionTile(
+              // ExpansionTile for Client
+              Theme(
+                data: Theme.of(context)
+                    .copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
                   iconColor: Colors.white,
                   title: Padding(
                     padding: EdgeInsets.zero,
@@ -102,21 +89,38 @@ class _MenuWidgetState extends State<MenuWidget> {
                       ],
                     ),
                   ),
-                  trailing: Icon(
-                    _isExpanded ? MdiIcons.chevronUp : MdiIcons.chevronDown,
-                    color: Colors.white,
+                  trailing: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 200),
+                    transitionBuilder:
+                        (Widget child, Animation<double> animation) {
+                      return ScaleTransition(
+                        scale: animation,
+                        child: child,
+                      );
+                    },
+                    child: _isClientExpanded
+                        ? Icon(
+                            MdiIcons.chevronUp,
+                            key: const Key('up'),
+                            color: Colors.white,
+                          )
+                        : Icon(
+                            MdiIcons.chevronDown,
+                            key: const Key('down'),
+                            color: Colors.white,
+                          ),
                   ),
                   onExpansionChanged: (isExpanded) {
                     setState(() {
-                      _isExpanded = isExpanded;
+                      _isClientExpanded = isExpanded;
                     });
                   },
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 40),
+                      padding: const EdgeInsets.only(left: 20),
                       child: buildMenuItem(
-                        text: 'Registro de Cliente',
-                        icon: MdiIcons.accountPlusOutline,
+                        text: 'Cadastro',
+                        icon: MdiIcons.notePlusOutline,
                         onClick: () {
                           client.restoreData();
                           partner.restoreData();
@@ -131,55 +135,381 @@ class _MenuWidgetState extends State<MenuWidget> {
                     ),
                   ],
                 ),
+              ),
 
-              // Register Employee
-              if (store.getLevel() < 2)
-                buildMenuItem(
-                  text: 'Registro de Funcionário',
-                  icon: MdiIcons.badgeAccountHorizontalOutline,
-                  onClick: () {
-                    client.restoreData();
-                    partner.restoreData();
-                    employee.restoreData();
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const RegisterEmployee(),
-                      ),
-                    );
-                  },
-                ),
+              // Dividing line
+              const Divider(color: Colors.white),
 
-              // Register Partner
-              if (store.getLevel() < 2)
-                buildMenuItem(
-                  text: 'Registro de Parceiro',
-                  icon: MdiIcons.handshakeOutline,
-                  onClick: () {
-                    client.restoreData();
-                    partner.restoreData();
-                    employee.restoreData();
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const RegisterPartner(),
-                      ),
-                    );
+              // ExpansionTile for Employee
+              Theme(
+                data: Theme.of(context)
+                    .copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  iconColor: Colors.white,
+                  title: Padding(
+                    padding: EdgeInsets.zero,
+                    child: Row(
+                      children: [
+                        Icon(
+                          MdiIcons.badgeAccountHorizontalOutline,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(width: 10),
+                        const Text(
+                          'Funcionarios',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                  trailing: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 200),
+                    transitionBuilder:
+                        (Widget child, Animation<double> animation) {
+                      return ScaleTransition(
+                        scale: animation,
+                        child: child,
+                      );
+                    },
+                    child: _isEmployeeExpanded
+                        ? Icon(
+                            MdiIcons.chevronUp,
+                            key: const Key('up'),
+                            color: Colors.white,
+                          )
+                        : Icon(
+                            MdiIcons.chevronDown,
+                            key: const Key('down'),
+                            color: Colors.white,
+                          ),
+                  ),
+                  onExpansionChanged: (isExpanded) {
+                    setState(() {
+                      _isEmployeeExpanded = isExpanded;
+                    });
                   },
-                ),
-              if (store.getLevel() < 2)
-                buildMenuItem(
-                  text: 'Registro de Plano',
-                  icon: MdiIcons.formSelect,
-                  onClick: () {
-                    client.restoreData();
-                    partner.restoreData();
-                    employee.restoreData();
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const RegisterPlan(),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: buildMenuItem(
+                        text: 'Cadastro',
+                        icon: MdiIcons.notePlusOutline,
+                        onClick: () {
+                          client.restoreData();
+                          partner.restoreData();
+                          employee.restoreData();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterEmployee(),
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
+              ),
+
+              // Dividing line
+              const Divider(color: Colors.white),
+
+              // ExpansionTile for Partner
+              Theme(
+                data: Theme.of(context)
+                    .copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  iconColor: Colors.white,
+                  title: Padding(
+                    padding: EdgeInsets.zero,
+                    child: Row(
+                      children: [
+                        Icon(
+                          MdiIcons.handshakeOutline,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(width: 10),
+                        const Text(
+                          'Parceiros',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                  trailing: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 200),
+                    transitionBuilder:
+                        (Widget child, Animation<double> animation) {
+                      return ScaleTransition(
+                        scale: animation,
+                        child: child,
+                      );
+                    },
+                    child: _isPartnerExpanded
+                        ? Icon(
+                            MdiIcons.chevronUp,
+                            key: const Key('up'),
+                            color: Colors.white,
+                          )
+                        : Icon(
+                            MdiIcons.chevronDown,
+                            key: const Key('down'),
+                            color: Colors.white,
+                          ),
+                  ),
+                  onExpansionChanged: (isExpanded) {
+                    setState(() {
+                      _isPartnerExpanded = isExpanded;
+                    });
+                  },
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: buildMenuItem(
+                        text: 'Cadastro',
+                        icon: MdiIcons.notePlusOutline,
+                        onClick: () {
+                          client.restoreData();
+                          partner.restoreData();
+                          employee.restoreData();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterPartner(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Dividing line
+              const Divider(color: Colors.white),
+
+              // ExpansionTile for Plans
+              Theme(
+                data: Theme.of(context)
+                    .copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  iconColor: Colors.white,
+                  title: Padding(
+                    padding: EdgeInsets.zero,
+                    child: Row(
+                      children: [
+                        Icon(
+                          MdiIcons.newspaperVariantMultipleOutline,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(width: 10),
+                        const Text(
+                          'Planos',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                  trailing: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 200),
+                    transitionBuilder:
+                        (Widget child, Animation<double> animation) {
+                      return ScaleTransition(
+                        scale: animation,
+                        child: child,
+                      );
+                    },
+                    child: _isPlansExpanded
+                        ? Icon(
+                            MdiIcons.chevronUp,
+                            key: const Key('up'),
+                            color: Colors.white,
+                          )
+                        : Icon(
+                            MdiIcons.chevronDown,
+                            key: const Key('down'),
+                            color: Colors.white,
+                          ),
+                  ),
+                  onExpansionChanged: (isExpanded) {
+                    setState(() {
+                      _isPlansExpanded = isExpanded;
+                    });
+                  },
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: buildMenuItem(
+                        text: 'Cadastro',
+                        icon: MdiIcons.notePlusOutline,
+                        onClick: () {
+                          client.restoreData();
+                          partner.restoreData();
+                          employee.restoreData();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterPlan(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Dividing line
+              const Divider(color: Colors.white),
+
+              // ExpansionTile for Sells
+              Theme(
+                data: Theme.of(context)
+                    .copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  iconColor: Colors.white,
+                  title: Padding(
+                    padding: EdgeInsets.zero,
+                    child: Row(
+                      children: [
+                        Icon(
+                          MdiIcons.networkPos,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(width: 10),
+                        const Text(
+                          'Vendas',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                  trailing: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 200),
+                    transitionBuilder:
+                        (Widget child, Animation<double> animation) {
+                      return ScaleTransition(
+                        scale: animation,
+                        child: child,
+                      );
+                    },
+                    child: _isSellsExpanded
+                        ? Icon(
+                            MdiIcons.chevronUp,
+                            key: const Key('up'),
+                            color: Colors.white,
+                          )
+                        : Icon(
+                            MdiIcons.chevronDown,
+                            key: const Key('down'),
+                            color: Colors.white,
+                          ),
+                  ),
+                  onExpansionChanged: (isExpanded) {
+                    setState(() {
+                      _isSellsExpanded = isExpanded;
+                    });
+                  },
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: buildMenuItem(
+                        text: 'Cadastro',
+                        icon: MdiIcons.notePlusOutline,
+                        onClick: () {
+                          client.restoreData();
+                          partner.restoreData();
+                          employee.restoreData();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterPlan(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Dividing line
+              const Divider(color: Colors.white),
+
+              // Final space
+              const Spacer(),
+
+              // Dividing line
+              const Divider(color: Colors.white),
+
+              SizedBox(
+                height: 50, // Defina a altura desejada aqui
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          border: const Border(
+                            right: BorderSide(color: Colors.white38, width: 2, ),
+                          ),
+                        ),
+                        child: buildMenuItem(
+                          text: ' Logout',
+                          icon: MdiIcons.exitToApp,
+                          onClick: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Sair da conta'),
+                                  content:
+                                      const Text('Tem certeza que quer sair?'),
+                                  actions: <Widget>[
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        buttonDefault(
+                                          text: 'SIM',
+                                          onClick: () {
+                                            store.signOut();
+                                            Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const LoginScreen(),
+                                              ),
+                                              (route) => false,
+                                            );
+                                          },
+                                        ),
+                                        buttonDefault(
+                                          text: 'NÃO',
+                                          onClick: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: buildMenuItem(
+                        text: 'Usuário',
+                        icon: MdiIcons.badgeAccountOutline,
+                        onClick: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterClient(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
               // Dividing line
               const Divider(color: Colors.white),
