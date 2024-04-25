@@ -56,49 +56,113 @@ mixin _$SellStore on _SellStore, Store {
     });
   }
 
-  late final _$_nameAtom = Atom(name: '_SellStore._name', context: context);
+  late final _$_planAtom = Atom(name: '_SellStore._plan', context: context);
 
   @override
-  String get _name {
-    _$_nameAtom.reportRead();
-    return super._name;
+  String get _plan {
+    _$_planAtom.reportRead();
+    return super._plan;
   }
 
   @override
-  set _name(String value) {
-    _$_nameAtom.reportWrite(value, super._name, () {
-      super._name = value;
+  set _plan(String value) {
+    _$_planAtom.reportWrite(value, super._plan, () {
+      super._plan = value;
     });
   }
 
-  late final _$_priceAtom = Atom(name: '_SellStore._price', context: context);
+  late final _$_contractAtom =
+      Atom(name: '_SellStore._contract', context: context);
 
   @override
-  String get _price {
-    _$_priceAtom.reportRead();
-    return super._price;
+  String get _contract {
+    _$_contractAtom.reportRead();
+    return super._contract;
   }
 
   @override
-  set _price(String value) {
-    _$_priceAtom.reportWrite(value, super._price, () {
-      super._price = value;
+  set _contract(String value) {
+    _$_contractAtom.reportWrite(value, super._contract, () {
+      super._contract = value;
     });
   }
 
-  late final _$_descriptionAtom =
-      Atom(name: '_SellStore._description', context: context);
+  late final _$_validityAtom =
+      Atom(name: '_SellStore._validity', context: context);
 
   @override
-  String get _description {
-    _$_descriptionAtom.reportRead();
-    return super._description;
+  String get _validity {
+    _$_validityAtom.reportRead();
+    return super._validity;
   }
 
   @override
-  set _description(String value) {
-    _$_descriptionAtom.reportWrite(value, super._description, () {
-      super._description = value;
+  set _validity(String value) {
+    _$_validityAtom.reportWrite(value, super._validity, () {
+      super._validity = value;
+    });
+  }
+
+  late final _$_employeeAtom =
+      Atom(name: '_SellStore._employee', context: context);
+
+  @override
+  String get _employee {
+    _$_employeeAtom.reportRead();
+    return super._employee;
+  }
+
+  @override
+  set _employee(String value) {
+    _$_employeeAtom.reportWrite(value, super._employee, () {
+      super._employee = value;
+    });
+  }
+
+  late final _$_clientAtom = Atom(name: '_SellStore._client', context: context);
+
+  @override
+  String get _client {
+    _$_clientAtom.reportRead();
+    return super._client;
+  }
+
+  @override
+  set _client(String value) {
+    _$_clientAtom.reportWrite(value, super._client, () {
+      super._client = value;
+    });
+  }
+
+  late final _$_clientIdAtom =
+      Atom(name: '_SellStore._clientId', context: context);
+
+  @override
+  String get _clientId {
+    _$_clientIdAtom.reportRead();
+    return super._clientId;
+  }
+
+  @override
+  set _clientId(String value) {
+    _$_clientIdAtom.reportWrite(value, super._clientId, () {
+      super._clientId = value;
+    });
+  }
+
+  late final _$planNamesAtom =
+      Atom(name: '_SellStore.planNames', context: context);
+
+  @override
+  List<String> get planNames {
+    _$planNamesAtom.reportRead();
+    return super.planNames;
+  }
+
+  @override
+  set planNames(List<String> value) {
+    _$planNamesAtom.reportWrite(value, super.planNames, () {
+      super.planNames = value;
     });
   }
 
@@ -119,15 +183,6 @@ mixin _$SellStore on _SellStore, Store {
         .run(() => super.addDetailsSell(sellMap, id));
   }
 
-  late final _$duplicateEntryCheckAsyncAction =
-      AsyncAction('_SellStore.duplicateEntryCheck', context: context);
-
-  @override
-  Future<void> duplicateEntryCheck() {
-    return _$duplicateEntryCheckAsyncAction
-        .run(() => super.duplicateEntryCheck());
-  }
-
   late final _$_SellStoreActionController =
       ActionController(name: '_SellStore', context: context);
 
@@ -143,33 +198,55 @@ mixin _$SellStore on _SellStore, Store {
   }
 
   @override
-  String getName() {
+  String getPlan() {
     final _$actionInfo =
-        _$_SellStoreActionController.startAction(name: '_SellStore.getName');
+        _$_SellStoreActionController.startAction(name: '_SellStore.getPlan');
     try {
-      return super.getName();
+      return super.getPlan();
     } finally {
       _$_SellStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  String getPrice() {
-    final _$actionInfo =
-        _$_SellStoreActionController.startAction(name: '_SellStore.getPrice');
-    try {
-      return super.getPrice();
-    } finally {
-      _$_SellStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  String getDescription() {
+  String getContract() {
     final _$actionInfo = _$_SellStoreActionController.startAction(
-        name: '_SellStore.getDescription');
+        name: '_SellStore.getContract');
     try {
-      return super.getDescription();
+      return super.getContract();
+    } finally {
+      _$_SellStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String getValidity() {
+    final _$actionInfo = _$_SellStoreActionController.startAction(
+        name: '_SellStore.getValidity');
+    try {
+      return super.getValidity();
+    } finally {
+      _$_SellStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String getClient() {
+    final _$actionInfo =
+        _$_SellStoreActionController.startAction(name: '_SellStore.getClient');
+    try {
+      return super.getClient();
+    } finally {
+      _$_SellStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  List<String> getPlanNames() {
+    final _$actionInfo = _$_SellStoreActionController.startAction(
+        name: '_SellStore.getPlanNames');
+    try {
+      return super.getPlanNames();
     } finally {
       _$_SellStoreActionController.endAction(_$actionInfo);
     }
@@ -187,33 +264,55 @@ mixin _$SellStore on _SellStore, Store {
   }
 
   @override
-  void setName(String name) {
+  void setPlan(String plan) {
     final _$actionInfo =
-        _$_SellStoreActionController.startAction(name: '_SellStore.setName');
+        _$_SellStoreActionController.startAction(name: '_SellStore.setPlan');
     try {
-      return super.setName(name);
+      return super.setPlan(plan);
     } finally {
       _$_SellStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setPrice(String price) {
-    final _$actionInfo =
-        _$_SellStoreActionController.startAction(name: '_SellStore.setPrice');
-    try {
-      return super.setPrice(price);
-    } finally {
-      _$_SellStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setDescription(String description) {
+  void setContract(String contract) {
     final _$actionInfo = _$_SellStoreActionController.startAction(
-        name: '_SellStore.setDescription');
+        name: '_SellStore.setContract');
     try {
-      return super.setDescription(description);
+      return super.setContract(contract);
+    } finally {
+      _$_SellStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setValidity(String validity) {
+    final _$actionInfo = _$_SellStoreActionController.startAction(
+        name: '_SellStore.setValidity');
+    try {
+      return super.setValidity(validity);
+    } finally {
+      _$_SellStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setEmployee(String employee) {
+    final _$actionInfo = _$_SellStoreActionController.startAction(
+        name: '_SellStore.setEmployee');
+    try {
+      return super.setEmployee(employee);
+    } finally {
+      _$_SellStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setClient(String client) {
+    final _$actionInfo =
+        _$_SellStoreActionController.startAction(name: '_SellStore.setClient');
+    try {
+      return super.setClient(client);
     } finally {
       _$_SellStoreActionController.endAction(_$actionInfo);
     }
@@ -222,7 +321,7 @@ mixin _$SellStore on _SellStore, Store {
   @override
   String toString() {
     return '''
-
+planNames: ${planNames}
     ''';
   }
 }

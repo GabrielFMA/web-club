@@ -86,7 +86,7 @@ abstract class _PlanStore with Store {
 
       Map<String, dynamic> paternInfoMap = {
         "ID": _idPlan,
-        "Nome": _name,
+        "Nome": _name.toLowerCase(),
         "Preço": _price,
         "Nivel do plano": _planNumber,
         "Descrição": _description,

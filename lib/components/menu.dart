@@ -9,6 +9,7 @@ import 'package:web_simclub/screen/client/register_client.dart';
 import 'package:web_simclub/screen/partner/register_partner.dart';
 import 'package:web_simclub/screen/employee/register_employee.dart';
 import 'package:web_simclub/screen/plan/register_plan.dart';
+import 'package:web_simclub/screen/sell/new_sell.dart';
 import 'package:web_simclub/store/auth.store.dart';
 import 'package:web_simclub/store/client.store.dart';
 import 'package:web_simclub/store/employee.store.dart';
@@ -41,7 +42,7 @@ class _MenuWidgetState extends State<MenuWidget> {
             children: [
               // Info Button
               ListTile(
-                title: Text('Olá, ' + store.getName(),
+                title: Text('Olá, ' + store.getName() + '!',
                     style: const TextStyle(color: Colors.white)),
               ),
 
@@ -49,6 +50,7 @@ class _MenuWidgetState extends State<MenuWidget> {
               const Divider(color: Colors.white),
 
               // ExpansionTile for Client
+              if (store.getLevel() < 3)
               buildMenuDrawer(
                 context: context,
                 text: 'Cliente',
@@ -68,6 +70,7 @@ class _MenuWidgetState extends State<MenuWidget> {
               ),
 
               // ExpansionTile for Employee
+              if (store.getLevel() < 2)
               buildMenuDrawer(
                 context: context,
                 text: 'Funcionarios',
@@ -87,6 +90,7 @@ class _MenuWidgetState extends State<MenuWidget> {
               ),
 
               // ExpansionTile for Partner
+              if (store.getLevel() < 2)
               buildMenuDrawer(
                 context: context,
                 text: 'Parceiros',
@@ -106,6 +110,7 @@ class _MenuWidgetState extends State<MenuWidget> {
               ),
 
               // ExpansionTile for Plans
+              if (store.getLevel() < 2)
               buildMenuDrawer(
                 context: context,
                 text: 'Planos',
@@ -125,6 +130,7 @@ class _MenuWidgetState extends State<MenuWidget> {
               ),
 
               // ExpansionTile for Sells
+              if (store.getLevel() < 3)
               buildMenuDrawer(
                 context: context,
                 text: 'Vendas',
@@ -137,7 +143,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                   employee.restoreData();
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const RegisterPlan(),
+                      builder: (context) => const RegisterSell(),
                     ),
                   );
                 },

@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
 
@@ -52,7 +51,7 @@ abstract class _ClientStore with Store {
   String _phone = '';
 
   @observable
-  String _numContract = '';
+  String _rg = '';
 
   @observable
   String _cep = '';
@@ -153,7 +152,7 @@ abstract class _ClientStore with Store {
   void setPhone(String phone) => _phone = phone;
 
   @action
-  void setNumContract(String numContract) => _numContract = numContract;
+  void setRG(String rg) => _rg = rg;
 
   @action
   void setStreet(String street) => _street = street;
@@ -179,7 +178,7 @@ abstract class _ClientStore with Store {
 
   // Auth Firebase Functions
   @action
-  Future<void> signUpWithEmailPassword(BuildContext context) async {
+  Future<void> signUpWithEmailPassword() async {
     try {
       print('Registration: Name: $_name, Email: $_email, Password: $_password');
       final response = await http.post(
@@ -222,9 +221,9 @@ abstract class _ClientStore with Store {
         "ID": _uidUser,
         "Nome": _name,
         "CPF": _cpf,
-        "Email": _email,
+        "RG": _rg,
+        "Email": _email.toLowerCase(),
         "Telefone": _phone,
-        "Contrato": _numContract,
         "Plano": _plan,
         "Nivel do Plano": _planNumber,
         "Endereço": addressMap
@@ -256,9 +255,9 @@ abstract class _ClientStore with Store {
             .collection("Usuarios")
             .where("CPF", isEqualTo: _cpf.toLowerCase())
             .get(),
-        'Contrato': FirebaseFirestore.instance
+        'RG': FirebaseFirestore.instance
             .collection("Usuarios")
-            .where("Contrato", isEqualTo: _numContract.toLowerCase())
+            .where("RG", isEqualTo: _rg.toLowerCase())
             .get(),
       };
 
@@ -304,7 +303,7 @@ abstract class _ClientStore with Store {
           await http.get(Uri.parse("https://viacep.com.br/ws/$cep/json/"));
 
       if (rsp.body.contains('"erro": true')) {
-        _textError = 'Invalid CEP';
+        _textError = 'CEP Inválido';
         _isError = true;
         return;
       } else {
@@ -319,7 +318,7 @@ abstract class _ClientStore with Store {
         trueCEP = true;
       }
     } on http.ClientException catch (_) {
-      _textError = 'Invalid CEP';
+      _textError = 'CEP Inválido';
       _isError = true;
       return;
     } catch (e) {

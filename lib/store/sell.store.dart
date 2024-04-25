@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, equal_keys_in_map
+// ignore_for_file: avoid_print, equal_keys_in_map, unnecessary_string_interpolations
 
 import 'dart:math';
 
@@ -26,13 +26,28 @@ abstract class _SellStore with Store {
   String _idSell = '';
 
   @observable
-  String _name = '';
+  String _plan = '';
 
   @observable
-  String _price = '';
+  String _contract = '';
 
   @observable
-  String _description = '';
+  String _validity = '';
+
+  //Employee
+  @observable
+  String _employee = '';
+
+  //Client
+  @observable
+  String _client = '';
+
+  @observable
+  String _clientId = '';
+
+  //Plans
+  @observable
+  List<String> planNames = [];
 
   // Get functions
 
@@ -46,13 +61,21 @@ abstract class _SellStore with Store {
   String getidSell() => _idSell;
 
   @action
-  String getName() => _name;
+  String getPlan() => _plan;
 
   @action
-  String getPrice() => _price;
+  String getContract() => _contract;
 
   @action
-  String getDescription() => _description;
+  String getValidity() => _validity;
+
+  //Client
+  @action
+  String getClient() => _client;
+
+  //Plans
+  @action
+  List<String> getPlanNames() => planNames;
 
   // Set functions
 
@@ -61,13 +84,21 @@ abstract class _SellStore with Store {
   void setIdSell(String idSell) => _idSell = idSell;
 
   @action
-  void setName(String name) => _name = name;
+  void setPlan(String plan) => _plan = plan;
 
   @action
-  void setPrice(String price) => _price = price;
+  void setContract(String contract) => _contract = contract;
 
   @action
-  void setDescription(String description) => _description = description;
+  void setValidity(String validity) => _validity = validity;
+
+  //Employee
+  @action
+  void setEmployee(String employee) => _employee = employee;
+
+  //Client
+  @action
+  void setClient(String client) => _client = client;
 
   @action
   Future<void> registrationSell() async {
@@ -76,9 +107,11 @@ abstract class _SellStore with Store {
 
       Map<String, dynamic> paternInfoMap = {
         "ID": _idSell,
-        "Nome": _name,
-        "Preço": _price,
-        "Descrição": _description,
+        "Vendedor": _employee,
+        "Cliente": _client,
+        "Plano": _plan,
+        "Contrato": _contract,
+        "Validade": _validity,
       };
 
       await addDetailsSell(paternInfoMap, _idSell);
@@ -106,31 +139,72 @@ abstract class _SellStore with Store {
     return randomId;
   }
 
-  @action
-  Future<void> duplicateEntryCheck() async {
+  Future<void> clientCheck() async {
     try {
-      final name = await FirebaseFirestore.instance
-          .collection("Vendas")
-          .where("Nome", isEqualTo: _name.toLowerCase())
-          .get();
+      _isError = false;
+      await idCheck("CPF");
+      await idCheck("RG");
+      await idCheck("Email");
 
-      if (name.docs.isNotEmpty) {
-        _textError = 'Esse Venda já foi cadastrada';
-        _isError = true;
-      } else {
-        _textError = '';
-        _isError = false;
-      }
+      await updateClientInfo("Plano", _plan);
+      await updateClientInfo("Nível do Plano", "1");
     } catch (e) {
-      print('Erro ao verificar duplicidades: $e');
-      rethrow;
+      _textError = "Não foi possivel encontrar um cliente com esses dados.";
+      _isError = true;
+      print("Ocorreu um erro: $e");
     }
+  }
+
+  Future<void> idCheck(String value) async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection("Usuarios")
+        .where(value, isEqualTo: _client.toLowerCase())
+        .get();
+    if (snapshot.docs.isNotEmpty) {
+      _clientId = snapshot.docs[0].id;
+      print("$value válido. ID do documento: $_clientId");
+    } else {
+      print("Nenhum $value foi encontrado.");
+    }
+  }
+
+  Future<void> planNameSearch() async {
+    try {
+      final partnerCollection = db.collection("Planos");
+      final snapshot = await partnerCollection.get();
+
+      planNames.clear();
+
+      var index = 0;
+      while (index < snapshot.docs.length) {
+        final doc = snapshot.docs[index];
+        final data = doc.data();
+        final name = data['Nome'];
+        if (name != null) {
+          planNames.add(name);
+        }
+        index++;
+      }
+      print("$planNames valor0");
+    } catch (e) {
+      print('Erro ao buscar os dados dos parceiros: $e');
+    }
+  }
+
+  Future<void> updateClientInfo(String value1, String value) async {
+    await FirebaseFirestore.instance
+        .collection("Usuarios")
+        .doc(_clientId)
+        .update({value1: value});
+    print("$value1: $value");
   }
 
   restoreData() {
     setIdSell('');
-    setName('');
-    setPrice('');
-    setDescription('');
+    setEmployee('');
+    setClient('');
+    setPlan('');
+    setContract('');
+    setValidity('');
   }
 }

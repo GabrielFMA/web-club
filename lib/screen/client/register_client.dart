@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:web_simclub/components/auth/textfield_password.dart';
 import 'package:web_simclub/components/menu.dart';
 import 'package:web_simclub/store/client.store.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
@@ -16,12 +17,23 @@ class RegisterClient extends StatefulWidget {
 }
 
 class _RegisterClientState extends State<RegisterClient> {
+  //form1
   final _nomeController = TextEditingController();
   final _emailController = TextEditingController();
   final _cpfController = TextEditingController();
+  final _rgController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  String _password = ' ';
+  //form2
   final _cepController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _contractController = TextEditingController();
+  final _streetController = TextEditingController();
+  final _numberController = TextEditingController();
+  final _complementController = TextEditingController();
+  final _districtController = TextEditingController();
+  final _cityController = TextEditingController();
+  final _stateController = TextEditingController();
 
   final formKey1 = GlobalKey<FormState>();
   final formKey2 = GlobalKey<FormState>();
@@ -83,45 +95,72 @@ class _RegisterClientState extends State<RegisterClient> {
                                           },
                                         ),
 
-                                        //CPF field
-                                        TextFieldString(
-                                          icon: Icon(
-                                            MdiIcons.cardAccountDetailsOutline,
-                                            color: store
-                                                    .getTextError()
-                                                    .contains('Contrato')
-                                                ? Colors.red
-                                                : null,
-                                          ),
-                                          hintText: "CPF",
-                                          text: _cpfController.text,
-                                          shouldValidate: true,
-                                          validator: (text) {
-                                            if (text!.isEmpty) {
-                                              return "Digite o CPF";
-                                            }
-                                            if (!RegExp(r'^[0-9]+$')
-                                                .hasMatch(text)) {
-                                              return "Digite apenas números";
-                                            }
-                                            if (text.length != 11) {
-                                              return 'Digite um CPF válido';
-                                            }
-                                            store.setCPF(text);
-                                            return null;
-                                          },
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              //CPF field
+                                              child: TextFieldString(
+                                                icon: Icon(MdiIcons
+                                                    .cardAccountDetailsOutline),
+                                                hintText: "CPF",
+                                                text: _cpfController.text,
+                                                shouldValidate: true,
+                                                validator: (text) {
+                                                  if (text!.isEmpty) {
+                                                    return "Digite o CPF";
+                                                  }
+                                                  if (!RegExp(r'^[0-9.\\-]+$')
+                                                      .hasMatch(text)) {
+                                                    return "Digite apenas números";
+                                                  }
+                                                  if (text.length == 11 ||
+                                                      text.length == 14) {
+                                                    text = text.replaceAll(
+                                                        RegExp(r'[^0-9]'), '');
+                                                    print(text);
+                                                    store.setCPF(text);
+                                                    return null;
+                                                  } else {
+                                                    return 'Digite um CPF válido';
+                                                  }
+                                                },
+                                              ),
+                                            ),
+
+                                            //Space
+                                            const SizedBox(width: 10),
+
+                                            Expanded(
+                                              //RG field
+                                              child: TextFieldString(
+                                                icon: Icon(MdiIcons
+                                                    .cardAccountMailOutline),
+                                                hintText: "RG",
+                                                text: _rgController.text,
+                                                shouldValidate: true,
+                                                validator: (text) {
+                                                  if (text!.isEmpty) {
+                                                    return "Digite o RG";
+                                                  }
+                                                  if (text.length > 8 && text.length < 14) {
+                                                    text = text.replaceAll(
+                                                        RegExp(r'[-.]'), '');
+                                                    text = text.toLowerCase();
+                                                    print(text);
+                                                    store.setRG(text);
+                                                    return null;
+                                                  } else {
+                                                    return 'Digite um RG válido';
+                                                  }
+                                                },
+                                              ),
+                                            ),
+                                          ],
                                         ),
 
                                         //Email field
                                         TextFieldString(
-                                          icon: Icon(
-                                            MdiIcons.emailOutline,
-                                            color: store
-                                                    .getTextError()
-                                                    .contains('Contrato')
-                                                ? Colors.red
-                                                : null,
-                                          ),
+                                          icon: Icon(MdiIcons.emailOutline),
                                           hintText: "Digite seu email",
                                           text: _emailController.text,
                                           shouldValidate: true,
@@ -162,34 +201,49 @@ class _RegisterClientState extends State<RegisterClient> {
                                         ),
 
                                         //Contract field
-                                        TextFieldString(
-                                          icon: Icon(
-                                            MdiIcons.fileDocumentEditOutline,
-                                            color: store
-                                                    .getTextError()
-                                                    .contains('Contrato')
-                                                ? Colors.red
-                                                : null,
-                                          ),
-                                          hintText: "Contrato",
-                                          text: _contractController.text,
-                                          shouldValidate: true,
-                                          validator: (text) {
-                                            if (text!.isEmpty) {
-                                              return "Digite seu Contrato";
-                                            }
-                                            if (!RegExp(r'^[0-9]+$')
-                                                .hasMatch(text)) {
-                                              return "Digite apenas números";
-                                            }
-                                            if (text.length < 6) {
-                                              return "O contrato deve ter pelo menos 6 dígitos";
-                                            }
-                                            store.setNumContract(text);
-                                            store.setPassword(text
-                                                .substring(text.length - 6));
-                                            return null;
-                                          },
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              //Password field
+                                              child: TextFieldPassword(
+                                                password:
+                                                    _passwordController.text,
+                                                shouldValidate: true,
+                                                validator: (text) {
+                                                  if (text!.isEmpty) {
+                                                    return "Digite uma senha";
+                                                  } else if (text.length < 6) {
+                                                    return "Digite uma senha maior";
+                                                  }
+                                                  _password = text;
+                                                  store.setPassword(text);
+                                                  return null;
+                                                },
+                                              ),
+                                            ),
+
+                                            //Space
+                                            const SizedBox(width: 10),
+
+                                            Expanded(
+                                              //Password confirm field
+                                              child: TextFieldConfirmPassword(
+                                                confirmPassword:
+                                                    _confirmPasswordController
+                                                        .text,
+                                                shouldValidate: true,
+                                                validator: (text) {
+                                                  if (text!.isEmpty) {
+                                                    return "Confirme sua senha";
+                                                  }
+                                                  if (text != _password) {
+                                                    return "As senhas não são iguais";
+                                                  }
+                                                  return null;
+                                                },
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
@@ -249,7 +303,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                               ? store.getStreet()
                                               : "Rua",
                                           enabled: !store.trueCEP,
-                                          text: _contractController.text,
+                                          text: _streetController.text,
                                           shouldValidate: true,
                                           validator: (_) {
                                             if (store.getStreet().isEmpty) {
@@ -266,7 +320,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                                 icon: Icon(
                                                     MdiIcons.pencilOutline),
                                                 hintText: "Número",
-                                                text: _contractController.text,
+                                                text: _numberController.text,
                                                 shouldValidate: true,
                                                 validator: (text) {
                                                   if (text!.isEmpty) {
@@ -291,7 +345,8 @@ class _RegisterClientState extends State<RegisterClient> {
                                                 icon: Icon(
                                                     MdiIcons.pencilOutline),
                                                 hintText: "Complemento",
-                                                text: _contractController.text,
+                                                text:
+                                                    _complementController.text,
                                                 shouldValidate: true,
                                                 validator: (text) {
                                                   store.setComplement(text);
@@ -316,7 +371,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                               ? store.getDistrict()
                                               : "Bairro",
                                           enabled: !store.trueCEP,
-                                          text: _contractController.text,
+                                          text: _districtController.text,
                                           shouldValidate: true,
                                           validator: (_) {
                                             if (store.getDistrict().isEmpty) {
@@ -343,7 +398,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                                     ? store.getCity()
                                                     : "Cidade",
                                                 enabled: !store.trueCEP,
-                                                text: _contractController.text,
+                                                text: _cityController.text,
                                                 shouldValidate: true,
                                                 validator: (_) {
                                                   if (store.getCity().isEmpty) {
@@ -373,7 +428,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                                     ? store.getState()
                                                     : "Estado",
                                                 enabled: !store.trueCEP,
-                                                text: _contractController.text,
+                                                text: _stateController.text,
                                                 shouldValidate: true,
                                                 validator: (_) {
                                                   if (store
@@ -428,9 +483,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                                 text: 'SIM',
                                                 onClick: () async {
                                                   await store
-                                                      .signUpWithEmailPassword(
-                                                          context);
-
+                                                      .signUpWithEmailPassword();
                                                   if (!store.getIsError()) {
                                                     store.restoreData();
                                                     Navigator

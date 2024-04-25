@@ -268,8 +268,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                                   text: 'SIM',
                                                   onClick: () async {
                                                     await store
-                                                        .signUpWithEmailPassword(
-                                                            context);
+                                                        .signUpWithEmailPassword();
 
                                                     store.restoreData();
                                                     Navigator

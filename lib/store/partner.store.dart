@@ -190,9 +190,9 @@ abstract class _PartnerStore with Store {
 
       Map<String, dynamic> paternInfoMap = {
         "ID": _idPartner,
-        "Nome": _name,
+        "Nome": _name.toLowerCase(),
         "CNPJ": _cnpj,
-        "Email": _email,
+        "Email": _email.toLowerCase(),
         "Telefone": _phone,
         "Endereço": addressMap,
         "Consultas": examMap

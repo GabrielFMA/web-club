@@ -164,19 +164,18 @@ mixin _$ClientStore on _ClientStore, Store {
     });
   }
 
-  late final _$_numContractAtom =
-      Atom(name: '_ClientStore._numContract', context: context);
+  late final _$_rgAtom = Atom(name: '_ClientStore._rg', context: context);
 
   @override
-  String get _numContract {
-    _$_numContractAtom.reportRead();
-    return super._numContract;
+  String get _rg {
+    _$_rgAtom.reportRead();
+    return super._rg;
   }
 
   @override
-  set _numContract(String value) {
-    _$_numContractAtom.reportWrite(value, super._numContract, () {
-      super._numContract = value;
+  set _rg(String value) {
+    _$_rgAtom.reportWrite(value, super._rg, () {
+      super._rg = value;
     });
   }
 
@@ -325,9 +324,9 @@ mixin _$ClientStore on _ClientStore, Store {
       AsyncAction('_ClientStore.signUpWithEmailPassword', context: context);
 
   @override
-  Future<void> signUpWithEmailPassword(BuildContext context) {
+  Future<void> signUpWithEmailPassword() {
     return _$signUpWithEmailPasswordAsyncAction
-        .run(() => super.signUpWithEmailPassword(context));
+        .run(() => super.signUpWithEmailPassword());
   }
 
   late final _$registrationUserAsyncAction =
@@ -588,11 +587,11 @@ mixin _$ClientStore on _ClientStore, Store {
   }
 
   @override
-  void setNumContract(String numContract) {
-    final _$actionInfo = _$_ClientStoreActionController.startAction(
-        name: '_ClientStore.setNumContract');
+  void setRG(String rg) {
+    final _$actionInfo =
+        _$_ClientStoreActionController.startAction(name: '_ClientStore.setRG');
     try {
-      return super.setNumContract(numContract);
+      return super.setRG(rg);
     } finally {
       _$_ClientStoreActionController.endAction(_$actionInfo);
     }

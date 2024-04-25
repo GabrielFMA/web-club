@@ -104,7 +104,7 @@ abstract class _EmployeeStore with Store {
 
   // Auth Firebase Functions
 
-  Future<void> signUpWithEmailPassword(BuildContext context) async {
+  Future<void> signUpWithEmailPassword() async {
     try {
       print(_name);
       print(_email);
@@ -146,8 +146,8 @@ abstract class _EmployeeStore with Store {
     try {
       Map<String, dynamic> userInfoMap = {
         "ID": _uidUser,
-        "Nome": _name,
-        "Email": _email,
+        "Nome": _name.toLowerCase(),
+        "Email": _email.toLowerCase(),
         "Telefone": _phone,
         "Cargo": _position,
         "Level": _level,

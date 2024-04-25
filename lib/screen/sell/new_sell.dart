@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, non_constant_identifier_names, use_build_context_synchronously
+// ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -8,6 +8,20 @@ import 'package:web_simclub/components/auth/textfield_string.dart';
 import 'package:web_simclub/components/menu.dart';
 import 'package:web_simclub/store/sell.store.dart';
 
+class LoadingScreen extends StatelessWidget {
+  const LoadingScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.green[200],
+      body: const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+}
+
 class RegisterSell extends StatefulWidget {
   const RegisterSell({super.key});
 
@@ -16,15 +30,44 @@ class RegisterSell extends StatefulWidget {
 }
 
 class _RegisterSellState extends State<RegisterSell> {
-  final _nameController = TextEditingController();
-  final _priceController = TextEditingController();
-  final _descriptionController = TextEditingController();
+  late Future<void> _loadDataFuture;
 
-  final formKey = GlobalKey<FormState>();
+  String? namePlan;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDataFuture = _loadData();
+  }
+
+  Future<void> _loadData() async {
+    final store = Provider.of<SellStore>(context, listen: false);
+    await store.planNameSearch();
+  }
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _loadDataFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const LoadingScreen();
+        } else {
+          return _buildContent();
+        }
+      },
+    );
+  }
+
+  Widget _buildContent() {
     final store = Provider.of<SellStore>(context);
+    final planName = store.getPlanNames().toSet().toList();
+    final _clientController = TextEditingController();
+    final _contractController = TextEditingController();
+    final _validityController = TextEditingController();
+
+    final formKey = GlobalKey<FormState>();
+    print(planName);
 
     return Scaffold(
       backgroundColor: Colors.green[200],
@@ -64,80 +107,103 @@ class _RegisterSellState extends State<RegisterSell> {
                               // Space
                               const SizedBox(height: 15),
 
-                              //Name field
+                              //Cliente field
                               TextFieldString(
                                 icon: Icon(MdiIcons.noteMultiple),
-                                hintText: "Funcionario",
-                                text: _nameController.text,
+                                hintText: "Cliente",
+                                text: _clientController.text,
                                 shouldValidate: true,
                                 validator: (text) {
-                                  if (text!.isEmpty) {
-                                    return "Digite a Venda";
+                                  if (text!.trim().isEmpty) {
+                                    return "Digite o cliente";
                                   }
-                                  store.setName(text);
-                                  return null;
+                                  if (RegExp(
+                                          r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                      .hasMatch(text)) {
+                                    store.setClient(text);
+                                    return null;
+                                  } else if (RegExp(r'^[0-9.\\-]+$')
+                                      .hasMatch(text)) {
+                                    store.setClient(text);
+                                    return null;
+                                  } else if (text.length > 8 &&
+                                      text.length < 14) {
+                                    text = text.replaceAll(RegExp(r'[-.]'), '');
+                                    text = text.toLowerCase();
+                                    store.setClient(text);
+                                    return null;
+                                  }
+                                  return "Caracteres são inválidas";
                                 },
                               ),
 
-                              //Name field
+                              //Drawer field
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: Colors.green[500]?.withOpacity(.3),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(MdiIcons.textBoxMultipleOutline),
+                                    const SizedBox(width: 15),
+                                    Expanded(
+                                      child: DropdownButtonFormField<String>(
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: namePlan != null
+                                              ? namePlan!
+                                              : "Selecione um plano",
+                                          hintStyle: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        onChanged: (value) {
+                                          setState(() {
+                                            namePlan = value;
+                                          });
+                                        },
+                                        items: planName.map((valueItem) {
+                                          return DropdownMenuItem<String>(
+                                            value: valueItem,
+                                            child: Text(valueItem),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              //Contract field
                               TextFieldString(
                                 icon: Icon(MdiIcons.noteMultiple),
-                                hintText: "Nome da Venda",
-                                text: _nameController.text,
+                                hintText: "Contrato",
+                                text: _contractController.text,
                                 shouldValidate: true,
                                 validator: (text) {
                                   if (text!.isEmpty) {
-                                    return "Digite a Venda";
+                                    return "Digite o Contrato";
                                   }
-                                  store.setName(text);
+                                  store.setContract(text);
                                   return null;
                                 },
                               ),
 
-                              //Name field
+                              //Validade field
                               TextFieldString(
                                 icon: Icon(MdiIcons.noteMultiple),
-                                hintText: "Nome da Venda",
-                                text: _nameController.text,
+                                hintText: "Data da venda",
+                                text: _validityController.text,
                                 shouldValidate: true,
                                 validator: (text) {
                                   if (text!.isEmpty) {
-                                    return "Digite a Venda";
+                                    return "Digite a Validade";
                                   }
-                                  store.setName(text);
-                                  return null;
-                                },
-                              ),
-
-                              //Price field
-                              TextFieldString(
-                                icon: Icon(MdiIcons.currencyUsd),
-                                hintText: "Preço do Plano",
-                                text: _priceController.text,
-                                shouldValidate: true,
-                                validator: (text) {
-                                  if (text!.isEmpty) {
-                                    return "Digite o Preço";
-                                  }
-                                  if (!RegExp(r'^[0-9]+$').hasMatch(text)) {
-                                    return "Digite apenas números";
-                                  }
-                                  store.setPrice(text);
-                                  return null;
-                                },
-                              ),
-
-                              //Description field
-                              TextFieldString(
-                                icon: Icon(MdiIcons.noteText),
-                                hintText: "Descrição do Plano",
-                                text: _descriptionController.text,
-                                shouldValidate: true,
-                                validator: (text) {
-                                  if (text!.isEmpty) {
-                                    return "Digite a Descrição";
-                                  }
-                                  store.setDescription(text);
+                                  store.setValidity(text);
                                   return null;
                                 },
                               ),
@@ -148,11 +214,11 @@ class _RegisterSellState extends State<RegisterSell> {
                               buttonDefault(
                                 context,
                                 () async {
-                                  final isFormKey =
-                                      formKey.currentState!.validate();
-                                  store.duplicateEntryCheck();
-                                  if (isFormKey && !store.getIsError()) {
+                                  if (formKey.currentState!.validate()) {
+                                    store.clientCheck();
                                     //Confirmation screen
+                                  }
+                                  if (!store.getIsError()) {
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
