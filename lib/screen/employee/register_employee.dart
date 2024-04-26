@@ -22,6 +22,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  String _name = '';
   String _password = ' ';
 
   String? valuePosition;
@@ -77,21 +78,48 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                               const SizedBox(height: 5),
 
                               //Name field
-                              TextFieldString(
-                                icon: Icon(MdiIcons.accountTieOutline),
-                                hintText: "Digite seu Nome",
-                                text: _nomeController.text,
-                                shouldValidate: true,
-                                validator: (text) {
-                                  if (text!.isEmpty) {
-                                    return "Digite um nome";
-                                  }
-                                  if (text.length < 6) {
-                                    return 'Digite seu nome completo';
-                                  }
-                                  store.setName(text);
-                                  return null;
-                                },
+                              Row(
+                                children: [
+                                  Expanded(
+                                    //Name field
+                                    child: TextFieldString(
+                                      icon: Icon(MdiIcons.accountOutline),
+                                      hintText: "Nome",
+                                      text: _nomeController.text,
+                                      shouldValidate: true,
+                                      validator: (text) {
+                                        if (text!.isEmpty) {
+                                          return "Digite um nome";
+                                        }
+                                        _name += "$text ";
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+
+                                  //Space
+                                  const SizedBox(width: 10),
+
+                                  Expanded(
+                                    //Sobrenome field
+                                    child: TextFieldString(
+                                      icon: Icon(MdiIcons.accountOutline),
+                                      hintText: "Sobrenome",
+                                      text: _nomeController.text,
+                                      shouldValidate: true,
+                                      validator: (text) {
+                                        if (text!.isEmpty) {
+                                          return "Digite um Sobrenome";
+                                        }
+                                        if (_name.trim().isNotEmpty) {
+                                          _name += text;
+                                          store.setName(_name);
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
 
                               //Email field
@@ -102,7 +130,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                 shouldValidate: true,
                                 validator: (text) {
                                   if (text!.isEmpty) {
-                                    return "Digite seu Email";
+                                    return "Email";
                                   }
                                   if (!RegExp(
                                           r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
@@ -245,7 +273,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                       formKey.currentState!.validate();
 
                                   await store.duplicateEntryCheck();
-                                  
+
                                   if (isFormValid &&
                                       store.getLevel() < 3 &&
                                       !store.getIsError()) {

@@ -162,7 +162,7 @@ abstract class _SellStore with Store {
 
       await addDetailsSell(sellInfoMap, _idSell);
       await updateClientInfo("Plano", _plan);
-      await updateClientInfo("Nivel do plano", _planLevel);
+      await updateClientInfo("Nivel do Plano", _planLevel);
     } catch (e) {
       print('Erro ao fazer registro: $e');
       print('Tipo de exceção: ${e.runtimeType}');

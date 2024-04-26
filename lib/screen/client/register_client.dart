@@ -24,6 +24,7 @@ class _RegisterClientState extends State<RegisterClient> {
   final _rgController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  String _name = '';
   String _password = ' ';
   //form2
   final _cepController = TextEditingController();
@@ -80,19 +81,50 @@ class _RegisterClientState extends State<RegisterClient> {
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        //Name field
-                                        TextFieldString(
-                                          icon: Icon(MdiIcons.accountOutline),
-                                          hintText: "Digite o nome do cliente",
-                                          text: _nomeController.text,
-                                          shouldValidate: true,
-                                          validator: (text) {
-                                            if (text!.isEmpty) {
-                                              return "Digite um nome";
-                                            }
-                                            store.setName(text);
-                                            return null;
-                                          },
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              //Name field
+                                              child: TextFieldString(
+                                                icon: Icon(
+                                                    MdiIcons.accountOutline),
+                                                hintText: "Nome",
+                                                text: _nomeController.text,
+                                                shouldValidate: true,
+                                                validator: (text) {
+                                                  if (text!.isEmpty) {
+                                                    return "Digite um nome";
+                                                  }
+                                                  _name += "$text ";
+                                                  return null;
+                                                },
+                                              ),
+                                            ),
+
+                                            //Space
+                                            const SizedBox(width: 10),
+
+                                            Expanded(
+                                              //Sobrenome field
+                                              child: TextFieldString(
+                                                icon: Icon(
+                                                    MdiIcons.accountOutline),
+                                                hintText: "Sobrenome",
+                                                text: _nomeController.text,
+                                                shouldValidate: true,
+                                                validator: (text) {
+                                                  if (text!.isEmpty) {
+                                                    return "Digite um Sobrenome";
+                                                  }
+                                                  if (_name.trim().isNotEmpty) {
+                                                    _name += text;
+                                                    store.setName(_name);
+                                                    return null;
+                                                  }
+                                                },
+                                              ),
+                                            ),
+                                          ],
                                         ),
 
                                         Row(
@@ -142,7 +174,8 @@ class _RegisterClientState extends State<RegisterClient> {
                                                   if (text!.isEmpty) {
                                                     return "Digite o RG";
                                                   }
-                                                  if (text.length > 8 && text.length < 14) {
+                                                  if (text.length > 8 &&
+                                                      text.length < 14) {
                                                     text = text.replaceAll(
                                                         RegExp(r'[-.]'), '');
                                                     text = text.toLowerCase();

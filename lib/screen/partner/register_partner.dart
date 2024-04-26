@@ -84,7 +84,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                         TextFieldString(
                                           icon: Icon(MdiIcons
                                               .accountSupervisorCircleOutline),
-                                          hintText: "Digite o nome do parceiro",
+                                          hintText: "Nome do parceiro",
                                           text: _nomeController.text,
                                           shouldValidate: true,
                                           validator: (text) {
@@ -105,7 +105,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                           shouldValidate: true,
                                           validator: (text) {
                                             if (text!.isEmpty) {
-                                              return "Digite o CNPJ";
+                                              return "CNPJ";
                                             }
                                             if (!RegExp(r'^[0-9]+$')
                                                 .hasMatch(text)) {
@@ -122,7 +122,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                         //Email field
                                         TextFieldString(
                                           icon: Icon(MdiIcons.emailOutline),
-                                          hintText: "Digite seu email",
+                                          hintText: "Email",
                                           text: _emailController.text,
                                           shouldValidate: true,
                                           validator: (text) {
