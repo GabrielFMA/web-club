@@ -127,7 +127,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                 ),
                                 child: Row(
                                   children: [
-                                    Icon(MdiIcons.textBoxMultipleOutline),
+                                    Icon(MdiIcons.postOutline),
                                     const SizedBox(width: 15),
                                     Expanded(
                                       child: DropdownButtonFormField<String>(

@@ -19,10 +19,16 @@ class RegisterPartner extends StatefulWidget {
 class _RegisterPartnerState extends State<RegisterPartner> {
   final _nomeController = TextEditingController();
   final _emailController = TextEditingController();
-  final _cpfController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _contractController = TextEditingController();
+  final _cpnjController = TextEditingController();
+  //form2
   final _cepController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _streetController = TextEditingController();
+  final _numberController = TextEditingController();
+  final _complementController = TextEditingController();
+  final _districtController = TextEditingController();
+  final _cityController = TextEditingController();
+  final _stateController = TextEditingController();
 
   final formKey1 = GlobalKey<FormState>();
   final formKey2 = GlobalKey<FormState>();
@@ -95,7 +101,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                           icon: Icon(
                                               MdiIcons.officeBuildingOutline),
                                           hintText: "CNPJ",
-                                          text: _cpfController.text,
+                                          text: _cpnjController.text,
                                           shouldValidate: true,
                                           validator: (text) {
                                             if (text!.isEmpty) {
@@ -284,7 +290,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                               ? store.getStreet()
                                               : "Rua",
                                           enabled: !store.trueCEP,
-                                          text: _contractController.text,
+                                          text: _streetController.text,
                                           shouldValidate: true,
                                           validator: (_) {
                                             if (store.getStreet().isEmpty) {
@@ -301,7 +307,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                                 icon: Icon(
                                                     MdiIcons.pencilOutline),
                                                 hintText: "Número",
-                                                text: _contractController.text,
+                                                text: _numberController.text,
                                                 shouldValidate: true,
                                                 validator: (text) {
                                                   if (text!.isEmpty) {
@@ -323,7 +329,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                                 icon: Icon(
                                                     MdiIcons.pencilOutline),
                                                 hintText: "Complemento",
-                                                text: _contractController.text,
+                                                text: _complementController.text,
                                                 shouldValidate: true,
                                                 validator: (text) {
                                                   store.setComplement(text);
@@ -348,7 +354,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                               ? store.getDistrict()
                                               : "Bairro",
                                           enabled: !store.trueCEP,
-                                          text: _contractController.text,
+                                          text: _districtController.text,
                                           shouldValidate: true,
                                           validator: (_) {
                                             if (store.getDistrict().isEmpty) {
@@ -375,7 +381,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                                     ? store.getCity()
                                                     : "Cidade",
                                                 enabled: !store.trueCEP,
-                                                text: _contractController.text,
+                                                text: _cityController.text,
                                                 shouldValidate: true,
                                                 validator: (_) {
                                                   if (store.getCity().isEmpty) {
@@ -402,7 +408,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                                     ? store.getState()
                                                     : "Estado",
                                                 enabled: !store.trueCEP,
-                                                text: _contractController.text,
+                                                text: _stateController.text,
                                                 shouldValidate: true,
                                                 validator: (_) {
                                                   if (store

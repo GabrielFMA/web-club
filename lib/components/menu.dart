@@ -14,6 +14,8 @@ import 'package:web_simclub/store/auth.store.dart';
 import 'package:web_simclub/store/client.store.dart';
 import 'package:web_simclub/store/employee.store.dart';
 import 'package:web_simclub/store/partner.store.dart';
+import 'package:web_simclub/store/plan.store.dart';
+import 'package:web_simclub/store/sell.store.dart';
 
 class MenuWidget extends StatefulWidget {
   const MenuWidget({super.key});
@@ -26,6 +28,8 @@ class _MenuWidgetState extends State<MenuWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final sell = Provider.of<SellStore>(context);
+    final plan = Provider.of<PlanStore>(context);
     final store = Provider.of<AuthStore>(context);
     final client = Provider.of<ClientStore>(context);
     final partner = Provider.of<PartnerStore>(context);
@@ -59,8 +63,6 @@ class _MenuWidgetState extends State<MenuWidget> {
                 icon2: MdiIcons.notePlusOutline,
                 onClick: () {
                   client.restoreData();
-                  partner.restoreData();
-                  employee.restoreData();
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => const RegisterClient(),
@@ -78,8 +80,6 @@ class _MenuWidgetState extends State<MenuWidget> {
                 icon: MdiIcons.badgeAccountHorizontalOutline,
                 icon2: MdiIcons.notePlusOutline,
                 onClick: () {
-                  client.restoreData();
-                  partner.restoreData();
                   employee.restoreData();
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -98,9 +98,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                 icon: MdiIcons.handshakeOutline,
                 icon2: MdiIcons.notePlusOutline,
                 onClick: () {
-                  client.restoreData();
                   partner.restoreData();
-                  employee.restoreData();
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => const RegisterPartner(),
@@ -118,9 +116,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                 icon: MdiIcons.newspaperVariantMultipleOutline,
                 icon2: MdiIcons.notePlusOutline,
                 onClick: () {
-                  client.restoreData();
-                  partner.restoreData();
-                  employee.restoreData();
+                  plan.restoreData();
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => const RegisterPlan(),
@@ -138,9 +134,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                 icon: MdiIcons.networkPos,
                 icon2: MdiIcons.notePlusOutline,
                 onClick: () {
-                  client.restoreData();
-                  partner.restoreData();
-                  employee.restoreData();
+                  sell.restoreData();
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => const RegisterSell(),

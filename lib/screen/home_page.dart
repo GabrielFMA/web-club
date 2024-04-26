@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'dart:async';
-
 import 'package:web_simclub/components/menu.dart'; // Importe a biblioteca dart:async
 
 class HomePage extends StatefulWidget {

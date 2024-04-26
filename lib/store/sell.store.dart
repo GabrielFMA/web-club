@@ -26,13 +26,22 @@ abstract class _SellStore with Store {
   String _idSell = '';
 
   @observable
-  String _plan = '';
-
-  @observable
   String _contract = '';
 
   @observable
-  String _validity = '';
+  String _budget = '';
+
+  @observable
+  bool _trueBudget = false;
+
+  //Plan
+  @observable
+  String _plan = '';
+
+  @observable
+  int _planLevel = 0;
+
+  Map<String, dynamic> planMap = {};
 
   //Employee
   @observable
@@ -44,6 +53,23 @@ abstract class _SellStore with Store {
 
   @observable
   String _clientId = '';
+
+  @observable
+  String _clientName = '';
+
+  @observable
+  String _clientCPF = '';
+
+  @observable
+  String _clientRG = '';
+
+  @observable
+  String _clientEmail = '';
+
+  @observable
+  bool _trueClient = false;
+
+  Map<String, dynamic> clientMap = {};
 
   //Plans
   @observable
@@ -61,17 +87,33 @@ abstract class _SellStore with Store {
   String getidSell() => _idSell;
 
   @action
-  String getPlan() => _plan;
-
-  @action
   String getContract() => _contract;
 
   @action
-  String getValidity() => _validity;
+  bool trueBudget() => _trueBudget;
+
+  //Plan
+  @action
+  String getPlan() => _plan;
 
   //Client
   @action
   String getClient() => _client;
+
+  @action
+  String getClientName() => _clientName;
+
+  @action
+  String getClientCPF() => _clientCPF;
+
+  @action
+  String getClientRG() => _clientRG;
+
+  @action
+  String getClientEmail() => _clientEmail;
+
+  @action
+  bool trueClient() => _trueClient;
 
   //Plans
   @action
@@ -84,13 +126,14 @@ abstract class _SellStore with Store {
   void setIdSell(String idSell) => _idSell = idSell;
 
   @action
-  void setPlan(String plan) => _plan = plan;
-
-  @action
   void setContract(String contract) => _contract = contract;
 
   @action
-  void setValidity(String validity) => _validity = validity;
+  void setTrueBudget(bool trueBudget) => _trueBudget = trueBudget;
+
+  //Plan
+  @action
+  void setPlan(String plan) => _plan = plan;
 
   //Employee
   @action
@@ -104,17 +147,22 @@ abstract class _SellStore with Store {
   Future<void> registrationSell() async {
     try {
       _idSell = generateRandomId();
+      await planDataCheck();
 
-      Map<String, dynamic> paternInfoMap = {
+      Map<String, dynamic> sellInfoMap = {
         "ID": _idSell,
         "Vendedor": _employee,
-        "Cliente": _client,
-        "Plano": _plan,
+        "Cliente": clientMap,
+        "Plano": planMap,
         "Contrato": _contract,
-        "Validade": _validity,
       };
 
-      await addDetailsSell(paternInfoMap, _idSell);
+      print(clientMap);
+      print(planMap);
+
+      await addDetailsSell(sellInfoMap, _idSell);
+      await updateClientInfo("Plano", _plan);
+      await updateClientInfo("Nivel do plano", _planLevel);
     } catch (e) {
       print('Erro ao fazer registro: $e');
       print('Tipo de exceção: ${e.runtimeType}');
@@ -125,6 +173,14 @@ abstract class _SellStore with Store {
   @action
   Future addDetailsSell(Map<String, dynamic> sellMap, String id) async {
     await db.collection("Vendas").doc(id).set(sellMap);
+  }
+  
+  Future<void> updateClientInfo(value1, value) async {
+    await FirebaseFirestore.instance
+        .collection("Usuarios")
+        .doc(_clientId)
+        .update({value1: value});
+    print("$value1: $value");
   }
 
   // Função para gerar um ID aleatório
@@ -139,30 +195,94 @@ abstract class _SellStore with Store {
     return randomId;
   }
 
-  Future<void> clientCheck() async {
+  Future<void> budgetCheck(value) async {
     try {
       _isError = false;
-      await idCheck("CPF");
-      await idCheck("RG");
-      await idCheck("Email");
-
-      await updateClientInfo("Plano", _plan);
-      await updateClientInfo("Nível do Plano", "1");
+      _trueBudget = false;
+      _client = "";
+      await budgetSearch(value);
+      if (_client.isEmpty) {
+        _textError = "Não foi possível encontrar o orçamento.";
+        _isError = true;
+        _trueBudget = false;
+      } else {
+        _textError = "";
+        _isError = false;
+        _trueBudget = true;
+        await clientDataCheck(_client);
+      }
     } catch (e) {
-      _textError = "Não foi possivel encontrar um cliente com esses dados.";
+      _textError = "Ocorreu um erro ao buscar o orçamento: $e";
       _isError = true;
       print("Ocorreu um erro: $e");
     }
   }
 
-  Future<void> idCheck(String value) async {
+  Future<void> budgetSearch(value) async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection("Orçamentos")
+        .doc(value)
+        .get();
+    if (snapshot.exists) {
+      _client = snapshot.get('CPF');
+      print("$value válido. CPF do cliente: $_client");
+    } else {
+      print("Nenhum $value foi encontrado.");
+    }
+    DocumentSnapshot snapshot2 = await FirebaseFirestore.instance
+        .collection("Orçamentos")
+        .doc(value)
+        .get();
+    if (snapshot2.exists) {
+      _plan = snapshot2.get('Plano');
+      print("$value válido. Plan do cliente: $_plan");
+    } else {
+      print("Nenhum $value foi encontrado.");
+    }
+  }
+
+  Future<void> clientDataCheck(client) async {
+    try {
+      _trueClient = false;
+      _clientId = "";
+      await clientIdSearch("CPF", client);
+      await clientIdSearch("RG", client);
+      await clientIdSearch("Email", client);
+      if (_clientId.isEmpty) {
+        _textError = "Não foi possivel encontrar um cliente com esses dados.";
+        _isError = true;
+      } else {
+        _textError = "";
+        _isError = false;
+        _trueClient = true;
+      }
+    } catch (e) {
+      print("Ocorreu um erro: $e");
+    }
+  }
+
+  Future<void> clientIdSearch(value, client) async {
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection("Usuarios")
-        .where(value, isEqualTo: _client.toLowerCase())
+        .where(value, isEqualTo: client.toLowerCase())
         .get();
     if (snapshot.docs.isNotEmpty) {
-      _clientId = snapshot.docs[0].id;
-      print("$value válido. ID do documento: $_clientId");
+      var doc = snapshot.docs[0];
+      _clientId = doc.id;
+      _clientName = doc['Nome'];
+      _clientCPF = doc['CPF'];
+      _clientRG = doc['RG'];
+      _clientEmail = doc['Email'];
+      print(
+          "$value válido. Id: $_clientId, Nome: $_clientName, CPF:  $_clientCPF, RG:  $_clientRG, Email:  $_clientEmail");
+
+      clientMap = {
+        "ID": _clientId,
+        "Nome": _clientName,
+        "CPF": _clientCPF,
+        "RG": _clientRG,
+        "Email": _clientEmail,
+      };
     } else {
       print("Nenhum $value foi encontrado.");
     }
@@ -185,18 +305,44 @@ abstract class _SellStore with Store {
         }
         index++;
       }
-      print("$planNames valor0");
     } catch (e) {
-      print('Erro ao buscar os dados dos parceiros: $e');
+      print('Erro ao buscar os dados dos Planos: $e');
     }
   }
 
-  Future<void> updateClientInfo(String value1, String value) async {
-    await FirebaseFirestore.instance
-        .collection("Usuarios")
-        .doc(_clientId)
-        .update({value1: value});
-    print("$value1: $value");
+  Future<void> planDataCheck() async {
+    try {
+      await planIdSearch("Nome");
+    } catch (e) {
+      print("Ocorreu um erro: $e");
+    }
+  }
+
+  Future<void> planIdSearch(value) async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection("Planos")
+        .where(value, isEqualTo: _plan)
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      var doc = snapshot.docs[0];
+      _planLevel = doc['Nivel do plano'];
+      String planDescription = doc['Descrição'];
+      String planId = doc['ID'];
+      String planPrice = doc['Preço'];
+      print(
+          "$_plan válido. Nível do plano: $_planLevel, Descrição do plano: $planDescription, Id do plano: $planId e o Preço do plano: $planPrice");
+      planMap = {
+        "ID": planId,
+        "Nome": _plan,
+        "Level do Plano": _planLevel,
+        "Preço": planPrice,
+        "Descrição": planDescription,
+      };
+    } else {
+      // Se nenhum documento corresponder à consulta
+      print("Nenhum $_plan foi encontrado.");
+    }
   }
 
   restoreData() {
@@ -205,6 +351,15 @@ abstract class _SellStore with Store {
     setClient('');
     setPlan('');
     setContract('');
-    setValidity('');
+    setTrueBudget(false);
+    _trueClient = false;
+    _client= '';
+    _clientId= '';
+    _clientName = '';
+    _clientCPF = '';
+    _clientRG = '';
+    _clientEmail = '';
+    _budget = '';
+    _textError = '';
   }
 }

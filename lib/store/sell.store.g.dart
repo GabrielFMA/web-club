@@ -56,21 +56,6 @@ mixin _$SellStore on _SellStore, Store {
     });
   }
 
-  late final _$_planAtom = Atom(name: '_SellStore._plan', context: context);
-
-  @override
-  String get _plan {
-    _$_planAtom.reportRead();
-    return super._plan;
-  }
-
-  @override
-  set _plan(String value) {
-    _$_planAtom.reportWrite(value, super._plan, () {
-      super._plan = value;
-    });
-  }
-
   late final _$_contractAtom =
       Atom(name: '_SellStore._contract', context: context);
 
@@ -87,19 +72,65 @@ mixin _$SellStore on _SellStore, Store {
     });
   }
 
-  late final _$_validityAtom =
-      Atom(name: '_SellStore._validity', context: context);
+  late final _$_budgetAtom = Atom(name: '_SellStore._budget', context: context);
 
   @override
-  String get _validity {
-    _$_validityAtom.reportRead();
-    return super._validity;
+  String get _budget {
+    _$_budgetAtom.reportRead();
+    return super._budget;
   }
 
   @override
-  set _validity(String value) {
-    _$_validityAtom.reportWrite(value, super._validity, () {
-      super._validity = value;
+  set _budget(String value) {
+    _$_budgetAtom.reportWrite(value, super._budget, () {
+      super._budget = value;
+    });
+  }
+
+  late final _$_trueBudgetAtom =
+      Atom(name: '_SellStore._trueBudget', context: context);
+
+  @override
+  bool get _trueBudget {
+    _$_trueBudgetAtom.reportRead();
+    return super._trueBudget;
+  }
+
+  @override
+  set _trueBudget(bool value) {
+    _$_trueBudgetAtom.reportWrite(value, super._trueBudget, () {
+      super._trueBudget = value;
+    });
+  }
+
+  late final _$_planAtom = Atom(name: '_SellStore._plan', context: context);
+
+  @override
+  String get _plan {
+    _$_planAtom.reportRead();
+    return super._plan;
+  }
+
+  @override
+  set _plan(String value) {
+    _$_planAtom.reportWrite(value, super._plan, () {
+      super._plan = value;
+    });
+  }
+
+  late final _$_planLevelAtom =
+      Atom(name: '_SellStore._planLevel', context: context);
+
+  @override
+  int get _planLevel {
+    _$_planLevelAtom.reportRead();
+    return super._planLevel;
+  }
+
+  @override
+  set _planLevel(int value) {
+    _$_planLevelAtom.reportWrite(value, super._planLevel, () {
+      super._planLevel = value;
     });
   }
 
@@ -147,6 +178,86 @@ mixin _$SellStore on _SellStore, Store {
   set _clientId(String value) {
     _$_clientIdAtom.reportWrite(value, super._clientId, () {
       super._clientId = value;
+    });
+  }
+
+  late final _$_clientNameAtom =
+      Atom(name: '_SellStore._clientName', context: context);
+
+  @override
+  String get _clientName {
+    _$_clientNameAtom.reportRead();
+    return super._clientName;
+  }
+
+  @override
+  set _clientName(String value) {
+    _$_clientNameAtom.reportWrite(value, super._clientName, () {
+      super._clientName = value;
+    });
+  }
+
+  late final _$_clientCPFAtom =
+      Atom(name: '_SellStore._clientCPF', context: context);
+
+  @override
+  String get _clientCPF {
+    _$_clientCPFAtom.reportRead();
+    return super._clientCPF;
+  }
+
+  @override
+  set _clientCPF(String value) {
+    _$_clientCPFAtom.reportWrite(value, super._clientCPF, () {
+      super._clientCPF = value;
+    });
+  }
+
+  late final _$_clientRGAtom =
+      Atom(name: '_SellStore._clientRG', context: context);
+
+  @override
+  String get _clientRG {
+    _$_clientRGAtom.reportRead();
+    return super._clientRG;
+  }
+
+  @override
+  set _clientRG(String value) {
+    _$_clientRGAtom.reportWrite(value, super._clientRG, () {
+      super._clientRG = value;
+    });
+  }
+
+  late final _$_clientEmailAtom =
+      Atom(name: '_SellStore._clientEmail', context: context);
+
+  @override
+  String get _clientEmail {
+    _$_clientEmailAtom.reportRead();
+    return super._clientEmail;
+  }
+
+  @override
+  set _clientEmail(String value) {
+    _$_clientEmailAtom.reportWrite(value, super._clientEmail, () {
+      super._clientEmail = value;
+    });
+  }
+
+  late final _$_trueClientAtom =
+      Atom(name: '_SellStore._trueClient', context: context);
+
+  @override
+  bool get _trueClient {
+    _$_trueClientAtom.reportRead();
+    return super._trueClient;
+  }
+
+  @override
+  set _trueClient(bool value) {
+    _$_trueClientAtom.reportWrite(value, super._trueClient, () {
+      super._trueClient = value;
     });
   }
 
@@ -198,17 +309,6 @@ mixin _$SellStore on _SellStore, Store {
   }
 
   @override
-  String getPlan() {
-    final _$actionInfo =
-        _$_SellStoreActionController.startAction(name: '_SellStore.getPlan');
-    try {
-      return super.getPlan();
-    } finally {
-      _$_SellStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String getContract() {
     final _$actionInfo = _$_SellStoreActionController.startAction(
         name: '_SellStore.getContract');
@@ -220,11 +320,22 @@ mixin _$SellStore on _SellStore, Store {
   }
 
   @override
-  String getValidity() {
-    final _$actionInfo = _$_SellStoreActionController.startAction(
-        name: '_SellStore.getValidity');
+  bool trueBudget() {
+    final _$actionInfo =
+        _$_SellStoreActionController.startAction(name: '_SellStore.trueBudget');
     try {
-      return super.getValidity();
+      return super.trueBudget();
+    } finally {
+      _$_SellStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String getPlan() {
+    final _$actionInfo =
+        _$_SellStoreActionController.startAction(name: '_SellStore.getPlan');
+    try {
+      return super.getPlan();
     } finally {
       _$_SellStoreActionController.endAction(_$actionInfo);
     }
@@ -236,6 +347,61 @@ mixin _$SellStore on _SellStore, Store {
         _$_SellStoreActionController.startAction(name: '_SellStore.getClient');
     try {
       return super.getClient();
+    } finally {
+      _$_SellStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String getClientName() {
+    final _$actionInfo = _$_SellStoreActionController.startAction(
+        name: '_SellStore.getClientName');
+    try {
+      return super.getClientName();
+    } finally {
+      _$_SellStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String getClientCPF() {
+    final _$actionInfo = _$_SellStoreActionController.startAction(
+        name: '_SellStore.getClientCPF');
+    try {
+      return super.getClientCPF();
+    } finally {
+      _$_SellStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String getClientRG() {
+    final _$actionInfo = _$_SellStoreActionController.startAction(
+        name: '_SellStore.getClientRG');
+    try {
+      return super.getClientRG();
+    } finally {
+      _$_SellStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String getClientEmail() {
+    final _$actionInfo = _$_SellStoreActionController.startAction(
+        name: '_SellStore.getClientEmail');
+    try {
+      return super.getClientEmail();
+    } finally {
+      _$_SellStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  bool trueClient() {
+    final _$actionInfo =
+        _$_SellStoreActionController.startAction(name: '_SellStore.trueClient');
+    try {
+      return super.trueClient();
     } finally {
       _$_SellStoreActionController.endAction(_$actionInfo);
     }
@@ -264,17 +430,6 @@ mixin _$SellStore on _SellStore, Store {
   }
 
   @override
-  void setPlan(String plan) {
-    final _$actionInfo =
-        _$_SellStoreActionController.startAction(name: '_SellStore.setPlan');
-    try {
-      return super.setPlan(plan);
-    } finally {
-      _$_SellStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void setContract(String contract) {
     final _$actionInfo = _$_SellStoreActionController.startAction(
         name: '_SellStore.setContract');
@@ -286,11 +441,22 @@ mixin _$SellStore on _SellStore, Store {
   }
 
   @override
-  void setValidity(String validity) {
+  void setTrueBudget(bool trueBudget) {
     final _$actionInfo = _$_SellStoreActionController.startAction(
-        name: '_SellStore.setValidity');
+        name: '_SellStore.setTrueBudget');
     try {
-      return super.setValidity(validity);
+      return super.setTrueBudget(trueBudget);
+    } finally {
+      _$_SellStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPlan(String plan) {
+    final _$actionInfo =
+        _$_SellStoreActionController.startAction(name: '_SellStore.setPlan');
+    try {
+      return super.setPlan(plan);
     } finally {
       _$_SellStoreActionController.endAction(_$actionInfo);
     }

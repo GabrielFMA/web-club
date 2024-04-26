@@ -84,7 +84,7 @@ abstract class _PlanStore with Store {
     try {
       _idPlan = generateRandomId();
 
-      Map<String, dynamic> paternInfoMap = {
+      Map<String, dynamic> planInfoMap = {
         "ID": _idPlan,
         "Nome": _name.toLowerCase(),
         "Preço": _price,
@@ -92,7 +92,7 @@ abstract class _PlanStore with Store {
         "Descrição": _description,
       };
 
-      await addDetailsPlan(paternInfoMap, _idPlan);
+      await addDetailsPlan(planInfoMap, _idPlan);
     } catch (e) {
       print('Erro ao fazer registro: $e');
       print('Tipo de exceção: ${e.runtimeType}');
