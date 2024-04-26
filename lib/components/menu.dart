@@ -9,7 +9,7 @@ import 'package:web_simclub/screen/client/register_client.dart';
 import 'package:web_simclub/screen/partner/register_partner.dart';
 import 'package:web_simclub/screen/employee/register_employee.dart';
 import 'package:web_simclub/screen/plan/register_plan.dart';
-import 'package:web_simclub/screen/sell/new_sell.dart';
+import 'package:web_simclub/screen/sell/register_sell.dart';
 import 'package:web_simclub/store/auth.store.dart';
 import 'package:web_simclub/store/client.store.dart';
 import 'package:web_simclub/store/employee.store.dart';

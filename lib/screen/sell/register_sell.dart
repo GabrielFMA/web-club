@@ -119,10 +119,16 @@ class _RegisterSellState extends State<RegisterSell> {
                                       children: [
                                         //budget field
                                         TextFieldString(
-                                          icon: Icon(MdiIcons.noteTextOutline),
-                                          hintText: "Numero de orçamento",
+                                          icon: Icon(store.trueClient()
+                                              ? MdiIcons.clipboardOffOutline
+                                              : MdiIcons
+                                                  .clipboardTextSearchOutline),
+                                          hintText: store.trueClient()
+                                              ? "Bloqueado"
+                                              : "Número de orçamento",
                                           text: _budgetController.text,
                                           shouldValidate: true,
+                                          enabled: !store.trueClient(),
                                           onChanged: (text) async {
                                             if (text.trim().isNotEmpty) {
                                               await store.budgetCheck(text);
@@ -136,12 +142,13 @@ class _RegisterSellState extends State<RegisterSell> {
                                             });
                                           },
                                           validator: (text) {
-                                            if (store
-                                                    .getClient()
-                                                    .trim()
-                                                    .isEmpty &&
-                                                text!.trim().isEmpty) {
-                                              return "Pesquise um cliente ou digite um numero de orçamento";
+                                            if (text!.trim().isEmpty) {
+                                              if (store
+                                                  .getClient()
+                                                  .trim()
+                                                  .isEmpty) {
+                                                return "Pesquise um cliente ou digite um numero de orçamento";
+                                              }
                                             }
                                             return null;
                                           },
@@ -179,7 +186,10 @@ class _RegisterSellState extends State<RegisterSell> {
                                                     ),
                                                   ),
                                                   validator: store.trueBudget()
-                                                      ? null
+                                                      ? (_) {
+                                                          store.planDataCheck();
+                                                          return null;
+                                                        }
                                                       : (value) {
                                                           if (namePlan ==
                                                                   null ||
@@ -187,35 +197,20 @@ class _RegisterSellState extends State<RegisterSell> {
                                                                   .isEmpty) {
                                                             return "Selecione um plano";
                                                           }
-                                                          if (store
-                                                              .getClient()
-                                                              .trim()
-                                                              .isEmpty) {
-                                                            return "Pesquise um cliente ou coloque um numero de orçamento";
-                                                          }
                                                           return null;
                                                         },
                                                   onChanged: (value) {
-                                                    if (store.trueBudget()) {
-                                                      store.planDataCheck();
-                                                    } else {
-                                                      setState(() {
-                                                        namePlan = value;
-                                                        store.setPlan(value!);
-                                                        store.planDataCheck();
-                                                      });
-                                                    }
+                                                    setState(() {
+                                                      namePlan = value;
+                                                      store.setPlan(value!);
+                                                    });
                                                   },
                                                   items:
                                                       planName.map((valueItem) {
                                                     return DropdownMenuItem<
                                                         String>(
                                                       value: valueItem,
-                                                      child: Text(
-                                                        store.trueBudget()
-                                                            ? store.getPlan()
-                                                            : valueItem,
-                                                      ),
+                                                      child: Text(valueItem),
                                                     );
                                                   }).toList(),
                                                 ),
@@ -283,6 +278,8 @@ class _RegisterSellState extends State<RegisterSell> {
                                           onChanged: (text) async {
                                             if (text.trim().isNotEmpty) {
                                               await store.clientDataCheck(text);
+                                            } else if (!store.trueBudget()) {
+                                              store.restoreData();
                                             }
                                             setState(() {});
                                           },

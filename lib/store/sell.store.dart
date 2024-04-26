@@ -174,7 +174,7 @@ abstract class _SellStore with Store {
   Future addDetailsSell(Map<String, dynamic> sellMap, String id) async {
     await db.collection("Vendas").doc(id).set(sellMap);
   }
-  
+
   Future<void> updateClientInfo(value1, value) async {
     await FirebaseFirestore.instance
         .collection("Usuarios")
@@ -197,14 +197,13 @@ abstract class _SellStore with Store {
 
   Future<void> budgetCheck(value) async {
     try {
-      _isError = false;
-      _trueBudget = false;
       _client = "";
       await budgetSearch(value);
       if (_client.isEmpty) {
         _textError = "Não foi possível encontrar o orçamento.";
-        _isError = true;
         _trueBudget = false;
+        _isError = true;
+        restoreData();
       } else {
         _textError = "";
         _isError = false;
@@ -243,18 +242,21 @@ abstract class _SellStore with Store {
 
   Future<void> clientDataCheck(client) async {
     try {
-      _trueClient = false;
       _clientId = "";
       await clientIdSearch("CPF", client);
       await clientIdSearch("RG", client);
       await clientIdSearch("Email", client);
       if (_clientId.isEmpty) {
         _textError = "Não foi possivel encontrar um cliente com esses dados.";
+        _trueClient = false;
         _isError = true;
+        restoreData();
       } else {
         _textError = "";
         _isError = false;
-        _trueClient = true;
+        if (!_trueBudget) {
+          _trueClient = true;
+        }
       }
     } catch (e) {
       print("Ocorreu um erro: $e");
@@ -340,7 +342,6 @@ abstract class _SellStore with Store {
         "Descrição": planDescription,
       };
     } else {
-      // Se nenhum documento corresponder à consulta
       print("Nenhum $_plan foi encontrado.");
     }
   }
@@ -353,8 +354,8 @@ abstract class _SellStore with Store {
     setContract('');
     setTrueBudget(false);
     _trueClient = false;
-    _client= '';
-    _clientId= '';
+    _client = '';
+    _clientId = '';
     _clientName = '';
     _clientCPF = '';
     _clientRG = '';

@@ -45,7 +45,7 @@ class TextFieldPassword extends StatelessWidget {
                 store.visible();
               },
               icon: Icon(
-                store.isVisible ? MdiIcons.eye : MdiIcons.eyeOff,
+                store.isVisible ? MdiIcons.eyeOutline : MdiIcons.eyeOffOutline,
               ),
             ),
           ),
@@ -96,7 +96,7 @@ class TextFieldConfirmPassword extends StatelessWidget {
                 store.visible();
               },
               icon: Icon(
-                store.isVisible ? MdiIcons.eye : MdiIcons.eyeOff,
+                store.isVisible ? MdiIcons.eyeOutline : MdiIcons.eyeOffOutline,
               ),
             ),
           ),
