@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:web_simclub/components/auth/textfield_password.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
 import 'package:web_simclub/components/menu.dart';
-import 'package:web_simclub/store/employee.store.dart';
+import 'package:web_simclub/store/register/employee/employee.store.dart';
 
 class RegisterEmployee extends StatefulWidget {
   const RegisterEmployee({Key? key});
@@ -116,6 +116,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                           store.setName(_name);
                                           return null;
                                         }
+                                        return null;
                                       },
                                     ),
                                   ),
@@ -216,14 +217,32 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                 text: _phoneController.text,
                                 shouldValidate: true,
                                 validator: (text) {
-                                  if (text!.isEmpty) {
+                                  if (text!.isEmpty || text.length < 9) {
                                     return "Digite seu Telefone";
                                   }
-                                  if (!RegExp(r'^[0-9]+$').hasMatch(text)) {
-                                    return "Digite apenas números";
+
+                                  text = text.replaceAll(RegExp(r'\D'), '');
+
+                                  if (text.length > 11) {
+                                    if (!RegExp(r'^\s*55?\s*\d{10,11}')
+                                        .hasMatch(text)) {
+                                      return "Digite um telefone válido";
+                                    }
+
+                                    if (text.startsWith('55')) {
+                                      text = text.substring(2);
+                                    }
                                   }
-                                  if (text.length != 11) {
-                                    return "Digite um Telefone válido";
+
+                                  if (int.tryParse(text.substring(0, 2))! <
+                                          11 ||
+                                      int.tryParse(text.substring(0, 2))! >
+                                          99) {
+                                    return "Digite um DDD válido";
+                                  }
+
+                                  if (!RegExp(r'^\d{10,11}$').hasMatch(text)) {
+                                    return "Digite um telefone válido";
                                   }
                                   store.setPhone(text);
                                   return null;

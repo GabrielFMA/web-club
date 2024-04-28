@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, equal_keys_in_map, unnecessary_string_interpolations
+// ignore_for_file: avoid_print, equal_keys_in_map, unnecessary_string_interpolations, library_private_types_in_public_api
 
 import 'dart:math';
 
@@ -29,10 +29,9 @@ abstract class _SellStore with Store {
   String _contract = '';
 
   @observable
-  String _budget = '';
-
-  @observable
   bool _trueBudget = false;
+
+  final _hour = DateTime.now();
 
   //Plan
   @observable
@@ -41,7 +40,7 @@ abstract class _SellStore with Store {
   @observable
   int _planLevel = 0;
 
-  Map<String, dynamic> planMap = {};
+  Map<String, dynamic> _planMap = {};
 
   //Employee
   @observable
@@ -69,11 +68,11 @@ abstract class _SellStore with Store {
   @observable
   bool _trueClient = false;
 
-  Map<String, dynamic> clientMap = {};
+  Map<String, dynamic> _clientMap = {};
 
   //Plans
   @observable
-  List<String> planNames = [];
+  List<String> _planNames = [];
 
   // Get functions
 
@@ -117,7 +116,7 @@ abstract class _SellStore with Store {
 
   //Plans
   @action
-  List<String> getPlanNames() => planNames;
+  List<String> getPlanNames() => _planNames;
 
   // Set functions
 
@@ -152,13 +151,14 @@ abstract class _SellStore with Store {
       Map<String, dynamic> sellInfoMap = {
         "ID": _idSell,
         "Vendedor": _employee,
-        "Cliente": clientMap,
-        "Plano": planMap,
+        "Cliente": _clientMap,
+        "Plano": _planMap,
         "Contrato": _contract,
+        "Horario": _hour,
       };
 
-      print(clientMap);
-      print(planMap);
+      print(_clientMap);
+      print(_planMap);
 
       await addDetailsSell(sellInfoMap, _idSell);
       await updateClientInfo("Plano", _plan);
@@ -278,7 +278,7 @@ abstract class _SellStore with Store {
       print(
           "$value válido. Id: $_clientId, Nome: $_clientName, CPF:  $_clientCPF, RG:  $_clientRG, Email:  $_clientEmail");
 
-      clientMap = {
+      _clientMap = {
         "ID": _clientId,
         "Nome": _clientName,
         "CPF": _clientCPF,
@@ -295,7 +295,7 @@ abstract class _SellStore with Store {
       final partnerCollection = db.collection("Planos");
       final snapshot = await partnerCollection.get();
 
-      planNames.clear();
+      _planNames.clear();
 
       var index = 0;
       while (index < snapshot.docs.length) {
@@ -303,7 +303,7 @@ abstract class _SellStore with Store {
         final data = doc.data();
         final name = data['Nome'];
         if (name != null) {
-          planNames.add(name);
+          _planNames.add(name);
         }
         index++;
       }
@@ -334,7 +334,7 @@ abstract class _SellStore with Store {
       String planPrice = doc['Preço'];
       print(
           "$_plan válido. Nível do plano: $_planLevel, Descrição do plano: $planDescription, Id do plano: $planId e o Preço do plano: $planPrice");
-      planMap = {
+      _planMap = {
         "ID": planId,
         "Nome": _plan,
         "Level do Plano": _planLevel,
@@ -360,7 +360,6 @@ abstract class _SellStore with Store {
     _clientCPF = '';
     _clientRG = '';
     _clientEmail = '';
-    _budget = '';
     _textError = '';
   }
 }

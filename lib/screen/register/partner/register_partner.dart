@@ -5,9 +5,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:web_simclub/components/menu.dart';
-import 'package:web_simclub/screen/partner/register_exam.dart';
+import 'package:web_simclub/screen/register/partner/register_exam.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
-import 'package:web_simclub/store/partner.store.dart';
+import 'package:web_simclub/store/register/partner/partner.store.dart';
 
 class RegisterPartner extends StatefulWidget {
   const RegisterPartner({super.key});
@@ -146,15 +146,38 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                           text: _phoneController.text,
                                           shouldValidate: true,
                                           validator: (text) {
-                                            if (text!.isEmpty) {
+                                            if (text!.isEmpty ||
+                                                text.length < 9) {
                                               return "Digite seu Telefone";
                                             }
-                                            if (!RegExp(r'^[0-9]+$')
-                                                .hasMatch(text)) {
-                                              return "Digite apenas números";
+
+                                            text = text.replaceAll(
+                                                RegExp(r'\D'), '');
+
+                                            if (text.length > 11) {
+                                              if (!RegExp(
+                                                      r'^\s*55?\s*\d{10,11}')
+                                                  .hasMatch(text)) {
+                                                return "Digite um telefone válido";
+                                              }
+
+                                              if (text.startsWith('55')) {
+                                                text = text.substring(2);
+                                              }
                                             }
-                                            if (text.length != 11) {
-                                              return "Digite um Telefone válido";
+
+                                            if (int.tryParse(
+                                                        text.substring(0, 2))! <
+                                                    11 ||
+                                                int.tryParse(
+                                                        text.substring(0, 2))! >
+                                                    99) {
+                                              return "Digite um DDD válido";
+                                            }
+
+                                            if (!RegExp(r'^\d{10,11}$')
+                                                .hasMatch(text)) {
+                                              return "Digite um telefone válido";
                                             }
                                             store.setPhone(text);
                                             return null;
@@ -329,7 +352,8 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                                 icon: Icon(
                                                     MdiIcons.pencilOutline),
                                                 hintText: "Complemento",
-                                                text: _complementController.text,
+                                                text:
+                                                    _complementController.text,
                                                 shouldValidate: true,
                                                 validator: (text) {
                                                   store.setComplement(text);

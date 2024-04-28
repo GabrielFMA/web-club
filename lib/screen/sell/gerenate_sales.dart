@@ -6,8 +6,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:provider/provider.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
 import 'package:web_simclub/components/menu.dart';
-import 'package:web_simclub/store/auth.store.dart';
-import 'package:web_simclub/store/sell.store.dart';
+import 'package:web_simclub/store/auth/auth.store.dart';
+import 'package:web_simclub/store/sell/sell.store.dart';
 
 class LoadingScreen extends StatelessWidget {
   const LoadingScreen({super.key});
@@ -23,11 +23,11 @@ class LoadingScreen extends StatelessWidget {
   }
 }
 
-class RegisterSell extends StatefulWidget {
-  const RegisterSell({super.key});
+class GerenateSales extends StatefulWidget {
+  const GerenateSales({super.key});
 
   @override
-  State<RegisterSell> createState() => _RegisterSellState();
+  State<GerenateSales> createState() => _GerenateSalesState();
 }
 
 String? namePlan;
@@ -41,7 +41,7 @@ final _cpfController = TextEditingController();
 final _rgController = TextEditingController();
 final _emailController = TextEditingController();
 
-class _RegisterSellState extends State<RegisterSell> {
+class _GerenateSalesState extends State<GerenateSales> {
   late Future<void> _loadDataFuture;
 
   final formKey1 = GlobalKey<FormState>();
@@ -66,11 +66,12 @@ class _RegisterSellState extends State<RegisterSell> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const LoadingScreen();
         } else {
-          return _buildContent();
+          return _buildContent ();
         }
       },
     );
   }
+
 
   Widget _buildContent() {
     final store = Provider.of<SellStore>(context);
@@ -416,7 +417,7 @@ class _RegisterSellState extends State<RegisterSell> {
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          const RegisterSell(),
+                                                          const GerenateSales(),
                                                     ),
                                                     (route) => false,
                                                   );

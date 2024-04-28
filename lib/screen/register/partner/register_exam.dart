@@ -5,8 +5,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:web_simclub/components/menu.dart';
-import 'package:web_simclub/screen/partner/register_partner.dart';
-import 'package:web_simclub/store/partner.store.dart';
+import 'package:web_simclub/screen/register/partner/register_partner.dart';
+import 'package:web_simclub/store/register/partner/partner.store.dart';
 
 class RegisterExam extends StatefulWidget {
   const RegisterExam({super.key});

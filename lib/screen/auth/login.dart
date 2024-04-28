@@ -3,7 +3,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:provider/provider.dart';
 import 'package:web_simclub/components/auth/textfield_password.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
-import 'package:web_simclub/store/auth.store.dart';
+import 'package:web_simclub/store/auth/auth.store.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class LoginScreen extends StatefulWidget {

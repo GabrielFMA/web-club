@@ -5,17 +5,18 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:web_simclub/screen/auth/login.dart';
-import 'package:web_simclub/screen/client/register_client.dart';
-import 'package:web_simclub/screen/partner/register_partner.dart';
-import 'package:web_simclub/screen/employee/register_employee.dart';
-import 'package:web_simclub/screen/plan/register_plan.dart';
-import 'package:web_simclub/screen/sell/register_sell.dart';
-import 'package:web_simclub/store/auth.store.dart';
-import 'package:web_simclub/store/client.store.dart';
-import 'package:web_simclub/store/employee.store.dart';
-import 'package:web_simclub/store/partner.store.dart';
-import 'package:web_simclub/store/plan.store.dart';
-import 'package:web_simclub/store/sell.store.dart';
+import 'package:web_simclub/screen/register/client/register_client.dart';
+import 'package:web_simclub/screen/register/partner/register_partner.dart';
+import 'package:web_simclub/screen/register/employee/register_employee.dart';
+import 'package:web_simclub/screen/register/plan/register_plan.dart';
+import 'package:web_simclub/screen/sell/budget_sell.dart';
+import 'package:web_simclub/screen/sell/gerenate_sales.dart';
+import 'package:web_simclub/store/auth/auth.store.dart';
+import 'package:web_simclub/store/register/client/client.store.dart';
+import 'package:web_simclub/store/register/employee/employee.store.dart';
+import 'package:web_simclub/store/register/partner/partner.store.dart';
+import 'package:web_simclub/store/register/plan/plan.store.dart';
+import 'package:web_simclub/store/sell/sell.store.dart';
 
 class MenuWidget extends StatefulWidget {
   const MenuWidget({super.key});
@@ -24,8 +25,19 @@ class MenuWidget extends StatefulWidget {
   _MenuWidgetState createState() => _MenuWidgetState();
 }
 
-class _MenuWidgetState extends State<MenuWidget> {
+class MenuItemData {
+  final String text;
+  final IconData icon;
+  final VoidCallback onClick;
 
+  MenuItemData({
+    required this.text,
+    required this.icon,
+    required this.onClick,
+  });
+}
+
+class _MenuWidgetState extends State<MenuWidget> {
   @override
   Widget build(BuildContext context) {
     final sell = Provider.of<SellStore>(context);
@@ -55,93 +67,125 @@ class _MenuWidgetState extends State<MenuWidget> {
 
               // ExpansionTile for Client
               if (store.getLevel() < 3)
-              buildMenuDrawer(
-                context: context,
-                text: 'Cliente',
-                text2: 'Cadastro',
-                icon: MdiIcons.accountOutline,
-                icon2: MdiIcons.notePlusOutline,
-                onClick: () {
-                  client.restoreData();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const RegisterClient(),
+                buildMenuDrawer(
+                  context: context,
+                  text: 'Cliente',
+                  icon: MdiIcons.accountOutline,
+                  menuItems: [
+                    MenuItemData(
+                      text: 'Cadastro',
+                      icon: MdiIcons.notePlusOutline,
+                      onClick: () {
+                        client.restoreData();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterClient(),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
+                  ],
+                ),
 
               // ExpansionTile for Employee
               if (store.getLevel() < 2)
-              buildMenuDrawer(
-                context: context,
-                text: 'Funcionarios',
-                text2: 'Cadastro',
-                icon: MdiIcons.badgeAccountHorizontalOutline,
-                icon2: MdiIcons.notePlusOutline,
-                onClick: () {
-                  employee.restoreData();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const RegisterEmployee(),
+                buildMenuDrawer(
+                  context: context,
+                  text: 'Funcionarios',
+                  icon: MdiIcons.badgeAccountHorizontalOutline,
+                  menuItems: [
+                    MenuItemData(
+                      text: 'Cadastro',
+                      icon: MdiIcons.notePlusOutline,
+                      onClick: () {
+                        employee.restoreData();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterEmployee(),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
+                  ],
+                ),
 
               // ExpansionTile for Partner
               if (store.getLevel() < 2)
-              buildMenuDrawer(
-                context: context,
-                text: 'Parceiros',
-                text2: 'Cadastro',
-                icon: MdiIcons.handshakeOutline,
-                icon2: MdiIcons.notePlusOutline,
-                onClick: () {
-                  partner.restoreData();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const RegisterPartner(),
+                buildMenuDrawer(
+                  context: context,
+                  text: 'Parceiros',
+                  icon: MdiIcons.handshakeOutline,
+                  menuItems: [
+                    MenuItemData(
+                      text: 'Cadastro',
+                      icon: MdiIcons.notePlusOutline,
+                      onClick: () {
+                        partner.restoreData();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterPartner(),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
+                  ],
+                ),
 
               // ExpansionTile for Plans
               if (store.getLevel() < 2)
-              buildMenuDrawer(
-                context: context,
-                text: 'Planos',
-                text2: 'Cadastro',
-                icon: MdiIcons.newspaperVariantMultipleOutline,
-                icon2: MdiIcons.notePlusOutline,
-                onClick: () {
-                  plan.restoreData();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const RegisterPlan(),
+                buildMenuDrawer(
+                  context: context,
+                  text: 'Planos',
+                  icon: MdiIcons.newspaperVariantMultipleOutline,
+                  menuItems: [
+                    MenuItemData(
+                      text: 'Cadastro',
+                      icon: MdiIcons.notePlusOutline,
+                      onClick: () {
+                        plan.restoreData();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterPlan(),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
+                  ],
+                ),
 
               // ExpansionTile for Sells
               if (store.getLevel() < 3)
-              buildMenuDrawer(
-                context: context,
-                text: 'Vendas',
-                text2: 'Cadastro',
-                icon: MdiIcons.networkPos,
-                icon2: MdiIcons.notePlusOutline,
-                onClick: () {
-                  sell.restoreData();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const RegisterSell(),
+                buildMenuDrawer(
+                  context: context,
+                  text: 'Vendas',
+                  icon: MdiIcons.networkPos,
+                  menuItems: [
+                    MenuItemData(
+                      text: 'Gerar',
+                      icon: MdiIcons.clipboardPlusOutline,
+                      onClick: () {
+                        sell.restoreData();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const GerenateSales(),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
+                    MenuItemData(
+                      text: 'Orçamento',
+                      icon: MdiIcons.textBoxPlusOutline,
+                      onClick: () {
+                        sell.restoreData();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const BudgetSell(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
 
               // Final space
               const Spacer(),
@@ -233,9 +277,7 @@ class _MenuWidgetState extends State<MenuWidget> {
     required BuildContext context,
     required String text,
     required IconData icon,
-    required String text2,
-    required IconData icon2,
-    required VoidCallback onClick,
+    List<MenuItemData> menuItems = const [], // Optional menu items
   }) {
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
@@ -258,16 +300,16 @@ class _MenuWidgetState extends State<MenuWidget> {
             ],
           ),
         ),
-        children: [
-          Padding(
+        children: menuItems.map((item) {
+          return Padding(
             padding: const EdgeInsets.only(left: 20),
             child: buildMenuItem(
-              text: text2,
-              icon: icon2,
-              onClick: onClick,
+              text: item.text,
+              icon: item.icon,
+              onClick: item.onClick,
             ),
-          ),
-        ],
+          );
+        }).toList(),
       ),
     );
   }

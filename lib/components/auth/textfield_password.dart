@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:web_simclub/store/auth.store.dart';
+import 'package:web_simclub/store/auth/auth.store.dart';
 
 class TextFieldPassword extends StatelessWidget {
   final String password;

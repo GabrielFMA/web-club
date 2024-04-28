@@ -7,12 +7,12 @@ import 'package:provider/provider.dart';
 import 'package:web_simclub/firebase_options.dart';
 import 'package:web_simclub/screen/auth/login.dart';
 import 'package:web_simclub/screen/home_page.dart';
-import 'package:web_simclub/store/auth.store.dart';
-import 'package:web_simclub/store/client.store.dart';
-import 'package:web_simclub/store/partner.store.dart';
-import 'package:web_simclub/store/employee.store.dart';
-import 'package:web_simclub/store/plan.store.dart';
-import 'package:web_simclub/store/sell.store.dart';
+import 'package:web_simclub/store/auth/auth.store.dart';
+import 'package:web_simclub/store/register/client/client.store.dart';
+import 'package:web_simclub/store/register/partner/partner.store.dart';
+import 'package:web_simclub/store/register/employee/employee.store.dart';
+import 'package:web_simclub/store/register/plan/plan.store.dart';
+import 'package:web_simclub/store/sell/sell.store.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
