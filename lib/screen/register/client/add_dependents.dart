@@ -1,46 +1,47 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, unrelated_type_equality_checks, avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:web_simclub/components/auth/textfield_password.dart';
 import 'package:web_simclub/components/menu.dart';
-import 'package:web_simclub/screen/register/partner/register_exam.dart';
+import 'package:web_simclub/store/register/client/client.store.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
-import 'package:web_simclub/store/register/partner/partner.store.dart';
+  //form1
+  final _nomeController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _cpfController = TextEditingController();
+  final _rgController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  String _name = '';
+  String _password = ' ';
+  //form2
+  final _cepController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _streetController = TextEditingController();
+  final _numberController = TextEditingController();
+  final _complementController = TextEditingController();
+  final _districtController = TextEditingController();
+  final _cityController = TextEditingController();
+  final _stateController = TextEditingController();
 
-final _nomeController = TextEditingController();
-final _emailController = TextEditingController();
-final _cpnjController = TextEditingController();
-//form2
-final _cepController = TextEditingController();
-final _phoneController = TextEditingController();
-final _streetController = TextEditingController();
-final _numberController = TextEditingController();
-final _complementController = TextEditingController();
-final _districtController = TextEditingController();
-final _cityController = TextEditingController();
-final _stateController = TextEditingController();
-
-int? _valueExam;
-
-List<int> _listExam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-class RegisterPartner extends StatefulWidget {
-  const RegisterPartner({super.key});
+class AddDependents extends StatefulWidget {
+  const AddDependents({super.key});
 
   @override
-  State<RegisterPartner> createState() => _RegisterPartnerState();
+  State<AddDependents> createState() => _AddDependentsState();
 }
 
-class _RegisterPartnerState extends State<RegisterPartner> {
+class _AddDependentsState extends State<AddDependents> {
+
   final formKey1 = GlobalKey<FormState>();
   final formKey2 = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final store = Provider.of<PartnerStore>(context);
-
+    final store = Provider.of<ClientStore>(context);
     return Scaffold(
       backgroundColor: Colors.green[200],
       body: Row(
@@ -64,7 +65,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                           children: [
                             const ListTile(
                               title: Text(
-                                "Registrar Parceiro",
+                                "Registrar Cliente",
                                 style: TextStyle(
                                   fontSize: 45,
                                   fontWeight: FontWeight.bold,
@@ -80,49 +81,121 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        //Name field
-                                        TextFieldString(
-                                          icon: Icon(MdiIcons
-                                              .accountSupervisorCircleOutline),
-                                          hintText: "Nome do parceiro",
-                                          text: _nomeController.text,
-                                          shouldValidate: true,
-                                          validator: (text) {
-                                            if (text!.isEmpty) {
-                                              return "Digite um nome";
-                                            }
-                                            store.setName(text);
-                                            return null;
-                                          },
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              //Name field
+                                              child: TextFieldString(
+                                                icon: Icon(
+                                                    MdiIcons.accountOutline),
+                                                hintText: "Nome",
+                                                text: _nomeController.text,
+                                                shouldValidate: true,
+                                                validator: (text) {
+                                                  if (text!.isEmpty) {
+                                                    return "Digite um nome";
+                                                  }
+                                                  _name += "$text ";
+                                                  return null;
+                                                },
+                                              ),
+                                            ),
+
+                                            //Space
+                                            const SizedBox(width: 10),
+
+                                            Expanded(
+                                              //Sobrenome field
+                                              child: TextFieldString(
+                                                icon: Icon(
+                                                    MdiIcons.accountOutline),
+                                                hintText: "Sobrenome",
+                                                text: _nomeController.text,
+                                                shouldValidate: true,
+                                                validator: (text) {
+                                                  if (text!.isEmpty) {
+                                                    return "Digite um Sobrenome";
+                                                  }
+                                                  if (_name.trim().isNotEmpty) {
+                                                    _name += text;
+                                                    store.setName(_name);
+                                                    return null;
+                                                  }
+                                                  return null;
+                                                },
+                                              ),
+                                            ),
+                                          ],
                                         ),
 
-                                        //CPF field
-                                        TextFieldString(
-                                          icon: Icon(
-                                              MdiIcons.officeBuildingOutline),
-                                          hintText: "CNPJ",
-                                          text: _cpnjController.text,
-                                          shouldValidate: true,
-                                          validator: (text) {
-                                            if (text!.isEmpty) {
-                                              return "CNPJ";
-                                            }
-                                            if (!RegExp(r'^[0-9]+$')
-                                                .hasMatch(text)) {
-                                              return "Digite apenas números";
-                                            }
-                                            if (text.length != 14) {
-                                              return 'Digite um CNPJ válido';
-                                            }
-                                            store.setCnpj(text);
-                                            return null;
-                                          },
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              //CPF field
+                                              child: TextFieldString(
+                                                icon: Icon(MdiIcons
+                                                    .cardAccountDetailsOutline),
+                                                hintText: "CPF",
+                                                text: _cpfController.text,
+                                                shouldValidate: true,
+                                                validator: (text) {
+                                                  if (text!.isEmpty) {
+                                                    return "Digite o CPF";
+                                                  }
+                                                  if (!RegExp(r'^[0-9.\\-]+$')
+                                                      .hasMatch(text)) {
+                                                    return "Digite apenas números";
+                                                  }
+                                                  if (text.length == 11 ||
+                                                      text.length == 14) {
+                                                    text = text.replaceAll(
+                                                        RegExp(r'[^0-9]'), '');
+                                                    print(text);
+                                                    store.setCPF(text);
+                                                    return null;
+                                                  } else {
+                                                    return 'Digite um CPF válido';
+                                                  }
+                                                },
+                                              ),
+                                            ),
+
+                                            //Space
+                                            const SizedBox(width: 10),
+
+                                            Expanded(
+                                              //RG field
+                                              child: TextFieldString(
+                                                icon: Icon(MdiIcons
+                                                    .cardAccountMailOutline),
+                                                hintText: "RG",
+                                                text: _rgController.text,
+                                                shouldValidate: true,
+                                                validator: (text) {
+                                                  if (text!.isEmpty) {
+                                                    return "Digite o RG";
+                                                  }
+                                                  if (text.length > 8 &&
+                                                      text.length < 14) {
+                                                    text = text.replaceAll(
+                                                        RegExp(r'[-.]'), '');
+                                                    text = text.toLowerCase();
+                                                    print(text);
+                                                    store.setRG(text);
+                                                    return null;
+                                                  } else {
+                                                    return 'Digite um RG válido';
+                                                  }
+                                                },
+                                              ),
+                                            ),
+                                          ],
                                         ),
 
                                         //Email field
                                         TextFieldString(
                                           icon: Icon(MdiIcons.emailOutline),
-                                          hintText: "Email",
+                                          hintText: "Digite seu email",
                                           text: _emailController.text,
                                           shouldValidate: true,
                                           validator: (text) {
@@ -184,77 +257,51 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                           },
                                         ),
 
-                                        //Space
-                                        const SizedBox(height: 5),
+                                        //Contract field
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              //Password field
+                                              child: TextFieldPassword(
+                                                password:
+                                                    _passwordController.text,
+                                                shouldValidate: true,
+                                                validator: (text) {
+                                                  if (text!.isEmpty) {
+                                                    return "Digite uma senha";
+                                                  } else if (text.length < 6) {
+                                                    return "Digite uma senha maior";
+                                                  }
+                                                  _password = text;
+                                                  store.setPassword(text);
+                                                  return null;
+                                                },
+                                              ),
+                                            ),
 
-                                        //Exams container
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 8),
-                                          decoration: BoxDecoration(
-                                            color: Colors.green[500]
-                                                ?.withOpacity(.3),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                MdiIcons.textBoxMultipleOutline,
-                                                color: Colors.black,
+                                            //Space
+                                            const SizedBox(width: 10),
+
+                                            Expanded(
+                                              //Password confirm field
+                                              child: TextFieldConfirmPassword(
+                                                confirmPassword:
+                                                    _confirmPasswordController
+                                                        .text,
+                                                shouldValidate: true,
+                                                validator: (text) {
+                                                  if (text!.isEmpty) {
+                                                    return "Confirme sua senha";
+                                                  }
+                                                  if (text != _password) {
+                                                    return "As senhas não são iguais";
+                                                  }
+                                                  return null;
+                                                },
                                               ),
-                                              const SizedBox(width: 15),
-                                              Expanded(
-                                                child: DropdownButtonFormField<
-                                                    String>(
-                                                  decoration:
-                                                      const InputDecoration(
-                                                    border: InputBorder.none,
-                                                    hintText:
-                                                        "Selecione a quantidade de consultas",
-                                                    hintStyle: TextStyle(
-                                                      color: Colors.black54,
-                                                      fontSize: 16,
-                                                    ),
-                                                  ),
-                                                  validator: (value) {
-                                                    if (value == null ||
-                                                        value.isEmpty) {
-                                                      return "Selecione a quantidade de consultas";
-                                                    }
-                                                    return null;
-                                                  },
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      _valueExam =
-                                                          int.tryParse(value!);
-                                                      store.setExam(_valueExam);
-                                                    });
-                                                  },
-                                                  items:
-                                                      _listExam.map((valueItem) {
-                                                    return DropdownMenuItem<
-                                                        String>(
-                                                      value:
-                                                          valueItem.toString(),
-                                                      child: Text(
-                                                        valueItem > 1
-                                                            ? '$valueItem Consultas'
-                                                            : (valueItem == 1
-                                                                ? '$valueItem Consulta'
-                                                                : ''),
-                                                        style: const TextStyle(
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }).toList(),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
-                                        const SizedBox(height: 5),
                                       ],
                                     ),
                                   ),
@@ -345,7 +392,10 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                                 },
                                               ),
                                             ),
+
+                                            //Space
                                             const SizedBox(width: 10),
+
                                             Expanded(
                                               //Complement field
                                               child: TextFieldString(
@@ -415,7 +465,10 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                                 },
                                               ),
                                             ),
+
+                                            //Space
                                             const SizedBox(width: 10),
+
                                             Expanded(
                                               //State field
                                               child: TextFieldString(
@@ -453,8 +506,10 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                               ],
                             ),
 
-                            const SizedBox(height: 12),
+                            //Space
+                            const SizedBox(height: 20),
 
+                            //Register button
                             buttonDefault(
                               context,
                               () async {
@@ -468,11 +523,51 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                 if (isForm1Valid &&
                                     isForm2Valid &&
                                     !store.getIsError()) {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const RegisterExam(),
-                                    ),
+                                  //Confirmation screen
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Registrar Cliente'),
+                                        content: const Text(
+                                            'Tem certeza que deseja registrar este cliente?'),
+                                        actions: <Widget>[
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              buttonDialog(
+                                                text: 'SIM',
+                                                onClick: () async {
+                                                  await store
+                                                      .signUpWithEmailPassword();
+                                                  if (!store.getIsError()) {
+                                                    store.restoreData();
+                                                    Navigator
+                                                        .pushAndRemoveUntil(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const AddDependents(),
+                                                      ),
+                                                      (route) => false,
+                                                    );
+                                                  } else {
+                                                    Navigator.pop(context);
+                                                  }
+                                                },
+                                              ),
+                                              buttonDialog(
+                                                text: 'NÃO',
+                                                onClick: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    },
                                   );
                                 }
                               },
@@ -481,7 +576,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                             //Space
                             const SizedBox(height: 15),
 
-                            //Partner erros
+                            //Register error
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.8,
                               child: Text(
@@ -506,9 +601,28 @@ class _RegisterPartnerState extends State<RegisterPartner> {
     );
   }
 
+  //Button screen
+  Widget buttonDialog({required String text, VoidCallback? onClick}) {
+    return Container(
+      height: 40,
+      width: 105,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.green[500],
+      ),
+      child: TextButton(
+        onPressed: onClick,
+        child: Text(
+          text,
+          style: const TextStyle(color: Colors.white),
+        ),
+      ),
+    );
+  }
+
+  //Button controller
   Widget buttonDefault(BuildContext context, VoidCallback? onClick) {
     return Container(
-      margin: const EdgeInsets.only(top: 10),
       height: 50,
       width: MediaQuery.of(context).size.width * .9,
       decoration: BoxDecoration(
@@ -516,7 +630,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
       child: TextButton(
         onPressed: onClick,
         child: const Text(
-          "PROSSEGUIR",
+          "REGISTRAR",
           style: TextStyle(color: Colors.white),
         ),
       ),

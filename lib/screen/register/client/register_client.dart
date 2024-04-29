@@ -8,15 +8,6 @@ import 'package:web_simclub/components/auth/textfield_password.dart';
 import 'package:web_simclub/components/menu.dart';
 import 'package:web_simclub/store/register/client/client.store.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
-
-class RegisterClient extends StatefulWidget {
-  const RegisterClient({super.key});
-
-  @override
-  State<RegisterClient> createState() => _RegisterClientState();
-}
-
-class _RegisterClientState extends State<RegisterClient> {
   //form1
   final _nomeController = TextEditingController();
   final _emailController = TextEditingController();
@@ -35,6 +26,15 @@ class _RegisterClientState extends State<RegisterClient> {
   final _districtController = TextEditingController();
   final _cityController = TextEditingController();
   final _stateController = TextEditingController();
+
+class RegisterClient extends StatefulWidget {
+  const RegisterClient({super.key});
+
+  @override
+  State<RegisterClient> createState() => _RegisterClientState();
+}
+
+class _RegisterClientState extends State<RegisterClient> {
 
   final formKey1 = GlobalKey<FormState>();
   final formKey2 = GlobalKey<FormState>();

@@ -9,6 +9,17 @@ import 'package:web_simclub/components/menu.dart';
 import 'package:web_simclub/store/auth/auth.store.dart';
 import 'package:web_simclub/store/sell/sell.store.dart';
 
+String? _namePlan;
+final _budgetController = TextEditingController();
+final _contractController = TextEditingController();
+final _employeeController = TextEditingController();
+//Formkey2
+final _clientController = TextEditingController();
+final _nameController = TextEditingController();
+final _cpfController = TextEditingController();
+final _rgController = TextEditingController();
+final _emailController = TextEditingController();
+
 class LoadingScreen extends StatelessWidget {
   const LoadingScreen({super.key});
 
@@ -29,17 +40,6 @@ class BudgetSell extends StatefulWidget {
   @override
   State<BudgetSell> createState() => _BudgetSellState();
 }
-
-String? namePlan;
-final _budgetController = TextEditingController();
-final _contractController = TextEditingController();
-final _employeeController = TextEditingController();
-//Formkey2
-final _clientController = TextEditingController();
-final _nameController = TextEditingController();
-final _cpfController = TextEditingController();
-final _rgController = TextEditingController();
-final _emailController = TextEditingController();
 
 class _BudgetSellState extends State<BudgetSell> {
   late Future<void> _loadDataFuture;
@@ -66,7 +66,7 @@ class _BudgetSellState extends State<BudgetSell> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const LoadingScreen();
         } else {
-          return _buildContent ();
+          return _buildContent();
         }
       },
     );
@@ -192,9 +192,9 @@ class _BudgetSellState extends State<BudgetSell> {
                                                           return null;
                                                         }
                                                       : (value) {
-                                                          if (namePlan ==
+                                                          if (_namePlan ==
                                                                   null ||
-                                                              namePlan!
+                                                              _namePlan!
                                                                   .isEmpty) {
                                                             return "Selecione um plano";
                                                           }
@@ -202,7 +202,7 @@ class _BudgetSellState extends State<BudgetSell> {
                                                         },
                                                   onChanged: (value) {
                                                     setState(() {
-                                                      namePlan = value;
+                                                      _namePlan = value;
                                                       store.setPlan(value!);
                                                     });
                                                   },

@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:web_simclub/components/menu.dart'; // Importe a biblioteca dart:async
+import 'package:web_simclub/components/menu.dart';
+
+bool _isLoading = true;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,8 +14,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool _isLoading = true;
-
   @override
   void initState() {
     super.initState();
@@ -31,7 +31,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _isLoading ? const Center(child: CircularProgressIndicator()) : const MenuWidget(),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : const MenuWidget(),
       backgroundColor: Colors.green[200],
     );
   }

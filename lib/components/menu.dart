@@ -84,6 +84,18 @@ class _MenuWidgetState extends State<MenuWidget> {
                         );
                       },
                     ),
+                    MenuItemData(
+                      text: 'Adicionar Dependentes',
+                      icon: MdiIcons.accountMultiplePlusOutline,
+                      onClick: () {
+                        client.restoreData();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterClient(),
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
 

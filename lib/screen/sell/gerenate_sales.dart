@@ -9,6 +9,17 @@ import 'package:web_simclub/components/menu.dart';
 import 'package:web_simclub/store/auth/auth.store.dart';
 import 'package:web_simclub/store/sell/sell.store.dart';
 
+String? _namePlan;
+final _budgetController = TextEditingController();
+final _contractController = TextEditingController();
+final _employeeController = TextEditingController();
+//Formkey2
+final _clientController = TextEditingController();
+final _nameController = TextEditingController();
+final _cpfController = TextEditingController();
+final _rgController = TextEditingController();
+final _emailController = TextEditingController();
+
 class LoadingScreen extends StatelessWidget {
   const LoadingScreen({super.key});
 
@@ -29,17 +40,6 @@ class GerenateSales extends StatefulWidget {
   @override
   State<GerenateSales> createState() => _GerenateSalesState();
 }
-
-String? namePlan;
-final _budgetController = TextEditingController();
-final _contractController = TextEditingController();
-final _employeeController = TextEditingController();
-//Formkey2
-final _clientController = TextEditingController();
-final _nameController = TextEditingController();
-final _cpfController = TextEditingController();
-final _rgController = TextEditingController();
-final _emailController = TextEditingController();
 
 class _GerenateSalesState extends State<GerenateSales> {
   late Future<void> _loadDataFuture;
@@ -192,9 +192,9 @@ class _GerenateSalesState extends State<GerenateSales> {
                                                           return null;
                                                         }
                                                       : (value) {
-                                                          if (namePlan ==
+                                                          if (_namePlan ==
                                                                   null ||
-                                                              namePlan!
+                                                              _namePlan!
                                                                   .isEmpty) {
                                                             return "Selecione um plano";
                                                           }
@@ -202,7 +202,7 @@ class _GerenateSalesState extends State<GerenateSales> {
                                                         },
                                                   onChanged: (value) {
                                                     setState(() {
-                                                      namePlan = value;
+                                                      _namePlan = value;
                                                       store.setPlan(value!);
                                                     });
                                                   },

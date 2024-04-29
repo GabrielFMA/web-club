@@ -9,6 +9,23 @@ import 'package:web_simclub/components/auth/textfield_string.dart';
 import 'package:web_simclub/components/menu.dart';
 import 'package:web_simclub/store/register/employee/employee.store.dart';
 
+final _nomeController = TextEditingController();
+final _emailController = TextEditingController();
+final _phoneController = TextEditingController();
+final _passwordController = TextEditingController();
+final _confirmPasswordController = TextEditingController();
+
+String _name = '';
+String _password = '';
+
+String? valuePosition;
+
+List<String> _listCargo = [
+  'Funcionario',
+  'Gerente',
+  'Administrador',
+];
+
 class RegisterEmployee extends StatefulWidget {
   const RegisterEmployee({Key? key});
 
@@ -17,22 +34,6 @@ class RegisterEmployee extends StatefulWidget {
 }
 
 class _RegisterEmployeeState extends State<RegisterEmployee> {
-  final _nomeController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-  String _name = '';
-  String _password = ' ';
-
-  String? valuePosition;
-
-  List<String> listCargo = [
-    'Funcionario',
-    'Gerente',
-    'Administrador',
-  ];
-
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -193,7 +194,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                             }
                                           });
                                         },
-                                        items: listCargo.map((cargo) {
+                                        items: _listCargo.map((cargo) {
                                           return DropdownMenuItem<String>(
                                             value: cargo,
                                             child: Text(

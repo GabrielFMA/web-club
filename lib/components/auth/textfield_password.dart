@@ -40,12 +40,30 @@ class TextFieldPassword extends StatelessWidget {
             icon: Icon(MdiIcons.lockOutline),
             border: InputBorder.none,
             hintText: "Senha",
-            suffixIcon: IconButton(
-              onPressed: () {
-                store.visible();
+            suffixIcon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200),
+              switchInCurve: Curves.easeIn,
+              switchOutCurve: Curves.easeOut,
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: ScaleTransition(
+                    scale: animation,
+                    child: child,
+                  ),
+                );
               },
-              icon: Icon(
-                store.isVisible ? MdiIcons.eyeOutline : MdiIcons.eyeOffOutline,
+              child: IconButton(
+                key: Key(store.isVisible
+                    .toString()),
+                onPressed: () {
+                  store.visible();
+                },
+                icon: Icon(
+                  store.isVisible
+                      ? MdiIcons.eyeOutline
+                      : MdiIcons.eyeOffOutline,
+                ),
               ),
             ),
           ),
@@ -65,7 +83,6 @@ class TextFieldConfirmPassword extends StatelessWidget {
       required this.confirmPassword,
       required this.shouldValidate,
       required this.validator});
-
 
   // Confirm Password Controller
   @override

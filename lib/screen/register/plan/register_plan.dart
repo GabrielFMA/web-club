@@ -8,6 +8,14 @@ import 'package:web_simclub/components/auth/textfield_string.dart';
 import 'package:web_simclub/components/menu.dart';
 import 'package:web_simclub/store/register/plan/plan.store.dart';
 
+final _nameController = TextEditingController();
+final _priceController = TextEditingController();
+final _descriptionController = TextEditingController();
+
+String? _selectedPlan;
+
+List<String> _listPlan = ['Básico', 'Intermediário', 'Premium'];
+
 class RegisterPlan extends StatefulWidget {
   const RegisterPlan({super.key});
 
@@ -16,14 +24,6 @@ class RegisterPlan extends StatefulWidget {
 }
 
 class _RegisterPlanState extends State<RegisterPlan> {
-  final _nameController = TextEditingController();
-  final _priceController = TextEditingController();
-  final _descriptionController = TextEditingController();
-
-  String? selectedPlan;
-
-  List<String> listPlan = ['Básico', 'Intermediário', 'Premium'];
-
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -116,11 +116,11 @@ class _RegisterPlanState extends State<RegisterPlan> {
                                           return null;
                                         },
                                         isExpanded: true,
-                                        value: selectedPlan,
+                                        value: _selectedPlan,
                                         onChanged: (value) {
                                           setState(() {
-                                            selectedPlan = value!;
-                                            switch (selectedPlan) {
+                                            _selectedPlan = value!;
+                                            switch (_selectedPlan) {
                                               case 'Premium':
                                                 store.setPlanNumber(3);
                                                 break;
@@ -136,7 +136,7 @@ class _RegisterPlanState extends State<RegisterPlan> {
                                             }
                                           });
                                         },
-                                        items: listPlan.map((plan) {
+                                        items: _listPlan.map((plan) {
                                           return DropdownMenuItem<String>(
                                             value: plan,
                                             child: Text(

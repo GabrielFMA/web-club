@@ -8,6 +8,9 @@ import 'package:web_simclub/components/menu.dart';
 import 'package:web_simclub/screen/register/partner/register_partner.dart';
 import 'package:web_simclub/store/register/partner/partner.store.dart';
 
+late List<TextEditingController> _textControllers;
+late List<String> _examValues;
+
 class RegisterExam extends StatefulWidget {
   const RegisterExam({super.key});
 
@@ -17,8 +20,6 @@ class RegisterExam extends StatefulWidget {
 
 class _RegisterExamState extends State<RegisterExam> {
   final formKey = GlobalKey<FormState>();
-  late List<TextEditingController> _textControllers;
-  late List<String> examValues;
 
   @override
   void initState() {
@@ -88,10 +89,10 @@ class _RegisterExamState extends State<RegisterExam> {
                                 context,
                                 () async {
                                   if (formKey.currentState!.validate()) {
-                                    examValues = _textControllers
+                                    _examValues = _textControllers
                                         .map((controller) => controller.text)
                                         .toList();
-                                    store.setListExam(examValues);
+                                    store.setListExam(_examValues);
                                     await store.registrationPartner();
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
@@ -99,7 +100,7 @@ class _RegisterExamState extends State<RegisterExam> {
                                             const RegisterPartner(),
                                       ),
                                     );
-                                    print(examValues);
+                                    print(_examValues);
                                   }
                                 },
                               ),
