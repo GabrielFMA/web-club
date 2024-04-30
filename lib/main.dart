@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, avoid_print
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,7 +24,6 @@ import 'package:web_simclub/store/register/partner/partner.store.dart';
 import 'package:web_simclub/store/register/plan/plan.store.dart';
 import 'package:web_simclub/store/sell/sell.store.dart';
 
-import 'package:universal_html/html.dart' as html;
 
 final auth = FirebaseAuth.instance;
 final currentUser = auth.currentUser;
@@ -37,7 +38,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +80,7 @@ class MyApp extends StatelessWidget {
                 '/orcamento': (_) => const BudgetSell(),
               }
             : {
+                '/home': (_) => const HomePage(),
                 '/login': (_) => const LoginScreen(),
               },
         home: const AuthChecker(),
@@ -88,7 +90,7 @@ class MyApp extends StatelessWidget {
 }
 
 class AuthChecker extends StatelessWidget {
-  const AuthChecker({Key? key}) : super(key: key);
+  const AuthChecker({super.key});
 
   @override
   Widget build(BuildContext context) {

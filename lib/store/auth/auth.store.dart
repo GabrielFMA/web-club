@@ -113,14 +113,7 @@ abstract class _AuthStore with Store {
       _password = ' ';
 
       if (!_isError) {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomePage(),
-          ),
-          (route) => false,
-        );
-        html.window.location.replace('/home');
+        Navigator.of(context).pushReplacementNamed('/home');
         _textError = ' ';
       }
     } on FirebaseAuthException catch (e) {
