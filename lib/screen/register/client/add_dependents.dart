@@ -89,8 +89,9 @@ class _AddDependentsState extends State<AddDependents> {
                                                 if (text.trim().isNotEmpty) {
                                                   await store
                                                       .dependentDataCheck(text);
-                                                } else {
-                                                  store.restoreData();
+                                                } else if (!store
+                                                    .trueDependent()) {
+                                                  store.restoreDependent();
                                                 }
                                                 setState(() {
                                                   if (store.trueDependent()) {
@@ -100,6 +101,7 @@ class _AddDependentsState extends State<AddDependents> {
                                                 });
                                               },
                                               validator: (text) {
+                                                print('Nome:');
                                                 print(store.getDependentName());
                                                 if (text!.trim().isEmpty &&
                                                     store
@@ -165,14 +167,17 @@ class _AddDependentsState extends State<AddDependents> {
                                               hintText: store.trueDependent()
                                                   ? store.getDependentName()
                                                   : "Nome",
+                                              enabled: !store.trueDependent(),
                                               text: _nameController.text,
                                               shouldValidate: true,
                                               validator: (text) {
-                                                if (text!.isEmpty &&
-                                                    !store.trueDependent()) {
-                                                  return "Digite um nome";
+                                                if (!store.trueDependent()) {
+                                                  if (text!.isEmpty) {
+                                                    return "Digite um nome";
+                                                  }
+                                                  store.setDependentName(text);
+                                                  return null;
                                                 }
-                                                store.setDependentName(text);
                                                 return null;
                                               },
                                             ),
@@ -188,17 +193,21 @@ class _AddDependentsState extends State<AddDependents> {
                                                         ? store
                                                             .getDependentCPF()
                                                         : "CPF",
+                                                    enabled:
+                                                        !store.trueDependent(),
                                                     text: _cpfClientController
                                                         .text,
                                                     shouldValidate: true,
                                                     validator: (text) {
-                                                      if (text!.isEmpty &&
-                                                          !store
-                                                              .trueDependent()) {
-                                                        return "Digite um CPF";
+                                                      if (!store
+                                                          .trueDependent()) {
+                                                        if (text!.isEmpty) {
+                                                          return "Digite um CPF";
+                                                        }
+                                                        store.setDependentCPF(
+                                                            text);
+                                                        return null;
                                                       }
-                                                      store.setDependentCPF(
-                                                          text);
                                                       return null;
                                                     },
                                                   ),
@@ -213,16 +222,20 @@ class _AddDependentsState extends State<AddDependents> {
                                                             .trueDependent()
                                                         ? store.getDependentRG()
                                                         : "RG",
+                                                    enabled:
+                                                        !store.trueDependent(),
                                                     text: _rgController.text,
                                                     shouldValidate: true,
                                                     validator: (text) {
-                                                      if (text!.isEmpty &&
-                                                          !store
-                                                              .trueDependent()) {
-                                                        return "Digite um RG";
+                                                      if (!store
+                                                          .trueDependent()) {
+                                                        if (text!.isEmpty) {
+                                                          return "Digite um RG";
+                                                        }
+                                                        store.setDependentRG(
+                                                            text);
+                                                        return null;
                                                       }
-                                                      store
-                                                          .setDependentRG(text);
                                                       return null;
                                                     },
                                                   ),
@@ -239,11 +252,13 @@ class _AddDependentsState extends State<AddDependents> {
                                               text: _emailController.text,
                                               shouldValidate: true,
                                               validator: (text) {
-                                                if (text!.isEmpty &&
-                                                    !store.trueDependent()) {
-                                                  return "Digite um email";
+                                                if (!store.trueDependent()) {
+                                                  if (text!.isEmpty) {
+                                                    return "Digite um email";
+                                                  }
+                                                  store.setDependentEmail(text);
+                                                  return null;
                                                 }
-                                                store.setDependentEmail(text);
                                                 return null;
                                               },
                                             ),
@@ -273,7 +288,7 @@ class _AddDependentsState extends State<AddDependents> {
                                             if (text.trim().isNotEmpty) {
                                               await store.clientDataCheck(text);
                                             } else {
-                                              store.restoreData();
+                                              store.restoreClient();
                                             }
                                             setState(() {});
                                           },
@@ -378,6 +393,7 @@ class _AddDependentsState extends State<AddDependents> {
                                     formKey1.currentState!.validate();
                                 final isForm3Valid =
                                     formKey3.currentState!.validate();
+                                String client = store.getClientName();
                                 //Confirmation screen
                                 if (!store.getIsError() &&
                                     isForm1Valid &&
@@ -387,9 +403,10 @@ class _AddDependentsState extends State<AddDependents> {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: const Text('Adicionar Venda'),
-                                        content: const Text(
-                                            'Tem certeza que deseja adicionar esta Venda?'),
+                                        title:
+                                            const Text('Adicionar Dependente'),
+                                        content: Text(
+                                            'Tem certeza que deseja adicionar este Dependente ao cliente: $client?'),
                                         actions: <Widget>[
                                           Row(
                                             mainAxisAlignment:
@@ -398,7 +415,7 @@ class _AddDependentsState extends State<AddDependents> {
                                               buttonDialog(
                                                 text: 'SIM',
                                                 onClick: () async {
-                                                  store.registrationSell();
+                                                  store.registrationDependent();
                                                   Navigator.pushAndRemoveUntil(
                                                     context,
                                                     MaterialPageRoute(

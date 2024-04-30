@@ -1,4 +1,6 @@
 // ignore_for_file: avoid_print, equal_keys_in_map, unnecessary_string_interpolations, library_private_types_in_public_api
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
@@ -111,21 +113,52 @@ abstract class _DependentsStore with Store {
   //NAO CRIADO --------------------------------------------------
 
   @action
-  Future<void> registrationSell() async {
+  Future<void> registrationDependent() async {
     try {
-      Map<String, dynamic> sellInfoMap = {};
+      if (_dependentId.isEmpty) {
+        _dependentId = generateRandomId();
+      }
 
-      await addDetailsSell(sellInfoMap, _clientId);
+      Map<String, dynamic> userInfoMap = {
+        "Id": _dependentId,
+        "Nome": _dependentName,
+        "CPF": _dependentCPF,
+        "RG": _dependentRG,
+        "Email": _dependentEmail.toLowerCase(),
+      };
+
+      // Adicionando detalhes da venda
+      await addDetailsDependent(userInfoMap, _clientId);
     } catch (e) {
       print('Erro ao fazer registro: $e');
       print('Tipo de exceção: ${e.runtimeType}');
     }
-    restoreData();
+    restoreClient();
+    restoreDependent();
   }
 
   @action
-  Future addDetailsSell(Map<String, dynamic> sellMap, String id) async {
-    await db.collection("Vendas").doc(id).set(sellMap);
+  Future<void> addDetailsDependent(
+      Map<String, dynamic> sellMap, String id) async {
+    // Adicionando os detalhes da venda na coleção de usuários
+    await db
+        .collection("Usuarios")
+        .doc(id)
+        .collection("Dependentes")
+        .doc(sellMap["Id"])
+        .set(sellMap);
+  }
+
+  // Função para gerar um ID aleatório
+  String generateRandomId() {
+    Random random = Random();
+    const chars =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789';
+    String randomId = '';
+    for (var i = 0; i < 28; i++) {
+      randomId += chars[random.nextInt(chars.length)];
+    }
+    return randomId;
   }
 
   //NAO CRIADO --------------------------------------------------
@@ -136,11 +169,12 @@ abstract class _DependentsStore with Store {
       await dependentIdSearch("CPF", dependent);
       await dependentIdSearch("RG", dependent);
       await dependentIdSearch("Email", dependent);
+      print(_dependentId);
       if (_dependentId.isEmpty) {
         _textError = "Não foi possivel encontrar um cliente com esses dados.";
-        _trueClient = false;
+        _trueDependent = false;
         _isError = true;
-        restoreData();
+        restoreDependent();
       } else {
         _textError = "";
         _isError = false;
@@ -180,7 +214,7 @@ abstract class _DependentsStore with Store {
         _textError = "Não foi possivel encontrar um cliente com esses dados.";
         _trueClient = false;
         _isError = true;
-        restoreData();
+        restoreClient();
       } else {
         _textError = "";
         _isError = false;
@@ -210,7 +244,7 @@ abstract class _DependentsStore with Store {
     }
   }
 
-  restoreData() {
+  restoreDependent() {
     //Dependent
     _dependentId = '';
     _dependentName = '';
@@ -218,6 +252,9 @@ abstract class _DependentsStore with Store {
     _dependentRG = '';
     _dependentEmail = '';
     _trueDependent = false;
+  }
+
+  restoreClient() {
     //Client
     _clientId = '';
     _clientName = '';
@@ -225,8 +262,5 @@ abstract class _DependentsStore with Store {
     _clientRG = '';
     _clientEmail = '';
     _trueClient = false;
-    //Error
-    _textError = '';
-    _isError = false;
   }
 }

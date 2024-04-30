@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:web_simclub/screen/auth/login.dart';
+import 'package:web_simclub/screen/home_page.dart';
 import 'package:web_simclub/screen/register/client/add_dependents.dart';
 import 'package:web_simclub/screen/register/client/register_client.dart';
 import 'package:web_simclub/screen/register/partner/register_partner.dart';
@@ -14,6 +15,7 @@ import 'package:web_simclub/screen/sell/budget_sell.dart';
 import 'package:web_simclub/screen/sell/gerenate_sales.dart';
 import 'package:web_simclub/store/auth/auth.store.dart';
 import 'package:web_simclub/store/register/client/client.store.dart';
+import 'package:web_simclub/store/register/client/dependents.store.dart';
 import 'package:web_simclub/store/register/employee/employee.store.dart';
 import 'package:web_simclub/store/register/partner/partner.store.dart';
 import 'package:web_simclub/store/register/plan/plan.store.dart';
@@ -47,6 +49,7 @@ class _MenuWidgetState extends State<MenuWidget> {
     final client = Provider.of<ClientStore>(context);
     final partner = Provider.of<PartnerStore>(context);
     final employee = Provider.of<EmployeeStore>(context);
+    final dependents = Provider.of<DependentsStore>(context);
 
     return Container(
       width: 320,
@@ -89,7 +92,8 @@ class _MenuWidgetState extends State<MenuWidget> {
                       text: 'Adicionar Dependentes',
                       icon: MdiIcons.accountMultiplePlusOutline,
                       onClick: () {
-                        client.restoreData();
+                        dependents.restoreClient();
+                        dependents.restoreDependent();
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => const AddDependents(),
@@ -270,7 +274,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                         onClick: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const RegisterClient(),
+                              builder: (context) => const HomePage(),
                             ),
                           );
                         },

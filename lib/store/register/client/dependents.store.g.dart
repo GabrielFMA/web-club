@@ -233,21 +233,22 @@ mixin _$DependentsStore on _DependentsStore, Store {
     });
   }
 
-  late final _$registrationSellAsyncAction =
-      AsyncAction('_DependentsStore.registrationSell', context: context);
+  late final _$registrationDependentAsyncAction =
+      AsyncAction('_DependentsStore.registrationDependent', context: context);
 
   @override
-  Future<void> registrationSell() {
-    return _$registrationSellAsyncAction.run(() => super.registrationSell());
+  Future<void> registrationDependent() {
+    return _$registrationDependentAsyncAction
+        .run(() => super.registrationDependent());
   }
 
-  late final _$addDetailsSellAsyncAction =
-      AsyncAction('_DependentsStore.addDetailsSell', context: context);
+  late final _$addDetailsDependentAsyncAction =
+      AsyncAction('_DependentsStore.addDetailsDependent', context: context);
 
   @override
-  Future<dynamic> addDetailsSell(Map<String, dynamic> sellMap, String id) {
-    return _$addDetailsSellAsyncAction
-        .run(() => super.addDetailsSell(sellMap, id));
+  Future<void> addDetailsDependent(Map<String, dynamic> sellMap, String id) {
+    return _$addDetailsDependentAsyncAction
+        .run(() => super.addDetailsDependent(sellMap, id));
   }
 
   late final _$_DependentsStoreActionController =

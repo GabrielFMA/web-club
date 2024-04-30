@@ -110,6 +110,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                       text: _lastNameController.text,
                                       shouldValidate: true,
                                       validator: (text) {
+                                        _name == '';
                                         if (text!.isEmpty) {
                                           return "Digite um Sobrenome";
                                         }

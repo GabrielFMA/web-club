@@ -93,6 +93,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                                 text: _nameController.text,
                                                 shouldValidate: true,
                                                 validator: (text) {
+                                                  _name == '';
                                                   if (text!.isEmpty) {
                                                     return "Digite um nome";
                                                   }
