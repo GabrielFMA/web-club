@@ -86,6 +86,22 @@ mixin _$PlanStore on _PlanStore, Store {
     });
   }
 
+  late final _$_depPriceAtom =
+      Atom(name: '_PlanStore._depPrice', context: context);
+
+  @override
+  String get _depPrice {
+    _$_depPriceAtom.reportRead();
+    return super._depPrice;
+  }
+
+  @override
+  set _depPrice(String value) {
+    _$_depPriceAtom.reportWrite(value, super._depPrice, () {
+      super._depPrice = value;
+    });
+  }
+
   late final _$_descriptionAtom =
       Atom(name: '_PlanStore._description', context: context);
 
@@ -181,6 +197,17 @@ mixin _$PlanStore on _PlanStore, Store {
   }
 
   @override
+  String getDepPrice() {
+    final _$actionInfo = _$_PlanStoreActionController.startAction(
+        name: '_PlanStore.getDepPrice');
+    try {
+      return super.getDepPrice();
+    } finally {
+      _$_PlanStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String getDescription() {
     final _$actionInfo = _$_PlanStoreActionController.startAction(
         name: '_PlanStore.getDescription');
@@ -230,6 +257,17 @@ mixin _$PlanStore on _PlanStore, Store {
         _$_PlanStoreActionController.startAction(name: '_PlanStore.setPrice');
     try {
       return super.setPrice(price);
+    } finally {
+      _$_PlanStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setDepPrice(String depPrice) {
+    final _$actionInfo = _$_PlanStoreActionController.startAction(
+        name: '_PlanStore.setDepPrice');
+    try {
+      return super.setDepPrice(depPrice);
     } finally {
       _$_PlanStoreActionController.endAction(_$actionInfo);
     }

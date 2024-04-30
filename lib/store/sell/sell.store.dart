@@ -167,6 +167,7 @@ abstract class _SellStore with Store {
       print('Erro ao fazer registro: $e');
       print('Tipo de exceção: ${e.runtimeType}');
     }
+    print('restore data dps do try');
     restoreData();
   }
 
@@ -228,16 +229,6 @@ abstract class _SellStore with Store {
     } else {
       print("Nenhum $value foi encontrado.");
     }
-    DocumentSnapshot snapshot2 = await FirebaseFirestore.instance
-        .collection("Orçamentos")
-        .doc(value)
-        .get();
-    if (snapshot2.exists) {
-      _plan = snapshot2.get('Plano');
-      print("$value válido. Plan do cliente: $_plan");
-    } else {
-      print("Nenhum $value foi encontrado.");
-    }
   }
 
   Future<void> clientDataCheck(client) async {
@@ -250,7 +241,7 @@ abstract class _SellStore with Store {
         _textError = "Não foi possivel encontrar um cliente com esses dados.";
         _trueClient = false;
         _isError = true;
-        restoreData();
+        restoreClient();
       } else {
         _textError = "";
         _isError = false;
@@ -344,6 +335,17 @@ abstract class _SellStore with Store {
     } else {
       print("Nenhum $_plan foi encontrado.");
     }
+  }
+
+  restoreClient(){
+    _trueClient = false;
+    _client = '';
+    _clientId = '';
+    _clientName = '';
+    _clientCPF = '';
+    _clientRG = '';
+    _clientEmail = '';
+    _textError = '';
   }
 
   restoreData() {

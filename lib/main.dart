@@ -9,6 +9,7 @@ import 'package:web_simclub/screen/auth/login.dart';
 import 'package:web_simclub/screen/home_page.dart';
 import 'package:web_simclub/store/auth/auth.store.dart';
 import 'package:web_simclub/store/register/client/client.store.dart';
+import 'package:web_simclub/store/register/client/dependents.store.dart';
 import 'package:web_simclub/store/register/partner/partner.store.dart';
 import 'package:web_simclub/store/register/employee/employee.store.dart';
 import 'package:web_simclub/store/register/plan/plan.store.dart';
@@ -29,11 +30,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        //Auth
         Provider<AuthStore>(create: (_) => AuthStore()),
+        //Client
         Provider<ClientStore>(create: (_) => ClientStore()),
+        Provider<DependentsStore>(create: (_) => DependentsStore()),
+        //Employee
         Provider<EmployeeStore>(create: (_) => EmployeeStore()),
+        //Partner
         Provider<PartnerStore>(create: (_) => PartnerStore()),
+        //Plan
         Provider<PlanStore>(create: (_) => PlanStore()),
+        //Sell
         Provider<SellStore>(create: (_) => SellStore())
       ],
       child: MaterialApp(

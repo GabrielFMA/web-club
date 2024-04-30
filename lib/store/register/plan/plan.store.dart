@@ -32,6 +32,9 @@ abstract class _PlanStore with Store {
   String _price = '';
 
   @observable
+  String _depPrice = '';
+
+  @observable
   String _description = '';
 
   @observable
@@ -55,6 +58,9 @@ abstract class _PlanStore with Store {
   String getPrice() => _price;
 
   @action
+  String getDepPrice() => _depPrice;
+
+  @action
   String getDescription() => _description;
 
   @action
@@ -74,6 +80,9 @@ abstract class _PlanStore with Store {
   void setPrice(String price) => _price = price;
 
   @action
+  void setDepPrice(String depPrice) => _depPrice = depPrice;
+
+  @action
   void setDescription(String description) => _description = description;
 
   @action
@@ -88,6 +97,7 @@ abstract class _PlanStore with Store {
         "ID": _idPlan,
         "Nome": _name.toLowerCase(),
         "Preço": _price,
+        "Preço Dependente": _depPrice,
         "Nivel do plano": _planNumber,
         "Descrição": _description,
       };

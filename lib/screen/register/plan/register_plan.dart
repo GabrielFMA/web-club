@@ -155,7 +155,7 @@ class _RegisterPlanState extends State<RegisterPlan> {
 
                               //Price field
                               TextFieldString(
-                                icon: Icon(MdiIcons.currencyUsd),
+                                icon: Icon(MdiIcons.cash),
                                 hintText: "Preço do Plano",
                                 text: _priceController.text,
                                 shouldValidate: true,
@@ -168,6 +168,25 @@ class _RegisterPlanState extends State<RegisterPlan> {
                                     return "Digite um número válido";
                                   }
                                   store.setPrice(text.replaceAll(',', '.'));
+                                  return null;
+                                },
+                              ),
+
+                              //Dependent Price field
+                              TextFieldString(
+                                icon: Icon(MdiIcons.cashMultiple),
+                                hintText: "Preço por Dependente",
+                                text: _priceController.text,
+                                shouldValidate: true,
+                                validator: (text) {
+                                  if (text!.isEmpty) {
+                                    return "Digite o Preço";
+                                  }
+                                  if (!RegExp(r'^\d+([,.]\d{1,2})?$')
+                                      .hasMatch(text)) {
+                                    return "Digite um número válido";
+                                  }
+                                  store.setDepPrice(text.replaceAll(',', '.'));
                                   return null;
                                 },
                               ),

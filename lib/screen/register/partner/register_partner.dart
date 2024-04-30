@@ -9,7 +9,7 @@ import 'package:web_simclub/screen/register/partner/register_exam.dart';
 import 'package:web_simclub/components/auth/textfield_string.dart';
 import 'package:web_simclub/store/register/partner/partner.store.dart';
 
-final _nomeController = TextEditingController();
+final _nameController = TextEditingController();
 final _emailController = TextEditingController();
 final _cpnjController = TextEditingController();
 //form2
@@ -85,7 +85,7 @@ class _RegisterPartnerState extends State<RegisterPartner> {
                                           icon: Icon(MdiIcons
                                               .accountSupervisorCircleOutline),
                                           hintText: "Nome do parceiro",
-                                          text: _nomeController.text,
+                                          text: _nameController.text,
                                           shouldValidate: true,
                                           validator: (text) {
                                             if (text!.isEmpty) {

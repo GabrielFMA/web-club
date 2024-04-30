@@ -9,7 +9,8 @@ import 'package:web_simclub/components/auth/textfield_string.dart';
 import 'package:web_simclub/components/menu.dart';
 import 'package:web_simclub/store/register/employee/employee.store.dart';
 
-final _nomeController = TextEditingController();
+final _nameController = TextEditingController();
+final _lastNameController = TextEditingController();
 final _emailController = TextEditingController();
 final _phoneController = TextEditingController();
 final _passwordController = TextEditingController();
@@ -86,7 +87,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                     child: TextFieldString(
                                       icon: Icon(MdiIcons.accountOutline),
                                       hintText: "Nome",
-                                      text: _nomeController.text,
+                                      text: _nameController.text,
                                       shouldValidate: true,
                                       validator: (text) {
                                         if (text!.isEmpty) {
@@ -106,7 +107,7 @@ class _RegisterEmployeeState extends State<RegisterEmployee> {
                                     child: TextFieldString(
                                       icon: Icon(MdiIcons.accountOutline),
                                       hintText: "Sobrenome",
-                                      text: _nomeController.text,
+                                      text: _lastNameController.text,
                                       shouldValidate: true,
                                       validator: (text) {
                                         if (text!.isEmpty) {

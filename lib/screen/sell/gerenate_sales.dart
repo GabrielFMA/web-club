@@ -368,7 +368,7 @@ class _GerenateSalesState extends State<GerenateSales> {
                                           icon: Icon(MdiIcons.emailOutline),
                                           hintText: (store.trueBudget() ||
                                                   store.trueClient())
-                                              ? store.getClientRG()
+                                              ? store.getClientEmail()
                                               : "Email",
                                           enabled: false,
                                           text: _emailController.text,
@@ -389,10 +389,10 @@ class _GerenateSalesState extends State<GerenateSales> {
                             buttonDefault(
                               context,
                               () async {
-                                final isForm1Valid =
-                                    formKey1.currentState!.validate();
                                 final isForm2Valid =
                                     formKey2.currentState!.validate();
+                                final isForm1Valid =
+                                    formKey1.currentState!.validate();
                                 //Confirmation screen
                                 if (!store.getIsError() &&
                                     isForm1Valid &&

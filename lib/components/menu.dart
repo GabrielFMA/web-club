@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:web_simclub/screen/auth/login.dart';
+import 'package:web_simclub/screen/register/client/add_dependents.dart';
 import 'package:web_simclub/screen/register/client/register_client.dart';
 import 'package:web_simclub/screen/register/partner/register_partner.dart';
 import 'package:web_simclub/screen/register/employee/register_employee.dart';
@@ -69,7 +70,7 @@ class _MenuWidgetState extends State<MenuWidget> {
               if (store.getLevel() < 3)
                 buildMenuDrawer(
                   context: context,
-                  text: 'Cliente',
+                  text: 'Clientes',
                   icon: MdiIcons.accountOutline,
                   menuItems: [
                     MenuItemData(
@@ -91,7 +92,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                         client.restoreData();
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const RegisterClient(),
+                            builder: (context) => const AddDependents(),
                           ),
                         );
                       },
@@ -169,11 +170,11 @@ class _MenuWidgetState extends State<MenuWidget> {
               if (store.getLevel() < 3)
                 buildMenuDrawer(
                   context: context,
-                  text: 'Vendas',
+                  text: 'Vendas e Orçamento',
                   icon: MdiIcons.networkPos,
                   menuItems: [
                     MenuItemData(
-                      text: 'Gerar',
+                      text: 'Venda',
                       icon: MdiIcons.clipboardPlusOutline,
                       onClick: () {
                         sell.restoreData();
