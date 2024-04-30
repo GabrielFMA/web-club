@@ -72,7 +72,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                       icon: MdiIcons.notePlusOutline,
                       onClick: () {
                         client.restoreData();
-                        Navigator.pushNamed(context, '/registrarcliente');
+                        Navigator.of(context).pushNamed('/registrarcliente');
                       },
                     ),
                     MenuItemData(
@@ -80,7 +80,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                       icon: MdiIcons.accountMultiplePlusOutline,
                       onClick: () {
                         client.restoreData();
-                        Navigator.pushNamed(context, '/adicionardependentes');
+                        Navigator.of(context).pushNamed('/adicionardependentes');
                       },
                     ),
                   ],
@@ -98,7 +98,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                       icon: MdiIcons.notePlusOutline,
                       onClick: () {
                         employee.restoreData();
-                        Navigator.pushNamed(context, '/registrarfuncionario');
+                        Navigator.of(context).pushNamed('/registrarfuncionario');
                       },
                     ),
                   ],
@@ -116,7 +116,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                       icon: MdiIcons.notePlusOutline,
                       onClick: () {
                         partner.restoreData();
-                        Navigator.pushNamed(context, '/registrarparceiro');
+                        Navigator.of(context).pushNamed('/registrarparceiro');
                       },
                     ),
                   ],
@@ -134,7 +134,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                       icon: MdiIcons.notePlusOutline,
                       onClick: () {
                         plan.restoreData();
-                        Navigator.pushNamed(context, '/registrarplano');
+                        Navigator.of(context).pushNamed('/registrarplano');
                       },
                     ),
                   ],
@@ -152,7 +152,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                       icon: MdiIcons.clipboardPlusOutline,
                       onClick: () {
                         sell.restoreData();
-                        Navigator.pushNamed(context, '/venda');
+                        Navigator.of(context).pushNamed('/venda');
                       },
                     ),
                     MenuItemData(
@@ -160,7 +160,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                       icon: MdiIcons.textBoxPlusOutline,
                       onClick: () {
                         sell.restoreData();
-                        Navigator.pushNamed(context, '/orcamento');
+                        Navigator.of(context).pushNamed('/orcamento');
                       },
                     ),
                   ],
@@ -203,7 +203,8 @@ class _MenuWidgetState extends State<MenuWidget> {
                                           text: 'SIM',
                                           onClick: () {
                                             store.signOut();
-                                            Navigator.pushNamed(context, '/login');
+                                            Navigator.of(context)
+                                                .pushNamed('/login');
                                           },
                                         ),
                                         buttonDefault(

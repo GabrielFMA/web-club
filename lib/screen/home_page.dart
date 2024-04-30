@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:web_simclub/components/menu.dart';
 
-bool _isLoading = true;
+import 'package:universal_html/html.dart' as html;
+
+bool _isLoading = false;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,7 +19,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _fetchDataWithDelay();
   }
 
   Future<void> _fetchDataWithDelay() async {

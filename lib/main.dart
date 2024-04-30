@@ -22,6 +22,8 @@ import 'package:web_simclub/store/register/partner/partner.store.dart';
 import 'package:web_simclub/store/register/plan/plan.store.dart';
 import 'package:web_simclub/store/sell/sell.store.dart';
 
+import 'package:universal_html/html.dart' as html;
+
 final auth = FirebaseAuth.instance;
 final currentUser = auth.currentUser;
 
@@ -57,7 +59,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Auth',
+        title: 'SimClub',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent),
           useMaterial3: true,
@@ -105,10 +107,18 @@ class AuthChecker extends StatelessWidget {
             final currentUser = snapshot.data!;
             authStore.recoveryData(currentUser.uid);
             print('Usuário logado: ${currentUser.uid}');
-            return const HomePage();
+            // Push to home screen without build context
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.of(context).pushReplacementNamed('/home');
+            });
+            return Container();
           } else {
             print('Sem usuário');
-            return const LoginScreen();
+            // Push to login screen without build context
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.of(context).pushReplacementNamed('/login');
+            });
+            return Container();
           }
         }
       },
