@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:web_simclub/screen/home_page.dart';
 
+import 'package:universal_html/html.dart' as html;
+
 part 'auth.store.g.dart';
 
 class AuthStore = _AuthStore with _$AuthStore;
@@ -55,6 +57,10 @@ abstract class _AuthStore with Store {
   bool getIsError() => _isError;
 
   String getTextError() => _textError;
+
+  Future<User?> getCurrentUser() async {
+    return FirebaseAuth.instance.currentUser;
+  }
 
   @action
   userUID() => _uidUser;
@@ -107,11 +113,7 @@ abstract class _AuthStore with Store {
       _password = ' ';
 
       if (!_isError) {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-          (route) => false,
-        );
+        Navigator.of(context).pushNamed('/home');
         _textError = ' ';
       }
     } on FirebaseAuthException catch (e) {

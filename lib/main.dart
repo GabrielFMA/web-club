@@ -1,8 +1,6 @@
-// ignore_for_file: avoid_print
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:provider/provider.dart';
 import 'package:web_simclub/firebase_options.dart';
@@ -19,12 +17,13 @@ import 'package:web_simclub/screen/sell/gerenate_sales.dart';
 import 'package:web_simclub/store/auth/auth.store.dart';
 import 'package:web_simclub/store/register/client/client.store.dart';
 import 'package:web_simclub/store/register/client/dependents.store.dart';
-import 'package:web_simclub/store/register/partner/partner.store.dart';
 import 'package:web_simclub/store/register/employee/employee.store.dart';
+import 'package:web_simclub/store/register/partner/partner.store.dart';
 import 'package:web_simclub/store/register/plan/plan.store.dart';
 import 'package:web_simclub/store/sell/sell.store.dart';
 
-bool isUserLoggedIn = false;
+final auth = FirebaseAuth.instance;
+final currentUser = auth.currentUser;
 
 void main() async {
   setUrlStrategy(PathUrlStrategy());
@@ -36,12 +35,10 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
   @override
   Widget build(BuildContext context) {
-    final auth = FirebaseAuth.instance;
-    final currentUser = auth.currentUser;
     return MultiProvider(
       providers: [
         //Auth
@@ -67,7 +64,7 @@ class MyApp extends StatelessWidget {
         ),
         routes: currentUser?.email != null
             ? {
-                '/login': (_) => const HomePage(),
+                '/login': (_) => const LoginScreen(),
                 '/home': (_) => const HomePage(),
                 '/registrarcliente': (_) => const RegisterClient(),
                 '/adicionardependentes': (_) => const AddDependents(),
@@ -82,25 +79,39 @@ class MyApp extends StatelessWidget {
             : {
                 '/login': (_) => const LoginScreen(),
               },
-        home: Builder(
-          builder: (context) {
-            final auth = FirebaseAuth.instance;
-            final currentUser = auth.currentUser;
-
-            if (currentUser != null) {
-              final store = Provider.of<AuthStore>(context, listen: false);
-
-              store.recoveryData(currentUser.uid);
-              print('Usuário logado: ${currentUser.uid}');
-
-              return const HomePage();
-            } else {
-              print('Sem usuario');
-              return const LoginScreen();
-            }
-          },
-        ),
+        home: const AuthChecker(),
       ),
+    );
+  }
+}
+
+class AuthChecker extends StatelessWidget {
+  const AuthChecker({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final authStore = Provider.of<AuthStore>(context);
+    return FutureBuilder<User?>(
+      future: authStore.getCurrentUser(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else {
+          if (snapshot.hasData && snapshot.data != null) {
+            final currentUser = snapshot.data!;
+            authStore.recoveryData(currentUser.uid);
+            print('Usuário logado: ${currentUser.uid}');
+            return const HomePage();
+          } else {
+            print('Sem usuário');
+            return const LoginScreen();
+          }
+        }
+      },
     );
   }
 }
