@@ -4,22 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:web_simclub/screen/auth/login.dart';
-import 'package:web_simclub/screen/home_page.dart';
-import 'package:web_simclub/screen/register/client/add_dependents.dart';
-import 'package:web_simclub/screen/register/client/register_client.dart';
-import 'package:web_simclub/screen/register/partner/register_partner.dart';
-import 'package:web_simclub/screen/register/employee/register_employee.dart';
-import 'package:web_simclub/screen/register/plan/register_plan.dart';
-import 'package:web_simclub/screen/sell/budget_sell.dart';
-import 'package:web_simclub/screen/sell/gerenate_sales.dart';
 import 'package:web_simclub/store/auth/auth.store.dart';
 import 'package:web_simclub/store/register/client/client.store.dart';
-import 'package:web_simclub/store/register/client/dependents.store.dart';
 import 'package:web_simclub/store/register/employee/employee.store.dart';
 import 'package:web_simclub/store/register/partner/partner.store.dart';
 import 'package:web_simclub/store/register/plan/plan.store.dart';
 import 'package:web_simclub/store/sell/sell.store.dart';
+
+import 'package:universal_html/html.dart' as html;
 
 class MenuWidget extends StatefulWidget {
   const MenuWidget({super.key});
@@ -49,7 +41,6 @@ class _MenuWidgetState extends State<MenuWidget> {
     final client = Provider.of<ClientStore>(context);
     final partner = Provider.of<PartnerStore>(context);
     final employee = Provider.of<EmployeeStore>(context);
-    final dependents = Provider.of<DependentsStore>(context);
 
     return Container(
       width: 320,
@@ -81,24 +72,15 @@ class _MenuWidgetState extends State<MenuWidget> {
                       icon: MdiIcons.notePlusOutline,
                       onClick: () {
                         client.restoreData();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const RegisterClient(),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/registrarcliente');
                       },
                     ),
                     MenuItemData(
                       text: 'Adicionar Dependentes',
                       icon: MdiIcons.accountMultiplePlusOutline,
                       onClick: () {
-                        dependents.restoreClient();
-                        dependents.restoreDependent();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const AddDependents(),
-                          ),
-                        );
+                        client.restoreData();
+                        Navigator.pushNamed(context, '/adicionardependentes');
                       },
                     ),
                   ],
@@ -116,11 +98,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                       icon: MdiIcons.notePlusOutline,
                       onClick: () {
                         employee.restoreData();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const RegisterEmployee(),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/registrarfuncionario');
                       },
                     ),
                   ],
@@ -138,11 +116,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                       icon: MdiIcons.notePlusOutline,
                       onClick: () {
                         partner.restoreData();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const RegisterPartner(),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/registrarparceiro');
                       },
                     ),
                   ],
@@ -160,11 +134,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                       icon: MdiIcons.notePlusOutline,
                       onClick: () {
                         plan.restoreData();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const RegisterPlan(),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/registrarplano');
                       },
                     ),
                   ],
@@ -182,11 +152,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                       icon: MdiIcons.clipboardPlusOutline,
                       onClick: () {
                         sell.restoreData();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const GerenateSales(),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/venda');
                       },
                     ),
                     MenuItemData(
@@ -194,11 +160,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                       icon: MdiIcons.textBoxPlusOutline,
                       onClick: () {
                         sell.restoreData();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const BudgetSell(),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/orcamento');
                       },
                     ),
                   ],
@@ -241,14 +203,8 @@ class _MenuWidgetState extends State<MenuWidget> {
                                           text: 'SIM',
                                           onClick: () {
                                             store.signOut();
-                                            Navigator.pushAndRemoveUntil(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const LoginScreen(),
-                                              ),
-                                              (route) => false,
-                                            );
+                                            html.window.location.replace('/login');
+                                            
                                           },
                                         ),
                                         buttonDefault(
@@ -272,11 +228,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                         text: 'Usuário',
                         icon: MdiIcons.badgeAccountOutline,
                         onClick: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const HomePage(),
-                            ),
-                          );
+                          Navigator.pushNamed(context, '/home');
                         },
                       ),
                     ),

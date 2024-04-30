@@ -3,10 +3,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:provider/provider.dart';
 import 'package:web_simclub/firebase_options.dart';
 import 'package:web_simclub/screen/auth/login.dart';
 import 'package:web_simclub/screen/home_page.dart';
+import 'package:web_simclub/screen/register/client/add_dependents.dart';
+import 'package:web_simclub/screen/register/client/register_client.dart';
+import 'package:web_simclub/screen/register/employee/register_employee.dart';
+import 'package:web_simclub/screen/register/partner/register_exam.dart';
+import 'package:web_simclub/screen/register/partner/register_partner.dart';
+import 'package:web_simclub/screen/register/plan/register_plan.dart';
+import 'package:web_simclub/screen/sell/budget_sell.dart';
+import 'package:web_simclub/screen/sell/gerenate_sales.dart';
 import 'package:web_simclub/store/auth/auth.store.dart';
 import 'package:web_simclub/store/register/client/client.store.dart';
 import 'package:web_simclub/store/register/client/dependents.store.dart';
@@ -15,7 +24,10 @@ import 'package:web_simclub/store/register/employee/employee.store.dart';
 import 'package:web_simclub/store/register/plan/plan.store.dart';
 import 'package:web_simclub/store/sell/sell.store.dart';
 
+bool isUserLoggedIn = false;
+
 void main() async {
+  setUrlStrategy(PathUrlStrategy());
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -28,6 +40,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final auth = FirebaseAuth.instance;
+    final currentUser = auth.currentUser;
     return MultiProvider(
       providers: [
         //Auth
@@ -51,13 +65,30 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent),
           useMaterial3: true,
         ),
-        home: Builder (
+        routes: currentUser?.email != null
+            ? {
+                '/login': (_) => const HomePage(),
+                '/home': (_) => const HomePage(),
+                '/registrarcliente': (_) => const RegisterClient(),
+                '/adicionardependentes': (_) => const AddDependents(),
+                '/registrarfuncionario': (_) => const RegisterEmployee(),
+                '/registrarparceiro': (_) => const RegisterPartner(),
+                '/registrarparceiro/registrarconsulta': (_) =>
+                    const RegisterExam(),
+                '/registrarplano': (_) => const RegisterPlan(),
+                '/venda': (_) => const GerenateSales(),
+                '/orcamento': (_) => const BudgetSell(),
+              }
+            : {
+                '/login': (_) => const LoginScreen(),
+              },
+        home: Builder(
           builder: (context) {
             final auth = FirebaseAuth.instance;
             final currentUser = auth.currentUser;
 
             if (currentUser != null) {
-              final store = Provider.of<AuthStore>(context);
+              final store = Provider.of<AuthStore>(context, listen: false);
 
               store.recoveryData(currentUser.uid);
               print('Usuário logado: ${currentUser.uid}');
