@@ -11,8 +11,6 @@ import 'package:web_simclub/store/register/partner/partner.store.dart';
 import 'package:web_simclub/store/register/plan/plan.store.dart';
 import 'package:web_simclub/store/sell/sell.store.dart';
 
-import 'package:universal_html/html.dart' as html;
-
 class MenuWidget extends StatefulWidget {
   const MenuWidget({super.key});
 
@@ -203,7 +201,6 @@ class _MenuWidgetState extends State<MenuWidget> {
                                           text: 'SIM',
                                           onClick: () {
                                             store.signOut();
-                                            html.window.location.replace('/login');
                                             
                                           },
                                         ),

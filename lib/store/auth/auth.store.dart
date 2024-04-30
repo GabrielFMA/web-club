@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:web_simclub/screen/home_page.dart';
 
-import 'package:universal_html/html.dart' as html;
-
 part 'auth.store.g.dart';
 
 class AuthStore = _AuthStore with _$AuthStore;
@@ -114,7 +112,6 @@ abstract class _AuthStore with Store {
           MaterialPageRoute(builder: (context) => const HomePage()),
           (route) => false,
         );
-        html.window.location.replace('/home');
         _textError = ' ';
       }
     } on FirebaseAuthException catch (e) {
