@@ -1,6 +1,6 @@
 # web-club
 
-Um programa Web para uma empresa de "Clube de benefícios" com foco em consultas médicas, foi desenvolvido inicialmente por nós, juntamente do aplicativo  [app_club](https://github.com/ribollitiago/app-club), mas depois foi vendido para ser continuado pelos desenvolvedores da empresa.
+Um programa Web para uma empresa de "Clube de benefícios" com foco em consultas médicas, foi desenvolvido inicialmente por nós, juntamente do aplicativo  [app-club](https://github.com/ribollitiago/app-club), mas depois foi vendido para ser continuado pelos desenvolvedores da empresa.
 
 ## 🛠️ Construído com
 
